@@ -43,7 +43,7 @@ defmodule PortfolioHermannWeb.Components.VisitStats do
 
   defp get_popular_pages(paths) do
     paths
-    |> Enum.sort_by(fn {_path, views} -> views end, :desc)
+    |> Enum.sort_by(fn {path, views} -> {path, views} end, :desc)
     |> Enum.take(5)
   end
 end

@@ -20,7 +20,17 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   def render(assigns) do
     ~H"""
     <section class="max-w-4xl mx-auto py-16">
-      <h1 class="text-3xl font-bold mb-6">Gestion des projets</h1>
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold mb-6">Gestion des projets</h1>
+        <div class="flex gap-4">
+          <.link navigate={~p"/admin/stats"} class="btn-soft px-4 py-2">
+            Voir les stats
+          </.link>
+          <.link href={~p"/admin/logout"} method="delete" data-confirm="Se deconnecter de l'Admin?" class="btn-soft text-red-600 hover:underline px-4 py-2">
+            Logout
+          </.link>
+        </div>
+      </div>
 
       <form phx-submit="add" class="space-y-2 card-soft mb-6">
         <input name="title" placeholder="Titre" class="w-full p-2 rounded-xl border" />
