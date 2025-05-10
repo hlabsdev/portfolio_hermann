@@ -1,132 +1,165 @@
 [
   {
-    "id": "fastsms",
-    "title": "FastSMS",
-    "tech": "Elixir, Phoenix LiveView, API SMS",
+    "demo_urls": [
+      {
+        "label": "Voir",
+        "url": ""
+      }
+    ],
     "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.",
-    "demo_urls": [],
+    "id": "fastsms",
+    "logo_url": null,
     "source_urls": [
-      { "label": "Code complet", "url": "https://github.com/hlabsdev/fastsms" }
-    ]
+      {
+        "label": "Code complet",
+        "url": "https://github.com/hlabsdev/fastsms"
+      }
+    ],
+    "tech": "Elixir, Phoenix LiveView, API SMS",
+    "title": "FastSMS"
   },
   {
-    "id": "objectbox-app",
-    "title": "App Flutter de gestion de stock",
-    "tech": "Flutter, ObjectBox, Google Drive",
+    "demo_urls": [
+      {
+        "label": "Télécharger APK",
+        "url": "https://github.com/hlabsdev/boutique/releases"
+      }
+    ],
     "desc": "Application mobile offline-first permettant à un commerçant de gérer ses produits, ventes, comptabilité, avec sauvegarde automatique sur Google Drive.",
-    "demo_urls": [
-      { "label": "Télécharger APK", "url": "https://github.com/hlabsdev/storebox/releases" }
-    ],
+    "id": "objectbox-app",
     "source_urls": [
-      { "label": "Source Flutter", "url": "https://github.com/hlabsdev/storebox" }
-    ]
+      {
+        "label": "Source Flutter",
+        "url": "https://github.com/hlabsdev/boutique"
+      }
+    ],
+    "tech": "Flutter, ObjectBox, Google Drive",
+    "title": "App Flutter de gestion de stock"
   },
   {
-    "id": "autodiagnostic",
-    "title": "Auto-diagnostic Export",
-    "tech": "Django, PDF, Chart.js",
+    "demo_urls": [],
     "desc": "Outil d’auto-évaluation des entreprises exportatrices avec score radar, PDF et commentaires personnalisés.",
-    "demo_urls": [],
+    "id": "autodiagnostic",
     "source_urls": [
-      { "label": "Code source", "url": "https://github.com/hlabsdev/autodiagnostic-export" }
-    ]
-  },
-  {
-    "id": "oifppl",
-    "title": "OIFPPL",
-    "tech": "Python, Vue.js, PostgreSQL",
-    "desc": "Plateforme de gestion des concours de littérature pour l’OIF, permettant la création, la soumission et le suivi des candidatures internationales.",
-    "demo_urls": [
-      { "label": "Démo en ligne", "url": "https://oifppl.org" }
+      {
+        "label": "Code source",
+        "url": "https://github.com/hlabsdev/autodiagnostic-export"
+      }
     ],
-    "source_urls": []
+    "tech": "Django, PDF, Chart.js",
+    "title": "Auto-diagnostic Export"
   },
   {
-    "id": "sgf-senegal",
-    "title": "SGF Sénégal",
-    "tech": "Angular, Node.js, Figma, PostgreSQL",
+    "demo_urls": [
+      {
+        "label": "Démo en ligne",
+        "url": "https://oifppl.org"
+      }
+    ],
+    "desc": "Plateforme de gestion des concours de littérature pour l’OIF, permettant la création, la soumission et le suivi des candidatures internationales.",
+    "id": "oifppl",
+    "source_urls": [],
+    "tech": "Python, Vue.js, PostgreSQL",
+    "title": "OIFPPL"
+  },
+  {
+    "demo_urls": [],
     "desc": "Système de Gestion Foncière pour la DGID du Sénégal incluant conception UX/UI, développement front-end et visualisation des données foncières.",
-    "demo_urls": [],
-    "source_urls": []
+    "id": "sgf-senegal",
+    "source_urls": [],
+    "tech": "Angular, Node.js, Figma, PostgreSQL",
+    "title": "SGF Sénégal"
   },
   {
-    "id": "mvdmt",
-    "title": "MVDMT - Statistiques Emploi ANPE",
-    "tech": "Vue.js, Chart.js, API REST",
+    "demo_urls": [],
     "desc": "Application permettant à l'ANPE du Togo de visualiser en temps réel les données sur l'emploi au niveau national, avec dashboards statistiques.",
-    "demo_urls": [],
+    "id": "mvdmt",
     "source_urls": [
-      { "label": "Frontend", "url": "https://github.com/hlabsdev/mvdmt" }
-    ]
+      {
+        "label": "Frontend",
+        "url": "https://github.com/hlabsdev/mvdmt"
+      }
+    ],
+    "tech": "Vue.js, Chart.js, API REST",
+    "title": "MVDMT - Statistiques Emploi ANPE"
   },
   {
-    "id": "sanlam-tarificateur",
-    "title": "Tarificateur Intelligent pour Sanlam Allianz",
-    "tech": "Machine Learning, FastAPI, Scikit-learn",
+    "demo_urls": [],
     "desc": "Modèle de prédiction des primes d'assurance déployé dans un backend API REST pour automatiser la tarification chez Sanlam.",
-    "demo_urls": [],
+    "id": "sanlam-tarificateur",
     "source_urls": [
-      { "label": "API & modèle", "url": "https://github.com/hlabsdev/sanlam-tarificateur" }
-    ]
+      {
+        "label": "API & modèle",
+        "url": "https://github.com/hlabsdev/sanlam-tarificateur"
+      }
+    ],
+    "tech": "Machine Learning, FastAPI, Scikit-learn",
+    "title": "Tarificateur Intelligent pour Sanlam Allianz"
   },
   {
-    "id": "cube-kpital",
-    "title": "K-PITAL Invest",
-    "tech": "Python, Django, Angular",
+    "demo_urls": [],
     "desc": "Plateforme de collecte de fonds et d’enregistrement d’investisseurs développée pour la startup CUBE TOGO.",
-    "demo_urls": [],
+    "id": "cube-kpital",
     "source_urls": [
-      { "label": "Code source", "url": "https://github.com/hlabsdev/kpital" }
-    ]
+      {
+        "label": "Code source",
+        "url": "https://github.com/hlabsdev/kpital"
+      }
+    ],
+    "tech": "Python, Django, Angular",
+    "title": "K-PITAL Invest"
   },
   {
-    "id": "cube-book",
-    "title": "CUBE-BOOK",
-    "tech": "Django, HTML, Bootstrap",
+    "demo_urls": [],
     "desc": "Système de publication de livres numériques et gestion des publications pour les auteurs partenaires de CUBE.",
-    "demo_urls": [],
-    "source_urls": []
+    "id": "cube-book",
+    "source_urls": [],
+    "tech": "Django, HTML, Bootstrap",
+    "title": "CUBE-BOOK"
   },
   {
-    "id": "microfinance-pro",
-    "title": "Microfinance Pro",
-    "tech": "Laravel, Flutter, Firebase",
+    "demo_urls": [],
     "desc": "Plateforme de gestion intégrée des opérations de microfinance : clients, prêts, remboursements et trésorerie.",
-    "demo_urls": [],
-    "source_urls": []
+    "id": "microfinance-pro",
+    "source_urls": [],
+    "tech": "Laravel, Flutter, Firebase",
+    "title": "Microfinance Pro"
   },
   {
-    "id": "geschool",
-    "title": "GESCHOOL",
-    "tech": "Flutter, Firebase",
+    "demo_urls": [],
     "desc": "Application mobile pour la gestion d’écoles, de centres de formation et d’universités, dans le cadre du projet PAFPE de la GIZ TOGO.",
-    "demo_urls": [],
+    "id": "geschool",
     "source_urls": [
-      { "label": "Source Flutter", "url": "https://github.com/hlabsdev/geschool" }
-    ]
+      {
+        "label": "Source Flutter",
+        "url": "https://github.com/hlabsdev/geschool"
+      }
+    ],
+    "tech": "Flutter, Firebase",
+    "title": "GESCHOOL"
   },
   {
-    "id": "coop-togo",
-    "title": "Suivi des Coopératives Agricoles",
-    "tech": "Django, PostgreSQL",
+    "demo_urls": [],
     "desc": "Plateforme d’enregistrement, de suivi et de gestion des coopératives agricoles du Togo pour le ministère en charge de l’agriculture.",
-    "demo_urls": [],
-    "source_urls": []
+    "id": "coop-togo",
+    "source_urls": [],
+    "tech": "Django, PostgreSQL",
+    "title": "Suivi des Coopératives Agricoles"
   },
   {
-    "id": "openclinic-dsnisi",
-    "title": "OpenClinic Togo",
-    "tech": "Java, PostgreSQL, OpenClinic",
+    "demo_urls": [],
     "desc": "Installation et adaptation du système de gestion hospitalière OpenClinic pour la DSNISI (Santé publique, Togo).",
-    "demo_urls": [],
-    "source_urls": []
+    "id": "openclinic-dsnisi",
+    "source_urls": [],
+    "tech": "Java, PostgreSQL, OpenClinic",
+    "title": "OpenClinic Togo"
   },
   {
-    "id": "ged-assemblee",
-    "title": "GED & Collaboration Assemblée Nationale",
-    "tech": "Elixir, PostgreSQL, Phoenix",
-    "desc": "Déploiement d’un système de travail collaboratif, gestion documentaire et transcription des débats à l’Assemblée nationale du Togo.",
     "demo_urls": [],
-    "source_urls": []
+    "desc": "Déploiement d’un système de travail collaboratif, gestion documentaire et transcription des débats à l’Assemblée nationale du Togo.",
+    "id": "ged-assemblee",
+    "source_urls": [],
+    "tech": "Elixir, PostgreSQL, Phoenix",
+    "title": "GED & Collaboration Assemblée Nationale"
   }
 ]
