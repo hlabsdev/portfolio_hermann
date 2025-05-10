@@ -1,7 +1,6 @@
 defmodule PortfolioHermannWeb.AdminAuth do
   use PortfolioHermannWeb, :verified_routes
   import Phoenix.LiveView
-  import Phoenix.Component
 
   def on_mount(:default, _params, session, socket) do
     if Map.get(session, "admin") do
@@ -10,7 +9,7 @@ defmodule PortfolioHermannWeb.AdminAuth do
       socket =
         socket
         |> put_flash(:error, "Veuillez vous connecter d'abord")
-        |> redirect(to: ~p"/admin/login")
+        |> redirect(to: "/admin/login")
 
       {:halt, socket}
     end

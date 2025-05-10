@@ -5,7 +5,6 @@ defmodule PortfolioHermannWeb.HomeLive do
   import PortfolioHermannWeb.Components.Timeline
 
   @impl true
-
   def mount(_params, _session, socket) do
     experiences = [
       {2025, [
@@ -26,6 +25,7 @@ defmodule PortfolioHermannWeb.HomeLive do
     {:ok, socket}
   end
 
+  @impl true
   def handle_event("next-slide", _, socket) do
     current = socket.assigns.current_slide
     total = length(socket.assigns.projects) - 1
@@ -33,6 +33,7 @@ defmodule PortfolioHermannWeb.HomeLive do
     {:noreply, assign(socket, :current_slide, new_slide)}
   end
 
+  @impl true
   def handle_event("prev-slide", _, socket) do
     current = socket.assigns.current_slide
     total = length(socket.assigns.projects) - 1
@@ -40,6 +41,7 @@ defmodule PortfolioHermannWeb.HomeLive do
     {:noreply, assign(socket, :current_slide, new_slide)}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="space-y-20">

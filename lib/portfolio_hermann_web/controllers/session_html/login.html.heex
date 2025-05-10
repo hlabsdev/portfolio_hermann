@@ -1,6 +1,6 @@
 <section class="max-w-md mx-auto py-20">
   <h1 class="text-2xl font-bold mb-4">Connexion Admin</h1>
-  <.form for={:login} action={~p"/admin/login"} method="post" class="space-y-4">
+  <.form for={%{}} as={:login} action={~p"/admin/login"} method="post" class="space-y-4">
     <input name="password" type="password" placeholder="Mot de passe" class="w-full p-3 rounded-xl border border-gray-300" />
     <button type="submit" class="btn-soft px-4 py-2">Se connecter</button>
   </.form>
