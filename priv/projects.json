@@ -3,12 +3,84 @@
     "id": "fastsms",
     "title": "FastSMS",
     "tech": "Elixir, Phoenix LiveView, API SMS",
-    "desc": "Plateforme de gestion de contacts et d’envoi de SMS programmés avec API dynamique."
+    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces."
   },
   {
     "id": "objectbox-app",
     "title": "App Flutter de gestion de stock",
     "tech": "Flutter, ObjectBox, Google Drive",
-    "desc": "Application mobile offline-first avec backup Google Drive, pour commerçants."
+    "desc": "Application mobile offline-first permettant à un commerçant de gérer ses produits, ventes, comptabilité, avec sauvegarde automatique sur Google Drive."
+  },
+  {
+    "id": "autodiagnostic",
+    "title": "Plateforme d’auto-diagnostic export",
+    "tech": "Python (Django), PDF, Diagramme Radar",
+    "desc": "Application web permettant aux PME d’évaluer leur niveau de préparation à l’international avec scoring dynamique, synthèse PDF et visualisation radar."
+  },
+  {
+    "id": "oifppl",
+    "title": "OIFPPL",
+    "tech": "Python, Vue.js, PostgreSQL",
+    "desc": "Plateforme de gestion des concours de littérature pour l’OIF, permettant la création, la soumission et le suivi des candidatures internationales."
+  },
+  {
+    "id": "sgf-senegal",
+    "title": "SGF Sénégal",
+    "tech": "Angular, Node.js, Figma, PostgreSQL",
+    "desc": "Système de Gestion Foncière pour la DGID du Sénégal incluant conception UX/UI, développement front-end et visualisation des données foncières."
+  },
+  {
+    "id": "mvdmt",
+    "title": "MVDMT - Statistiques Emploi ANPE",
+    "tech": "Vue.js, Chart.js, API REST",
+    "desc": "Application permettant à l'ANPE du Togo de visualiser en temps réel les données sur l'emploi au niveau national, avec dashboards statistiques."
+  },
+  {
+    "id": "sanlam-tarificateur",
+    "title": "Tarificateur Intelligent pour Sanlam Allianz",
+    "tech": "Machine Learning, FastAPI, Scikit-learn",
+    "desc": "Modèle de prédiction des primes d'assurance déployé dans un backend API REST pour automatiser la tarification chez Sanlam."
+  },
+  {
+    "id": "cube-kpital",
+    "title": "K-PITAL Invest",
+    "tech": "Python, Django, Angular",
+    "desc": "Plateforme de collecte de fonds et d’enregistrement d’investisseurs développée pour la startup CUBE TOGO."
+  },
+  {
+    "id": "cube-book",
+    "title": "CUBE-BOOK",
+    "tech": "Django, HTML, Bootstrap",
+    "desc": "Système de publication de livres numériques et gestion des publications pour les auteurs partenaires de CUBE."
+  },
+  {
+    "id": "microfinance-pro",
+    "title": "Microfinance Pro",
+    "tech": "Laravel, Flutter, Firebase",
+    "desc": "Plateforme de gestion intégrée des opérations de microfinance : clients, prêts, remboursements et trésorerie."
+  },
+  {
+    "id": "geschool",
+    "title": "GESCHOOL",
+    "tech": "Flutter, Firebase",
+    "desc": "Application mobile pour la gestion d’écoles, de centres de formation et d’universités, dans le cadre du projet PAFPE de la GIZ TOGO."
+  },
+  {
+    "id": "coop-togo",
+    "title": "Suivi des Coopératives Agricoles",
+    "tech": "Django, PostgreSQL",
+    "desc": "Plateforme d’enregistrement, de suivi et de gestion des coopératives agricoles du Togo pour le ministère en charge de l’agriculture."
+  },
+  {
+    "id": "openclinic-dsnisi",
+    "title": "OpenClinic Togo",
+    "tech": "Java, PostgreSQL, OpenClinic",
+    "desc": "Installation et adaptation du système de gestion hospitalière OpenClinic pour la DSNISI (Santé publique, Togo)."
+  },
+  {
+    "id": "ged-assemblee",
+    "title": "GED & Collaboration Assemblée Nationale",
+    "tech": "Elixir, PostgreSQL, Phoenix",
+    "desc": "Déploiement d’un système de travail collaboratif, gestion documentaire et transcription des débats à l’Assemblée nationale du Togo."
   }
 ]
