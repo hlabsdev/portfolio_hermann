@@ -1,0 +1,73 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+/* Soft UI additions */
+@layer components {
+  .card-soft {
+    @apply bg-white/30 dark:bg-gray-800/30 p-6 rounded-xl backdrop-blur;
+  }
+  .btn-soft {
+    @apply bg-white/30 hover:bg-white/50 rounded-xl transition duration-300 backdrop-blur;
+  }
+  .glass {
+    @apply bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl shadow-lg;
+  }
+  .typing-effect {
+    @apply overflow-hidden whitespace-nowrap border-r-4 border-black dark:border-white;
+    animation: typing 3.5s steps(40, end), blink .75s step-end infinite;
+  }
+  .animate-fadeIn {
+    animation: fadeIn 1s ease-in forwards;
+  }
+  .animate-slideUp {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  /* Styles pour la timeline */
+  .timeline-item {
+    @apply relative pl-8 pb-8 border-l-2 border-indigo-500/30;
+  }
+
+  .timeline-dot {
+    @apply absolute -left-2 w-4 h-4 bg-indigo-500 rounded-full;
+  }
+
+  /* Styles pour le carousel */
+  .carousel-item {
+    @apply h-96 bg-white/30 dark:bg-gray-800/30 rounded-xl p-6 backdrop-blur transform transition-all duration-500;
+  }
+
+  .carousel-item.active {
+    @apply scale-105 shadow-xl;
+  }
+  
+  /* Effet de typing */
+  .typing-effect::after {
+    content: '|';
+    animation: blink 1s step-start infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

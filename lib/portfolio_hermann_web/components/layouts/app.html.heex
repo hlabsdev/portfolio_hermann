@@ -1,0 +1,32 @@
+<nav class="flex justify-between items-center px-6 py-4 bg-white/30 dark:bg-gray-800/30 backdrop-blur shadow-md fixed w-full z-50">
+  <h1 class="text-2xl font-bold dark:text-white">Hermann GOLO</h1>
+  <ul class="flex space-x-4 text-lg items-center">
+    <li><.link navigate={~p"/"} class="hover:underline dark:text-gray-200">Accueil</.link></li>
+    <li><.link navigate={~p"/about"} class="hover:underline dark:text-gray-200">À propos</.link></li>
+    <li><.link navigate={~p"/projects"} class="hover:underline dark:text-gray-200">Projets</.link></li>
+    <li><.link navigate={~p"/contact"} class="hover:underline dark:text-gray-200">Contact</.link></li>
+    <li><a href="/cv.pdf" class="hover:underline dark:text-gray-200" target="_blank">Mon CV</a></li>
+    <li>
+      <button 
+        phx-click={JS.dispatch("toggle-dark-mode")}
+        class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden dark:block text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 block dark:hidden text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<div class="pt-24 px-4">
+  <%= @inner_content %>
+</div>
+<footer class="bg-white/30 backdrop-blur shadow-md fixed bottom-0 w-full z-50">
+  <div class="flex justify-center items-center py-4">
+    <p class="text-sm text-gray-600">© 2025 Hermann GOLO. Tous droits réservés.</p>
+  </div>
+</footer>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "fastsms",
+    "title": "FastSMS",
+    "tech": "Elixir, Phoenix LiveView, API SMS",
+    "desc": "Plateforme de gestion de contacts et d’envoi de SMS programmés avec API dynamique."
+  },
+  {
+    "id": "objectbox-app",
+    "title": "App Flutter de gestion de stock",
+    "tech": "Flutter, ObjectBox, Google Drive",
+    "desc": "Application mobile offline-first avec backup Google Drive, pour commerçants."
+  }
+]
