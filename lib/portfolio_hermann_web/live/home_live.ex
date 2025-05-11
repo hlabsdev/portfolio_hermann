@@ -30,7 +30,7 @@ defmodule PortfolioHermannWeb.HomeLive do
         <div class="relative text-center">
            <div class="space-y-4 mb-8">
             <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#f39d8d] to-[#8B4513] bg-clip-text text-transparent">
-              Hermann Kekeil GOLO -- Hlabs
+              Hermann Kekeil GOLO (💻 Hlabs)
             </h1>
 
             <p class="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-300">
