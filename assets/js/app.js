@@ -9,7 +9,7 @@ let Hooks = {}
 
 Hooks.DarkMode = {
   mounted() {
-    const isDark = localStorage.getItem('darkMode') === 'true'
+    const isDark = localStorage.getItem('darkMode') === 'false'
     if (isDark) {
       document.documentElement.classList.add('dark')
     }

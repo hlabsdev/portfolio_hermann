@@ -90,13 +90,16 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   def handle_event("like_project", %{"id" => id}, socket) do
     Projects.increment_like(id)
     projects = Projects.list_projects()
-    filtered_projects = filter_projects(
-      projects,
-      socket.assigns.selected_tags,
-      socket.assigns.selected_year,
-      socket.assigns.search_query,
-      socket.assigns.selected_techs
-    )
+
+    filtered_projects =
+      filter_projects(
+        projects,
+        socket.assigns.selected_tags,
+        socket.assigns.selected_year,
+        socket.assigns.search_query,
+        socket.assigns.selected_techs
+      )
+
     {:noreply, assign(socket, projects: projects, filtered_projects: filtered_projects)}
   end
 
@@ -145,7 +148,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
 
-        <!-- Filtres -->
+    <!-- Filtres -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Recherche -->
           <div>
@@ -163,7 +166,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             </form>
           </div>
 
-          <!-- Année -->
+    <!-- Année -->
           <div>
             <select
               phx-change="filter_year"
@@ -172,18 +175,18 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             >
               <option value="all">Toutes les années</option>
 
-              <%=for year <- @all_years do%>
+              <%= for year <- @all_years do %>
                 <option value={year} selected={@selected_year == to_string(year)}>
-                  <%=year%>
+                  {year}
                 </option>
-              <%=end%>
+              <% end %>
             </select>
           </div>
 
-          <!-- Technologies -->
+    <!-- Technologies -->
           <div class="space-y-2">
             <div class="flex flex-wrap gap-2">
-              <%=for tech <- @all_techs do%>
+              <%= for tech <- @all_techs do %>
                 <button
                   type="button"
                   phx-click={JS.push("toggle_tech", value: %{tech: tech})}
@@ -192,13 +195,13 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                       do: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300",
                       else: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/50"}"}
                 >
-                  <%=tech%>
+                  {tech}
                 </button>
-              <%=end%>
+              <% end %>
             </div>
           </div>
 
-          <!-- Tri -->
+    <!-- Tri -->
           <div class="flex gap-2">
             <button
               type="button"
@@ -235,9 +238,9 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
 
-        <!-- Tags -->
+    <!-- Tags -->
         <div class="flex flex-wrap gap-2">
-          <%=for tag <- @all_tags do%>
+          <%= for tag <- @all_tags do %>
             <button
               type="button"
               phx-click={JS.push("toggle_tag", value: %{tag: tag})}
@@ -246,38 +249,46 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                   do: "bg-[#f39d8d] text-white dark:bg-[#8B4513] dark:text-white",
                   else: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-[#f39d8d]/10 dark:hover:bg-[#8B4513]/20"}"}
             >
-              <%=tag%>
+              {tag}
             </button>
-          <%=end%>
+          <% end %>
         </div>
       </div>
 
-      <!-- Liste des projets -->
-      <%=if @view_mode == :grid do%>
+    <!-- Liste des projets -->
+      <%= if @view_mode == :grid do %>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <%=for project <- @filtered_projects do%>
+          <%= for project <- @filtered_projects do %>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div class="relative aspect-[4/3] bg-gray-200 dark:bg-gray-700">
-                <img
-                  src={project["logo_url"]}
-                  alt={project["title"]}
-                  class="w-full h-full object-cover"
-                />
+                <%= if project["logo_url"] && project["logo_url"] != "" do %>
+                  <img
+                    src={project["logo_url"]}
+                    alt={project["title"]}
+                    class="w-full h-full object-cover"
+                  />
+                <% else %>
+                  <div class="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                    <.icon name="hero-photo" class="w-12 h-12 text-gray-400" />
+                  </div>
+                <% end %>
               </div>
+
               <div class="p-6">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  <%=project["title"]%>
+                  {project["title"]}
                 </h3>
+
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                  <%=project["desc"]%>
+                  {project["desc"]}
                 </p>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <%=for tag <- project["tags"] || [] do%>
+                  <%= for tag <- project["tags"] || [] do %>
                     <span class="px-2 py-1 text-xs font-medium bg-[#f39d8d]/10 text-[#8B4513] dark:bg-[#8B4513]/20 dark:text-[#f39d8d] rounded">
-                      <%=tag%>
+                      {tag}
                     </span>
-                  <%=end%>
+                  <% end %>
                 </div>
 
                 <div class="flex justify-between items-center">
@@ -296,39 +307,53 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                       <span>{project["stats"]["likes"]}</span>
                     </button>
                   </div>
-
-                  <%=if project["source_urls"] && length(project["source_urls"]) > 0 do%>
-                    <a
-                      href={hd(project["source_urls"])["url"]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-200"
-                    >
-                      Voir le code →
-                    </a>
-                  <%=end%>
                 </div>
 
-                <%=if project["demo_urls"] && length(project["demo_urls"]) > 0 do%>
+                <%= if project["demo_urls"] && length(project["demo_urls"]) > 0 do %>
                   <div class="mt-4 flex flex-wrap gap-2">
-                    <%=for demo <- project["demo_urls"] do%>
+                    <%= for demo <- project["demo_urls"] do %>
                       <a
                         href={demo["url"]}
                         target="_blank"
                         rel="noopener noreferrer"
                         class="flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-sm transition-colors duration-200"
                       >
-                        <.icon name="hero-play" class="w-4 h-4 mr-1" />
-                        <%=demo["label"]%>
+                        <.icon name="hero-play" class="w-4 h-4 mr-1" /> {demo["label"]}
                       </a>
-                    <%=end%>
+                    <% end %>
                   </div>
-                <%=end%>
+                <% end %>
+
+                <%= if project["source_urls"] && length(project["source_urls"]) > 0 do %>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    <%= for source <- project["source_urls"] do %>
+                      <a
+                        href={source["url"]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-sm transition-colors duration-200"
+                      >
+                        <.icon name="hero-code-bracket-square" class="w-4 h-4 mr-1" /> {source["label"]}
+                      </a>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <div class="bottom-6 right-8 flex items-center justify-end mt-4">
+                  <a
+                    href={~p"/projects/#{project["id"]}"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center px-3 py-1 rounded-lg bg-orange-100 text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200"
+                  >
+                    Details →
+                  </a>
+                </div>
               </div>
             </div>
-          <%=end%>
+          <% end %>
         </div>
-      <%=else%>
+      <% else %>
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -337,15 +362,19 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Projet
                   </th>
+
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Technologies
                   </th>
+
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Année
                   </th>
+
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Stats
                   </th>
+
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Liens
                   </th>
@@ -353,7 +382,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               </thead>
 
               <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                <%=for project <- @filtered_projects do%>
+                <%= for project <- @filtered_projects do %>
                   <tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors duration-200">
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center">
@@ -364,31 +393,36 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                             alt=""
                           />
                         </div>
+
                         <div class="ml-4">
                           <div class="text-sm font-medium text-gray-900 dark:text-white">
-                            <%=project["title"]%>
+                            {project["title"]}
                           </div>
+
                           <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                            <%=project["desc"]%>
+                            {limit_text(project["desc"], 90)}
                           </div>
                         </div>
                       </div>
                     </td>
+
                     <td class="px-6 py-4">
                       <div class="text-sm text-gray-900 dark:text-white max-w-xs overflow-hidden">
-                        <%=project["tech"]%>
+                        {project["tech"]}
                       </div>
                     </td>
+
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900 dark:text-white">
-                        <%=project["year"]%>
+                        {project["year"]}
                       </div>
                     </td>
+
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <div class="flex items-center space-x-4">
                         <div class="flex items-center space-x-1">
                           <.icon name="hero-eye" class="w-4 h-4" />
-                          <span><%=project["stats"]["views"]%></span>
+                          <span>{project["stats"]["views"]}</span>
                         </div>
 
                         <button
@@ -397,13 +431,14 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                           class="flex items-center space-x-1 hover:text-[#f39d8d] dark:hover:text-[#f39d8d] transition-colors duration-200"
                         >
                           <.icon name="hero-heart" class="w-4 h-4" />
-                          <span><%=project["stats"]["likes"]%></span>
+                          <span>{project["stats"]["likes"]}</span>
                         </button>
                       </div>
                     </td>
+
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <div class="flex space-x-2">
-                        <%=if project["source_urls"] && length(project["source_urls"]) > 0 do%>
+                        <%= if project["source_urls"] && length(project["source_urls"]) > 0 do %>
                           <a
                             href={hd(project["source_urls"])["url"]}
                             target="_blank"
@@ -413,10 +448,10 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                           >
                             <.icon name="hero-code-bracket" class="w-5 h-5" />
                           </a>
-                        <%=end%>
+                        <% end %>
 
-                        <%=if project["demo_urls"] && length(project["demo_urls"]) > 0 do%>
-                          <%=for demo <- project["demo_urls"] do%>
+                        <%= if project["demo_urls"] && length(project["demo_urls"]) > 0 do %>
+                          <%= for demo <- project["demo_urls"] do %>
                             <a
                               href={demo["url"]}
                               target="_blank"
@@ -426,17 +461,17 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                             >
                               <.icon name="hero-play" class="w-5 h-5" />
                             </a>
-                          <%=end%>
-                        <%=end%>
+                          <% end %>
+                        <% end %>
                       </div>
                     </td>
                   </tr>
-                <%=end%>
+                <% end %>
               </tbody>
             </table>
           </div>
         </div>
-      <%=end%>
+      <% end %>
     </div>
     """
   end

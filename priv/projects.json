@@ -6,7 +6,7 @@
         "url": "https://portfolio.hermann-golo.com"
       }
     ],
-    "desc": "Ce portfolio moderne a été développé **From scratch** et **Manuellement**  en utilisant Elixir et Phoenix LiveView pour mettre en valeur mes projets et compétences professionnelles.**Caractéristiques principales :**\n- **Interface Utilisateur Élégante et Responsive :**\n  - Design soigné et adaptable à différentes tailles d'écran.\n  - Intégration d'un mode sombre et d'un mode clair pour une expérience utilisateur personnalisée.\n- **Gestion Complète des Projets :**\n  - Interface administrative sécurisée pour la création, la modification et la suppression des projets.\n- **Gestion des Médias :**\n  - Système d'upload facile pour les images et autres fichiers.\n  - Optimisation automatique des images pour des performances web améliorées.\n- **Organisation des Projets :**\n  - Système de tags pour catégoriser et organiser les projets.\n  - Possibilité d'attribuer des catégories spécifiques aux projets.\n- **Filtrage Dynamique :**\n  - Fonctionnalité de filtrage en temps réel des projets par tags et catégories.\n- **Statistiques de Visites :**\n  - Suivi des statistiques de visites en temps réel pour analyser l'engagement.\n- **Expérience Utilisateur Améliorée :**\n  - Animations fluides et interactives implémentées avec AlpineJS.\n- **Performance Optimisée :**\n  - Utilisation de Phoenix LiveView pour une interactivité rapide et des performances optimisées.\n**Technologies Utilisées :**\n- **Framework Backend :* - Elixir et Phoenix LiveView\n- **Framework CSS :* - TailwindCSS pour un design rapide et utilitaire.\n- **Bibliothèque d'Icônes :* - heroicons pour des icônes SVG élégantes.\n**Principes de Développement :**\n- Adhérence aux meilleures pratiques de développement Elixir et Phoenix.\n- Code clair, maintenable et bien organisé.",
+    "desc": "Ce portfolio moderne a été développé **From scratch** et **Manuellement** en utilisant Elixir et Phoenix LiveView pour mettre en valeur mes projets et compétences professionnelles.**Caractéristiques principales :**\n- **Interface Utilisateur Élégante et Responsive :**\n  - Design soigné et adaptable à différentes tailles d'écran.\n  - Intégration d'un mode sombre et d'un mode clair pour une expérience utilisateur personnalisée.\n- **Gestion Complète des Projets :**\n  - Interface administrative sécurisée pour la création, la modification et la suppression des projets.\n- **Gestion des Médias :**\n  - Système d'upload facile pour les images et autres fichiers.\n  - Optimisation automatique des images pour des performances web améliorées.\n- **Organisation des Projets :**\n  - Système de tags pour catégoriser et organiser les projets.\n  - Possibilité d'attribuer des catégories spécifiques aux projets.\n- **Filtrage Dynamique :**\n  - Fonctionnalité de filtrage en temps réel des projets par tags et catégories.\n- **Statistiques de Visites :**\n  - Suivi des statistiques de visites en temps réel pour analyser l'engagement.\n- **Expérience Utilisateur Améliorée :**\n  - Animations fluides et interactives implémentées avec AlpineJS.\n- **Performance Optimisée :**\n  - Utilisation de Phoenix LiveView pour une interactivité rapide et des performances optimisées.\n**Technologies Utilisées :**\n- **Framework Backend :* - Elixir et Phoenix LiveView\n- **Framework CSS :* - TailwindCSS pour un design rapide et utilitaire.\n- **Bibliothèque d'Icônes :* - heroicons pour des icônes SVG élégantes.\n**Principes de Développement :**\n- Adhérence aux meilleures pratiques de développement Elixir et Phoenix.\n- Code clair, maintenable et bien organisé.",
     "featured": true,
     "id": "portfolio-hermann",
     "logo_url": null,
@@ -20,22 +20,24 @@
       "likes": 1,
       "views": 0
     },
+    "techs": [
+      "Elixir",
+      "Phoenix LiveView",
+      "TailwindCSS",
+      "Docker"
+    ],
     "tags": [
       "Portfolio",
-      "Elixir",
-      "LiveView",
-      "TailwindCSS",
       "Full-Stack",
       "JSON"
     ],
-    "tech": "Elixir, Phoenix LiveView, TailwindCSS, Docker",
     "title": "Portfolio Professionnel",
     "type": "Application Web",
     "year": 2025
   },
   {
     "demo_urls": [],
-    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n        \n        ",
+    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n",
     "featured": true,
     "id": "fastsms",
     "logo_url": null,
@@ -49,14 +51,15 @@
       "likes": 2,
       "views": 0
     },
-    "tags": [
-      "Phoenix",
+    "techs": [
       "Elixir",
-      "LiveView",
-      "SMS",
-      "Admin"
+      "Phoenix LiveView",
+      "Docker"
     ],
-    "tech": "Elixir, Phoenix LiveView, Docker",
+    "tags": [
+      "Admin",
+      "SMS"
+    ],
     "title": "FastSMS",
     "type": "Application Web",
     "year": 2024
@@ -81,13 +84,15 @@
       "likes": 0,
       "views": 0
     },
-    "tags": [
+    "techs": [
       "Flutter",
-      "Offline",
       "ObjectBox",
+      "Google Drive"
+    ],
+    "tags": [
+      "Offline",
       "Comptabilité"
     ],
-    "tech": "Flutter, ObjectBox, Google Drive",
     "title": "App Flutter de gestion de stock",
     "type": "Application Mobile",
     "year": 2024
@@ -107,13 +112,17 @@
       "likes": 0,
       "views": 0
     },
-    "tags": [
+    "techs": [
       "Django",
-      "Export",
+      "Pandas",
+      "ElasticSearch",
       "PDF",
+      "Chart.js"
+    ],
+    "tags": [
+      "Export",
       "Data Science"
     ],
-    "tech": "Django, Pandas, ElasticSearch, PDF, Chart.js",
     "title": "Auto-diagnostic Export",
     "type": "Application Web",
     "year": 2024
@@ -133,13 +142,15 @@
       "likes": 1,
       "views": 0
     },
-    "tags": [
-      "Concours",
+    "techs": [
+      "Python",
       "Vue.js",
-      "OIF",
       "PostgreSQL"
     ],
-    "tech": "Python, Vue.js, PostgreSQL",
+    "tags": [
+      "Concours",
+      "OIF"
+    ],
     "title": "OIFPPL - Prix des 5 Continent",
     "type": "Application Web",
     "year": 2023
@@ -154,13 +165,19 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Angular",
+      "SpringBoot",
+      "Camunda",
+      "Keycloak",
+      "Figma",
+      "PostgreSQL"
+    ],
     "tags": [
       "Foncier",
       "Gouvernement",
-      "UX",
-      "Angular"
+      "UX"
     ],
-    "tech": "Angular, SpringBoot, Camunda, Keykloak Figma, PostgreSQL",
     "title": "SGF Sénégal",
     "type": "Application Web",
     "year": 2023
@@ -175,13 +192,16 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Angular",
+      "Laravel",
+      "API REST"
+    ],
     "tags": [
       "Statistiques",
       "Emploi",
-      "API",
-      "Laravel"
+      "Togo"
     ],
-    "tech": "Angular, Laravel, API REST",
     "title": "MVDMT - Veille Emploi ANPE",
     "type": "Application Web",
     "year": 2022
@@ -205,13 +225,16 @@
       "likes": 0,
       "views": 0
     },
-    "tags": [
+    "techs": [
+      "Machine Learning",
       "FastAPI",
-      "ML",
-      "Docker",
+      "Streamlit",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "tags": [
       "Assurance"
     ],
-    "tech": "Machine Learning, FastAPI, Streamlit, PostgreSQL, Docker",
     "title": "Tarificateur Intelligent pour Sanlam Allianz",
     "type": "Modèle ML",
     "year": 2023
@@ -231,12 +254,17 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Python",
+      "Django",
+      "PostgreSQL"
+    ],
     "tags": [
       "Investissement",
       "Startup",
-      "Finance"
+      "Finance",
+      "CUBE"
     ],
-    "tech": "Python, Django, PostgreSQL",
     "title": "K-PITAL Invest",
     "type": "Application Web",
     "year": 2022
@@ -261,13 +289,16 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Django",
+      "HTML",
+      "Bootstrap"
+    ],
     "tags": [
       "Livres",
       "Édition",
-      "CUBE",
-      "Bootstrap"
+      "CUBE"
     ],
-    "tech": "Django, HTML, Bootstrap",
     "title": "CUBE-BOOK",
     "type": "Application Web",
     "year": 2022
@@ -296,13 +327,15 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Laravel",
+      "Flutter",
+      "Firebase"
+    ],
     "tags": [
       "Microfinance",
-      "Comptabilité",
-      "Laravel",
-      "Flutter"
+      "Comptabilité"
     ],
-    "tech": "Laravel, Flutter, Firebase",
     "title": "Microfinance Pro",
     "type": "Application Web & Mobile",
     "year": 2021
@@ -326,13 +359,17 @@
       "likes": 0,
       "views": 0
     },
-    "tags": [
-      "Éducation",
+    "techs": [
       "Flutter",
       "Firebase",
-      "GIZ"
+      "Yii2",
+      "PostgreSQL"
     ],
-    "tech": "Flutter, Firebase, Yii2, PostgreSQL",
+    "tags": [
+      "Éducation",
+      "GIZ",
+      "Togo"
+    ],
     "title": "GESCHOOL",
     "type": "Application Web & Mobile",
     "year": 2021
@@ -347,12 +384,14 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Django",
+      "PostgreSQL"
+    ],
     "tags": [
       "Agriculture",
-      "Togo",
-      "Django"
+      "Togo"
     ],
-    "tech": "Django, PostgreSQL",
     "title": "Suivi des Coopératives Agricoles",
     "type": "Application Web",
     "year": 2021
@@ -372,12 +411,14 @@
       "likes": 0,
       "views": 0
     },
-    "tags": [
-      "Santé",
-      "OpenClinic",
-      "Java"
+    "techs": [
+      "Java",
+      "PostgreSQL",
+      "OpenClinic"
     ],
-    "tech": "Java, PostgreSQL, OpenClinic",
+    "tags": [
+      "Santé"
+    ],
     "title": "OpenClinic Togo",
     "type": "Application Web",
     "year": 2022
@@ -392,13 +433,16 @@
       "likes": 0,
       "views": 0
     },
+    "techs": [
+      "Elixir",
+      "PostgreSQL",
+      "Phoenix"
+    ],
     "tags": [
       "Assemblée",
       "GED",
-      "Phoenix",
       "Collaboration"
     ],
-    "tech": "Elixir, PostgreSQL, Phoenix",
     "title": "GED & Collaboration Assemblée Nationale",
     "type": "Application Web",
     "year": 2022
