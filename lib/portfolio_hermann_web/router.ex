@@ -22,6 +22,7 @@ defmodule PortfolioHermannWeb.Router do
       live "/", HomeLive
       live "/about", AboutLive
       live "/projects", ProjectsLive
+      live "/projects/:id", ProjectsLive
       live "/contact", ContactLive
       live "/blog", BlogLive
     end

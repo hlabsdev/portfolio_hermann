@@ -4,16 +4,25 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket,
-      projects: Projects.list_projects(),
-      editing_project: nil,
-      logo_type: "url", # "url" ou "file"
-      form_mode: :new
-    )}
+    socket = socket
+    |> assign(:projects, Projects.list_projects())
+    |> assign(:editing_project, nil)
+    |> assign(:logo_type, "url")
+    |> assign(:form_mode, :new)
+    |> allow_upload(:logo,
+      accept: ~w(.jpg .jpeg .png .gif),
+      max_entries: 1,
+      max_file_size: 5_000_000,
+      auto_upload: true
+    )
+
+    {:ok, socket}
   end
 
   @impl true
   def handle_event("add", %{"project" => project_params}, socket) do
+    project_params = handle_logo_upload(socket, project_params)
+
     project = %{
       "id" => UUID.uuid4(),
       "title" => project_params["title"],
@@ -36,6 +45,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   @impl true
   def handle_event("update", %{"project" => project_params}, socket) do
+    project_params = handle_logo_upload(socket, project_params)
+
     updates = %{
       "title" => project_params["title"],
       "tech" => project_params["tech"],
@@ -74,6 +85,27 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
   end
+
+  defp handle_logo_upload(socket, project_params) do
+    uploaded_files =
+      consume_uploaded_entries(socket, :logo, fn %{path: path}, _entry ->
+        ext = Path.extname(path)
+        filename = "#{UUID.uuid4()}#{ext}"
+        dest = Path.join("priv/static/uploads", filename)
+        File.mkdir_p!(Path.dirname(dest))
+        File.cp!(path, dest)
+        {:ok, "/uploads/" <> filename}
+      end)
+
+    case uploaded_files do
+      [url | _] -> Map.put(project_params, "logo_url", url)
+      _ -> project_params
+    end
+  end
+
+  defp error_to_string(:too_large), do: "Fichier trop volumineux"
+  defp error_to_string(:too_many_files), do: "Trop de fichiers"
+  defp error_to_string(:not_accepted), do: "Format de fichier non accepté"
 
   defp parse_urls(urls_string) when is_binary(urls_string) do
     urls_string
@@ -159,17 +191,37 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                      class="w-full px-3 py-2 border rounded-lg focus:ring-1 focus:ring-indigo-500" />
             <% else %>
               <div class="flex items-center gap-4">
-                <label class="block w-full">
-                  <span class="sr-only">Choisir un logo</span>
-                  <input type="file" accept="image/*" class="block w-full text-sm text-gray-500
+                <div class="w-full">
+                  <.live_file_input upload={@uploads.logo} class="block w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
                     file:bg-indigo-50 file:text-indigo-700
                     hover:file:bg-indigo-100
                   "/>
-                </label>
+                </div>
               </div>
+
+              <%= for entry <- @uploads.logo.entries do %>
+                <div class="mt-2">
+                  <.live_img_preview entry={entry} class="w-20 h-20 object-contain rounded-xl" />
+                  <%= if entry.progress < 100 do %>
+                    <div class="w-full h-2 bg-gray-200 rounded-full mt-2">
+                      <div class="h-2 bg-indigo-600 rounded-full" style={"width: #{entry.progress}%"}></div>
+                    </div>
+                  <% end %>
+                  <div class="text-sm text-gray-600">
+                    <%= entry.client_name %> - <%= entry.client_size |> :erlang.float_to_binary(decimals: 2) %> KB
+                  </div>
+                  <%= for err <- upload_errors(@uploads.logo, entry) do %>
+                    <div class="text-red-500 text-sm"><%= error_to_string(err) %></div>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <%= for err <- upload_errors(@uploads.logo) do %>
+                <div class="text-red-500 text-sm"><%= error_to_string(err) %></div>
+              <% end %>
             <% end %>
           </div>
 
