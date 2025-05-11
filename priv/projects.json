@@ -2,11 +2,41 @@
   {
     "demo_urls": [
       {
-        "label": "Voir",
-        "url": ""
+        "label": "Visiter le site",
+        "url": "https://portfolio.hermann-golo.com"
       }
     ],
-    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.",
+    "desc": "Ce portfolio moderne a été développé **From scratch** et **Manuellement**  en utilisant Elixir et Phoenix LiveView pour mettre en valeur mes projets et compétences professionnelles.**Caractéristiques principales :**\n- **Interface Utilisateur Élégante et Responsive :**\n  - Design soigné et adaptable à différentes tailles d'écran.\n  - Intégration d'un mode sombre et d'un mode clair pour une expérience utilisateur personnalisée.\n- **Gestion Complète des Projets :**\n  - Interface administrative sécurisée pour la création, la modification et la suppression des projets.\n- **Gestion des Médias :**\n  - Système d'upload facile pour les images et autres fichiers.\n  - Optimisation automatique des images pour des performances web améliorées.\n- **Organisation des Projets :**\n  - Système de tags pour catégoriser et organiser les projets.\n  - Possibilité d'attribuer des catégories spécifiques aux projets.\n- **Filtrage Dynamique :**\n  - Fonctionnalité de filtrage en temps réel des projets par tags et catégories.\n- **Statistiques de Visites :**\n  - Suivi des statistiques de visites en temps réel pour analyser l'engagement.\n- **Expérience Utilisateur Améliorée :**\n  - Animations fluides et interactives implémentées avec AlpineJS.\n- **Performance Optimisée :**\n  - Utilisation de Phoenix LiveView pour une interactivité rapide et des performances optimisées.\n**Technologies Utilisées :**\n- **Framework Backend :* - Elixir et Phoenix LiveView\n- **Framework CSS :* - TailwindCSS pour un design rapide et utilitaire.\n- **Bibliothèque d'Icônes :* - heroicons pour des icônes SVG élégantes.\n**Principes de Développement :**\n- Adhérence aux meilleures pratiques de développement Elixir et Phoenix.\n- Code clair, maintenable et bien organisé.",
+    "featured": true,
+    "id": "portfolio-hermann",
+    "logo_url": null,
+    "source_urls": [
+      {
+        "label": "Code source",
+        "url": "https://github.com/hlabsdev/portfolio-hermann"
+      }
+    ],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Portfolio",
+      "Elixir",
+      "LiveView",
+      "TailwindCSS",
+      "Full-Stack",
+      "JSON"
+    ],
+    "tech": "Elixir, Phoenix LiveView, TailwindCSS, Docker",
+    "title": "Portfolio Professionnel",
+    "type": "Application Web",
+    "year": 2025
+  },
+  {
+    "demo_urls": [],
+    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n        \n        ",
+    "featured": true,
     "id": "fastsms",
     "logo_url": null,
     "source_urls": [
@@ -15,8 +45,21 @@
         "url": "https://github.com/hlabsdev/fastsms"
       }
     ],
-    "tech": "Elixir, Phoenix LiveView, API SMS",
-    "title": "FastSMS"
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Phoenix",
+      "Elixir",
+      "LiveView",
+      "SMS",
+      "Admin"
+    ],
+    "tech": "Elixir, Phoenix LiveView, Docker",
+    "title": "FastSMS",
+    "type": "Application Web",
+    "year": 2024
   },
   {
     "demo_urls": [
@@ -26,6 +69,7 @@
       }
     ],
     "desc": "Application mobile offline-first permettant à un commerçant de gérer ses produits, ventes, comptabilité, avec sauvegarde automatique sur Google Drive.",
+    "featured": false,
     "id": "objectbox-app",
     "source_urls": [
       {
@@ -33,12 +77,25 @@
         "url": "https://github.com/hlabsdev/boutique"
       }
     ],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Flutter",
+      "Offline",
+      "ObjectBox",
+      "Comptabilité"
+    ],
     "tech": "Flutter, ObjectBox, Google Drive",
-    "title": "App Flutter de gestion de stock"
+    "title": "App Flutter de gestion de stock",
+    "type": "Application Mobile",
+    "year": 2024
   },
   {
     "demo_urls": [],
     "desc": "Outil d’auto-évaluation des entreprises exportatrices avec score radar, PDF et commentaires personnalisés.",
+    "featured": false,
     "id": "autodiagnostic",
     "source_urls": [
       {
@@ -46,120 +103,304 @@
         "url": "https://github.com/hlabsdev/autodiagnostic-export"
       }
     ],
-    "tech": "Django, PDF, Chart.js",
-    "title": "Auto-diagnostic Export"
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Django",
+      "Export",
+      "PDF",
+      "Data Science"
+    ],
+    "tech": "Django, Pandas, ElasticSearch, PDF, Chart.js",
+    "title": "Auto-diagnostic Export",
+    "type": "Application Web",
+    "year": 2024
   },
   {
     "demo_urls": [
       {
-        "label": "Démo en ligne",
-        "url": "https://oifppl.org"
+        "label": "Plateforme en ligne",
+        "url": "https://litteratures.francophonie.org"
       }
     ],
-    "desc": "Plateforme de gestion des concours de littérature pour l’OIF, permettant la création, la soumission et le suivi des candidatures internationales.",
+    "desc": "Plateforme de gestion des concours de littérature pour l’OIF, denomme Prix des 5 Contients, permettant la création, la soumission et le suivi des candidatures internationales. NB: Ce lien est une plateforme de production.",
+    "featured": true,
     "id": "oifppl",
     "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Concours",
+      "Vue.js",
+      "OIF",
+      "PostgreSQL"
+    ],
     "tech": "Python, Vue.js, PostgreSQL",
-    "title": "OIFPPL"
+    "title": "OIFPPL - Prix des 5 Continent",
+    "type": "Application Web",
+    "year": 2023
   },
   {
     "demo_urls": [],
     "desc": "Système de Gestion Foncière pour la DGID du Sénégal incluant conception UX/UI, développement front-end et visualisation des données foncières.",
+    "featured": true,
     "id": "sgf-senegal",
     "source_urls": [],
-    "tech": "Angular, Node.js, Figma, PostgreSQL",
-    "title": "SGF Sénégal"
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Foncier",
+      "Gouvernement",
+      "UX",
+      "Angular"
+    ],
+    "tech": "Angular, SpringBoot, Camunda, Keykloak Figma, PostgreSQL",
+    "title": "SGF Sénégal",
+    "type": "Application Web",
+    "year": 2023
   },
   {
     "demo_urls": [],
     "desc": "Application permettant à l'ANPE du Togo de visualiser en temps réel les données sur l'emploi au niveau national, avec dashboards statistiques.",
+    "featured": false,
     "id": "mvdmt",
-    "source_urls": [
-      {
-        "label": "Frontend",
-        "url": "https://github.com/hlabsdev/mvdmt"
-      }
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Statistiques",
+      "Emploi",
+      "API",
+      "Laravel"
     ],
-    "tech": "Vue.js, Chart.js, API REST",
-    "title": "MVDMT - Statistiques Emploi ANPE"
+    "tech": "Angular, Laravel, API REST",
+    "title": "MVDMT - Veille Emploi ANPE",
+    "type": "Application Web",
+    "year": 2022
   },
   {
     "demo_urls": [],
     "desc": "Modèle de prédiction des primes d'assurance déployé dans un backend API REST pour automatiser la tarification chez Sanlam.",
+    "featured": true,
     "id": "sanlam-tarificateur",
     "source_urls": [
       {
-        "label": "API & modèle",
-        "url": "https://github.com/hlabsdev/sanlam-tarificateur"
+        "label": "API",
+        "url": "https://github.com/Yulcom-Technologies-Github/tarificateur-api"
+      },
+      {
+        "label": "Artefact de deploiement",
+        "url": "https://github.com/Yulcom-Technologies-Github/tarificateur-deploiement"
       }
     ],
-    "tech": "Machine Learning, FastAPI, Scikit-learn",
-    "title": "Tarificateur Intelligent pour Sanlam Allianz"
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "FastAPI",
+      "ML",
+      "Docker",
+      "Assurance"
+    ],
+    "tech": "Machine Learning, FastAPI, Streamlit, PostgreSQL, Docker",
+    "title": "Tarificateur Intelligent pour Sanlam Allianz",
+    "type": "Modèle ML",
+    "year": 2023
   },
   {
-    "demo_urls": [],
+    "demo_urls": [
+      {
+        "label": "Plateforme en ligne",
+        "url": "https://saeicube.com/startup/Kpital-Invest/login"
+      }
+    ],
     "desc": "Plateforme de collecte de fonds et d’enregistrement d’investisseurs développée pour la startup CUBE TOGO.",
+    "featured": false,
     "id": "cube-kpital",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Investissement",
+      "Startup",
+      "Finance"
+    ],
+    "tech": "Python, Django, PostgreSQL",
+    "title": "K-PITAL Invest",
+    "type": "Application Web",
+    "year": 2022
+  },
+  {
+    "demo_urls": [
+      {
+        "label": "Plateforme en ligne",
+        "url": "https://cubebooks.saeicube.com"
+      }
+    ],
+    "desc": "Système de publication de livres numériques et gestion des publications pour les auteurs partenaires de CUBE.",
+    "featured": false,
+    "id": "cube-book",
     "source_urls": [
       {
         "label": "Code source",
-        "url": "https://github.com/hlabsdev/kpital"
+        "url": "https://gitlab.com/Hlabsdev/newcubebooks"
       }
     ],
-    "tech": "Python, Django, Angular",
-    "title": "K-PITAL Invest"
-  },
-  {
-    "demo_urls": [],
-    "desc": "Système de publication de livres numériques et gestion des publications pour les auteurs partenaires de CUBE.",
-    "id": "cube-book",
-    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Livres",
+      "Édition",
+      "CUBE",
+      "Bootstrap"
+    ],
     "tech": "Django, HTML, Bootstrap",
-    "title": "CUBE-BOOK"
+    "title": "CUBE-BOOK",
+    "type": "Application Web",
+    "year": 2022
   },
   {
-    "demo_urls": [],
+    "demo_urls": [
+      {
+        "label": "Plateforme en ligne",
+        "url": "https://www.microfinancepro.com"
+      }
+    ],
     "desc": "Plateforme de gestion intégrée des opérations de microfinance : clients, prêts, remboursements et trésorerie.",
+    "featured": false,
     "id": "microfinance-pro",
-    "source_urls": [],
+    "source_urls": [
+      {
+        "label": "Code source web",
+        "url": "https://gitlab.com/fulberdinho/mfp"
+      },
+      {
+        "label": "Code source mobile",
+        "url": "https://gitlab.com/Hlabsdev/financepro"
+      }
+    ],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Microfinance",
+      "Comptabilité",
+      "Laravel",
+      "Flutter"
+    ],
     "tech": "Laravel, Flutter, Firebase",
-    "title": "Microfinance Pro"
+    "title": "Microfinance Pro",
+    "type": "Application Web & Mobile",
+    "year": 2021
   },
   {
     "demo_urls": [],
-    "desc": "Application mobile pour la gestion d’écoles, de centres de formation et d’universités, dans le cadre du projet PAFPE de la GIZ TOGO.",
+    "desc": "Application Web et mobile pour la gestion d’écoles, de centres de formation et d’universités, dans le cadre du projet PAFPE de la GIZ TOGO.",
+    "featured": false,
     "id": "geschool",
     "source_urls": [
       {
-        "label": "Source Flutter",
+        "label": "Source Web",
         "url": "https://github.com/hlabsdev/geschool"
+      },
+      {
+        "label": "Source Flutter",
+        "url": "https://github.com/hlabsdev/geschool-mobile"
       }
     ],
-    "tech": "Flutter, Firebase",
-    "title": "GESCHOOL"
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Éducation",
+      "Flutter",
+      "Firebase",
+      "GIZ"
+    ],
+    "tech": "Flutter, Firebase, Yii2, PostgreSQL",
+    "title": "GESCHOOL",
+    "type": "Application Web & Mobile",
+    "year": 2021
   },
   {
     "demo_urls": [],
     "desc": "Plateforme d’enregistrement, de suivi et de gestion des coopératives agricoles du Togo pour le ministère en charge de l’agriculture.",
+    "featured": false,
     "id": "coop-togo",
     "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Agriculture",
+      "Togo",
+      "Django"
+    ],
     "tech": "Django, PostgreSQL",
-    "title": "Suivi des Coopératives Agricoles"
+    "title": "Suivi des Coopératives Agricoles",
+    "type": "Application Web",
+    "year": 2021
   },
   {
-    "demo_urls": [],
+    "demo_urls": [
+      {
+        "label": "Plateforme en ligne",
+        "url": "http://openclinic-chr.yulcom.net/openclinic"
+      }
+    ],
     "desc": "Installation et adaptation du système de gestion hospitalière OpenClinic pour la DSNISI (Santé publique, Togo).",
+    "featured": true,
     "id": "openclinic-dsnisi",
     "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Santé",
+      "OpenClinic",
+      "Java"
+    ],
     "tech": "Java, PostgreSQL, OpenClinic",
-    "title": "OpenClinic Togo"
+    "title": "OpenClinic Togo",
+    "type": "Application Web",
+    "year": 2022
   },
   {
     "demo_urls": [],
     "desc": "Déploiement d’un système de travail collaboratif, gestion documentaire et transcription des débats à l’Assemblée nationale du Togo.",
+    "featured": true,
     "id": "ged-assemblee",
     "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Assemblée",
+      "GED",
+      "Phoenix",
+      "Collaboration"
+    ],
     "tech": "Elixir, PostgreSQL, Phoenix",
-    "title": "GED & Collaboration Assemblée Nationale"
+    "title": "GED & Collaboration Assemblée Nationale",
+    "type": "Application Web",
+    "year": 2022
   }
 ]

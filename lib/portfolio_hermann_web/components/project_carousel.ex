@@ -2,17 +2,18 @@ defmodule PortfolioHermannWeb.Components.ProjectCarousel do
   use Phoenix.Component
   use PortfolioHermannWeb, :html
   import Phoenix.VerifiedRoutes
+  import PortfolioHermannWeb.Helpers
   alias Phoenix.LiveView.JS
 
   def carousel(assigns) do
     ~H"""
-    <div class="relative">
-      <div class="overflow-hidden">
+    <div class="relative rounded-lg ">
+      <div class="overflow-hidden rounded-lg shadow-lg">
         <div class="flex transition-transform duration-500" style={"transform: translateX(-#{@current_slide * 100}%)"}>
           <%= for {project, index} <- Enum.with_index(@projects) do %>
-            <div class={"carousel-item flex-none w-full #{if index == @current_slide, do: "active"}"}>
-              <div class="flex items-start space-x-6 mb-6">
-                <%= if project["logo_url"] do %>
+            <div class={"carousel-item flex-none w-full px-12 #{if index == @current_slide, do: "active"}"}>
+              <div class="flex items-start space-x-6">
+                <%= if project["logo_url"] && project["logo_url"]!="" do %>
                   <img
                     src={project["logo_url"]}
                     alt={project["title"]}
@@ -25,9 +26,9 @@ defmodule PortfolioHermannWeb.Components.ProjectCarousel do
                 </div>
               </div>
 
-              <p class="mb-6"><%= project["desc"] %></p>
+              <p class="mb-6 line-clamp-3"><%= project["desc"] %></p>
 
-              <div class="flex flex-wrap gap-2 mb-8">
+              <div class="absolute bottom-14 flex flex-wrap gap-2 mb-8">
                 <%= for demo <- (project["demo_urls"] || []) do %>
                   <a
                     href={demo["url"]}
@@ -44,7 +45,7 @@ defmodule PortfolioHermannWeb.Components.ProjectCarousel do
                 <% end %>
               </div>
 
-              <div class="absolute bottom-6 right-6">
+              <div class="absolute bottom-8 right-8">
                 <.link
                   navigate={~p"/projects/#{project["id"]}"}
                   class="btn-soft px-4 py-2 hover:bg-indigo-100 dark:hover:bg-indigo-900/20"
@@ -58,11 +59,11 @@ defmodule PortfolioHermannWeb.Components.ProjectCarousel do
       </div>
       <button
         phx-click={JS.push("prev-slide")}
-        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-gray-800/50 p-2 rounded-full hover:bg-white/70 dark:hover:bg-gray-800/70"
+        class="absolute mt-8 px-4 left-4 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-gray-800/50 p-2 rounded-full hover:bg-white/70 dark:hover:bg-gray-800/70"
       >←</button>
       <button
         phx-click={JS.push("next-slide")}
-        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-gray-800/50 p-2 rounded-full hover:bg-white/70 dark:hover:bg-gray-800/70"
+        class="absolute mt-8 px-4 right-4 top-1/2 -translate-y-1/2 bg-white/50 dark:bg-gray-800/50 p-2 rounded-full hover:bg-white/70 dark:hover:bg-gray-800/70"
       >→</button>
     </div>
     """

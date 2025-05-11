@@ -2,20 +2,28 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   use PortfolioHermannWeb, :live_view
   alias PortfolioHermann.Projects
   import PortfolioHermannWeb.ProjectCard
+  import PortfolioHermannWeb.Helpers
 
   @impl true
   def mount(_params, _session, socket) do
     all_projects = Projects.list_projects()
     techs = extract_technologies(all_projects)
+    years = all_projects |> Enum.map(&(&1["year"])) |> Enum.uniq() |> Enum.sort(:desc)
+    types = all_projects |> Enum.map(&(&1["type"])) |> Enum.uniq() |> Enum.sort()
 
     socket = socket
     |> assign(:projects, all_projects)
     |> assign(:all_projects, all_projects)
     |> assign(:techs, techs)
+    |> assign(:years, years)
+    |> assign(:types, types)
     |> assign(:selected_tech, nil)
+    |> assign(:selected_year, nil)
+    |> assign(:selected_type, nil)
     |> assign(:search_query, "")
     |> assign(:selected_project, nil)
     |> assign(:show_modal, false)
+    |> assign(:view_mode, :grid) # :grid ou :list
 
     {:ok, socket}
   end
@@ -100,7 +108,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
       <%= if @show_modal do %>
         <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div class="bg-white dark:bg-gray-800 w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-xl p-6 relative">
+          <div class="bg-gray-200 dark:bg-gray-400 w-full max-w-3xl max-h-[84vh] overflow-y-auto rounded-xl p-6 relative">
             <button
               phx-click="close_modal"
               class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -125,7 +133,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             </div>
 
             <div class="prose dark:prose-invert max-w-none mb-6">
-              <p><%= @selected_project["desc"] %></p>
+              <%= md_to_html(@selected_project["desc"]) %>
             </div>
 
             <div class="space-y-4">
