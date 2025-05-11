@@ -239,7 +239,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
         <!-- Contrôles de vue -->
         <div class="flex items-center gap-2">
           <button phx-click="toggle_view" phx-value-view="grid"
-            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :grid, do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :grid, do: "bg-indigo-600 text-white", else: "bg-white text-gray-700 hover:bg-gray-50"}"}>
             <.icon name="hero-squares-2x2" class="w-5 h-5" />
           </button>
           <button phx-click="toggle_view" phx-value-view="list"

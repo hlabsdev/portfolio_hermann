@@ -56,7 +56,7 @@ defmodule PortfolioHermann.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:elixir_uuid, "~> 1.2"},
-      {:mdex, "~> 0.6"}
+      {:mdex, "~> 0.6"},
     ]
   end
 

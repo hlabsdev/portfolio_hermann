@@ -8,6 +8,30 @@ defmodule PortfolioHermann.Projects do
     end
   end
 
+  def increment_like(id) do
+    projects = list_projects()
+    updated_projects = Enum.map(projects, fn project ->
+      if project["id"] == id do
+        update_in(project, ["stats", "likes"], &(&1 + 1))
+      else
+        project
+      end
+    end)
+    save_projects(updated_projects)
+  end
+
+  def increment_view(id) do
+    projects = list_projects()
+    updated_projects = Enum.map(projects, fn project ->
+      if project["id"] == id do
+        update_in(project, ["stats", "views"], &(&1 + 1))
+      else
+        project
+      end
+    end)
+    save_projects(updated_projects)
+  end
+
   def save_projects(projects) do
     File.write!(@path, Jason.encode!(projects, pretty: true))
   end
