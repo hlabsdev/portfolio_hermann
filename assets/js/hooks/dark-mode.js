@@ -1,41 +1,32 @@
 const DarkMode = {
   mounted() {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
+    // Initialiser le mode sombre en fonction des préférences sauvegardées ou système
+    const isDark = localStorage.getItem('darkMode') === 'true' 
+      || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    // Appliquer le mode initial
+    if (isDark) {
+      document.documentElement.classList.add('dark');
     }
 
-    this.el.addEventListener("click", () => {
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark')
-        localStorage.theme = 'light'
-      } else {
-        document.documentElement.classList.add('dark')
-        localStorage.theme = 'dark'
+    // Ajouter le gestionnaire de clic
+    this.el.addEventListener('click', () => {
+      const isDarkMode = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Écouter les changements de préférence système
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e) => {
+      if (!localStorage.getItem('darkMode')) {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       }
-    })
-
-    // Check for saved theme preference or default to system preference
-    const theme = localStorage.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    this.updateTheme(theme)
-
-    // Add system theme change listener
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.theme) {
-        this.updateTheme(e.matches ? 'dark' : 'light')
-      }
-    })
-  },
-
-  updateTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    localStorage.setItem('theme', theme)
+    });
   }
-}
+};
 
-export default handleDarkMode
+export default DarkMode;
