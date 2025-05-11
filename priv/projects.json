@@ -2,6 +2,68 @@
   {
     "demo_urls": [
       {
+        "label": "Voir",
+        "url": "Voir:Labore asperiores ea"
+      }
+    ],
+    "desc": "          Illum saepe consequ\n        ",
+    "featured": true,
+    "id": "a7d19984-d0ce-4ed1-8384-718f0b068d05",
+    "logo_url": "/images/logo.svg",
+    "source_urls": [
+      {
+        "label": "Voir",
+        "url": "Voir:Fugiat ipsa ut nemo"
+      }
+    ],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "tags": [
+      "Assurance",
+      "CUBE",
+      "Collaboration",
+      "Export",
+      "Finance",
+      "Foncier",
+      "Full-Stack",
+      "GED",
+      "GIZ",
+      "Gouvernement",
+      "Investissement",
+      "JSON",
+      "LiveView (Concept)",
+      "OIF",
+      "OpenClinic (Domaine)",
+      "PDF (Format)",
+      "SMS",
+      "Santé",
+      "Startup",
+      "Statistiques",
+      "Togo",
+      "UX",
+      "Édition"
+    ],
+    "techs": [
+      "Bootstrap",
+      "Camunda",
+      "ElasticSearch",
+      "Elixir",
+      "Laravel",
+      "TailwindCSS",
+      "Vue.js",
+      "Yii2",
+      "Figma",
+      "Google Drive"
+    ],
+    "title": "Officiis hic reprehe",
+    "type": "SIG",
+    "year": 2023
+  },
+  {
+    "demo_urls": [
+      {
         "label": "Visiter le site",
         "url": "https://portfolio.hermann-golo.com"
       }
@@ -17,48 +79,53 @@
       }
     ],
     "stats": {
-      "likes": 1,
+      "likes": 3,
       "views": 0
     },
+    "tags": [
+      "Portfolio",
+      "Full-Stack",
+      "JSON"
+    ],
     "techs": [
       "Elixir",
       "Phoenix LiveView",
       "TailwindCSS",
       "Docker"
     ],
-    "tags": [
-      "Portfolio",
-      "Full-Stack",
-      "JSON"
-    ],
     "title": "Portfolio Professionnel",
     "type": "Application Web",
     "year": 2025
   },
   {
-    "demo_urls": [],
-    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n",
+    "demo_urls": [
+      {
+        "label": "Voir",
+        "url": "Voir:Voir:Voir:"
+      }
+    ],
+    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n\n        \n        \n        \n        ",
     "featured": true,
     "id": "fastsms",
-    "logo_url": null,
+    "logo_url": "",
     "source_urls": [
       {
-        "label": "Code complet",
-        "url": "https://github.com/hlabsdev/fastsms"
+        "label": "Voir",
+        "url": "Voir:Voir:Voir:Code complet:https://github.com/hlabsdev/fastsms"
       }
     ],
     "stats": {
       "likes": 2,
       "views": 0
     },
+    "tags": [
+      "SMS",
+      "Startup"
+    ],
     "techs": [
       "Elixir",
-      "Phoenix LiveView",
-      "Docker"
-    ],
-    "tags": [
-      "Admin",
-      "SMS"
+      "Phoenix",
+      "Phoenix LiveView"
     ],
     "title": "FastSMS",
     "type": "Application Web",
@@ -72,7 +139,7 @@
       }
     ],
     "desc": "Application mobile offline-first permettant à un commerçant de gérer ses produits, ventes, comptabilité, avec sauvegarde automatique sur Google Drive.",
-    "featured": false,
+    "featured": true,
     "id": "objectbox-app",
     "source_urls": [
       {
@@ -84,14 +151,14 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Offline",
+      "Comptabilité"
+    ],
     "techs": [
       "Flutter",
       "ObjectBox",
       "Google Drive"
-    ],
-    "tags": [
-      "Offline",
-      "Comptabilité"
     ],
     "title": "App Flutter de gestion de stock",
     "type": "Application Mobile",
@@ -112,16 +179,16 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Export",
+      "Data Science"
+    ],
     "techs": [
       "Django",
       "Pandas",
       "ElasticSearch",
       "PDF",
       "Chart.js"
-    ],
-    "tags": [
-      "Export",
-      "Data Science"
     ],
     "title": "Auto-diagnostic Export",
     "type": "Application Web",
@@ -142,14 +209,14 @@
       "likes": 1,
       "views": 0
     },
+    "tags": [
+      "Concours",
+      "OIF"
+    ],
     "techs": [
       "Python",
       "Vue.js",
       "PostgreSQL"
-    ],
-    "tags": [
-      "Concours",
-      "OIF"
     ],
     "title": "OIFPPL - Prix des 5 Continent",
     "type": "Application Web",
@@ -165,6 +232,11 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Foncier",
+      "Gouvernement",
+      "UX"
+    ],
     "techs": [
       "Angular",
       "SpringBoot",
@@ -172,11 +244,6 @@
       "Keycloak",
       "Figma",
       "PostgreSQL"
-    ],
-    "tags": [
-      "Foncier",
-      "Gouvernement",
-      "UX"
     ],
     "title": "SGF Sénégal",
     "type": "Application Web",
@@ -192,15 +259,15 @@
       "likes": 0,
       "views": 0
     },
-    "techs": [
-      "Angular",
-      "Laravel",
-      "API REST"
-    ],
     "tags": [
       "Statistiques",
       "Emploi",
       "Togo"
+    ],
+    "techs": [
+      "Angular",
+      "Laravel",
+      "API REST"
     ],
     "title": "MVDMT - Veille Emploi ANPE",
     "type": "Application Web",
@@ -225,15 +292,15 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Assurance"
+    ],
     "techs": [
       "Machine Learning",
       "FastAPI",
       "Streamlit",
       "PostgreSQL",
       "Docker"
-    ],
-    "tags": [
-      "Assurance"
     ],
     "title": "Tarificateur Intelligent pour Sanlam Allianz",
     "type": "Modèle ML",
@@ -254,16 +321,16 @@
       "likes": 0,
       "views": 0
     },
-    "techs": [
-      "Python",
-      "Django",
-      "PostgreSQL"
-    ],
     "tags": [
       "Investissement",
       "Startup",
       "Finance",
       "CUBE"
+    ],
+    "techs": [
+      "Python",
+      "Django",
+      "PostgreSQL"
     ],
     "title": "K-PITAL Invest",
     "type": "Application Web",
@@ -289,15 +356,15 @@
       "likes": 0,
       "views": 0
     },
-    "techs": [
-      "Django",
-      "HTML",
-      "Bootstrap"
-    ],
     "tags": [
       "Livres",
       "Édition",
       "CUBE"
+    ],
+    "techs": [
+      "Django",
+      "HTML",
+      "Bootstrap"
     ],
     "title": "CUBE-BOOK",
     "type": "Application Web",
@@ -327,14 +394,14 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Microfinance",
+      "Comptabilité"
+    ],
     "techs": [
       "Laravel",
       "Flutter",
       "Firebase"
-    ],
-    "tags": [
-      "Microfinance",
-      "Comptabilité"
     ],
     "title": "Microfinance Pro",
     "type": "Application Web & Mobile",
@@ -359,16 +426,16 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Éducation",
+      "GIZ",
+      "Togo"
+    ],
     "techs": [
       "Flutter",
       "Firebase",
       "Yii2",
       "PostgreSQL"
-    ],
-    "tags": [
-      "Éducation",
-      "GIZ",
-      "Togo"
     ],
     "title": "GESCHOOL",
     "type": "Application Web & Mobile",
@@ -384,13 +451,13 @@
       "likes": 0,
       "views": 0
     },
-    "techs": [
-      "Django",
-      "PostgreSQL"
-    ],
     "tags": [
       "Agriculture",
       "Togo"
+    ],
+    "techs": [
+      "Django",
+      "PostgreSQL"
     ],
     "title": "Suivi des Coopératives Agricoles",
     "type": "Application Web",
@@ -411,13 +478,13 @@
       "likes": 0,
       "views": 0
     },
+    "tags": [
+      "Santé"
+    ],
     "techs": [
       "Java",
       "PostgreSQL",
       "OpenClinic"
-    ],
-    "tags": [
-      "Santé"
     ],
     "title": "OpenClinic Togo",
     "type": "Application Web",
@@ -433,15 +500,15 @@
       "likes": 0,
       "views": 0
     },
-    "techs": [
-      "Elixir",
-      "PostgreSQL",
-      "Phoenix"
-    ],
     "tags": [
       "Assemblée",
       "GED",
       "Collaboration"
+    ],
+    "techs": [
+      "Elixir",
+      "PostgreSQL",
+      "Phoenix"
     ],
     "title": "GED & Collaboration Assemblée Nationale",
     "type": "Application Web",

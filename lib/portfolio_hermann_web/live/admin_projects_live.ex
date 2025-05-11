@@ -1,24 +1,28 @@
 defmodule PortfolioHermannWeb.AdminProjectsLive do
   use PortfolioHermannWeb, :live_view
   alias PortfolioHermann.Projects
+  alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, _session, socket) do
-    socket = socket
-    |> assign(:projects, Projects.list_projects())
-    |> assign(:editing_project, nil)
-    |> assign(:logo_type, "url")
-    |> assign(:form_mode, :none)
-    |> assign(:view_mode, :grid)
-    |> assign(:year_filter, "all")
-    |> assign(:type_filter, "all")
-    |> assign(:search_query, "")
-    |> allow_upload(:logo,
-      accept: ~w(.jpg .jpeg .png .gif),
-      max_entries: 1,
-      max_file_size: 5_000_000,
-      auto_upload: true
-    )
+    socket =
+      socket
+      |> assign(:projects, Projects.list_projects())
+      |> assign(:all_techs, Projects.list_techs())
+      |> assign(:all_tags, Projects.list_tags())
+      |> assign(:editing_project, nil)
+      |> assign(:logo_type, "url")
+      |> assign(:form_mode, :none)
+      |> assign(:view_mode, :grid)
+      |> assign(:year_filter, "all")
+      |> assign(:type_filter, "all")
+      |> assign(:search_query, "")
+      |> allow_upload(:logo,
+        accept: ~w(.jpg .jpeg .png .gif),
+        max_entries: 1,
+        max_file_size: 5_000_000,
+        auto_upload: true
+      )
 
     {:ok, socket}
   end
@@ -35,7 +39,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     project = %{
       "id" => UUID.uuid4(),
       "title" => project_params["title"],
-      "tech" => project_params["tech"],
+      "techs" => parse_techs(project_params["techs"]),
       "desc" => project_params["desc"],
       "logo_url" => project_params["logo_url"],
       "demo_urls" => parse_urls(project_params["demo_urls"]),
@@ -51,11 +55,13 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     }
 
     Projects.add_project(project)
-    {:noreply, assign(socket,
-      projects: Projects.list_projects(),
-      editing_project: nil,
-      form_mode: :none
-    )}
+
+    {:noreply,
+     assign(socket,
+       projects: Projects.list_projects(),
+       editing_project: nil,
+       form_mode: :none
+     )}
   end
 
   @impl true
@@ -70,28 +76,26 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
     updates = %{
       "title" => project_params["title"],
-      "tech" => project_params["tech"],
+      "techs" => parse_techs(project_params["techs"]),
       "desc" => project_params["desc"],
       "logo_url" => project_params["logo_url"],
       "demo_urls" => parse_urls(project_params["demo_urls"]),
       "source_urls" => parse_urls(project_params["source_urls"]),
-      "type" => project_params["type"],
       "year" => String.to_integer(project_params["year"] || "2024"),
+      "type" => project_params["type"],
       "tags" => parse_tags(project_params["tags"]),
       "featured" => project_params["featured"] == "true",
-      "stats" => socket.assigns.editing_project["stats"] || %{
-        "views" => 0,
-        "likes" => 0
-      }
+      "stats" => socket.assigns.editing_project["stats"]
     }
 
     Projects.update_project(socket.assigns.editing_project["id"], updates)
 
-    {:noreply, assign(socket,
-      projects: Projects.list_projects(),
-      editing_project: nil,
-      form_mode: :none
-    )}
+    {:noreply,
+     assign(socket,
+       projects: Projects.list_projects(),
+       editing_project: nil,
+       form_mode: :none
+     )}
   end
 
   @impl true
@@ -166,16 +170,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   defp parse_urls(urls_string) when is_binary(urls_string) do
     urls_string
-    |> String.split(",")
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.map(fn url_string ->
-      case String.split(url_string, ":", parts: 2) do
-        [label, url] -> %{"label" => String.trim(label), "url" => String.trim(url)}
-        [url] -> %{"label" => "Voir", "url" => String.trim(url)}
-        _ -> nil
-      end
-    end)
+    |> String.split("\n")
+    |> Enum.map(&parse_url_line/1)
     |> Enum.reject(&is_nil/1)
   end
   defp parse_urls(_), do: []
@@ -188,12 +184,24 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     end
   end
 
+  defp parse_tags(tags) when is_list(tags), do: tags
+
   defp parse_tags(tags_string) when is_binary(tags_string) do
     tags_string
     |> String.split(",")
     |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
   end
   defp parse_tags(_), do: []
+
+  defp parse_techs(techs) when is_list(techs), do: techs
+  defp parse_techs(techs_string) when is_binary(techs_string) do
+    techs_string
+    |> String.split(",")
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(&(&1 == ""))
+  end
+  defp parse_techs(_), do: []
 
   defp filter_projects(projects, year_filter, type_filter, search_query) do
     projects
@@ -219,7 +227,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     Enum.filter(projects, fn project ->
       String.contains?(String.downcase(project["title"]), query) ||
       String.contains?(String.downcase(project["desc"]), query) ||
-      String.contains?(String.downcase(project["tech"]), query) ||
+      String.contains?(String.downcase(project["techs"]), query) ||
       Enum.any?(project["tags"], &String.contains?(String.downcase(&1), query))
     end)
   end
@@ -428,9 +436,19 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Technologies</label>
-            <input type="text" name="project[tech]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ex: Elixir, Phoenix, TailwindCSS" />
+            <div class="mt-2 flex flex-wrap gap-2">
+              <%= for tech <- @all_techs do %>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="project[techs][]"
+                    value={tech}
+                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tech %></span>
+                </label>
+              <% end %>
+            </div>
           </div>
 
           <div>
@@ -458,9 +476,19 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Tags</label>
-            <input type="text" name="project[tags]"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="tag1, tag2, tag3" />
+            <div class="mt-2 flex flex-wrap gap-2">
+              <%= for tag <- @all_tags do %>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="project[tags][]"
+                    value={tag}
+                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tag %></span>
+                </label>
+              <% end %>
+            </div>
           </div>
 
           <div>
@@ -548,9 +576,20 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Technologies</label>
-            <input type="text" name="project[tech]" value={@editing_project["tech"]} required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Ex: Elixir, Phoenix, TailwindCSS" />
+            <div class="mt-2 flex flex-wrap gap-2">
+              <%= for tech <- @all_techs do %>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="project[techs][]"
+                    value={tech}
+                    checked={tech in (@editing_project && @editing_project["techs"] || [])}
+                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tech %></span>
+                </label>
+              <% end %>
+            </div>
           </div>
 
           <div>
@@ -575,9 +614,20 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Tags</label>
-            <input type="text" name="project[tags]" value={Enum.join(@editing_project["tags"] || [], ", ")}
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="tag1, tag2, tag3" />
+            <div class="mt-2 flex flex-wrap gap-2">
+              <%= for tag <- @all_tags do %>
+                <label class="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    name="project[tags][]"
+                    value={tag}
+                    checked={tag in (@editing_project && @editing_project["tags"] || [])}
+                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tag %></span>
+                </label>
+              <% end %>
+            </div>
           </div>
 
           <div>

@@ -283,6 +283,16 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                   {project["desc"]}
                 </p>
 
+                  Technos:
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <%= for tech <- project["techs"] || [] do %>
+                    <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded">
+                      {tech}
+                    </span>
+                  <% end %>
+                </div>
+
+                  Tags:
                 <div class="flex flex-wrap gap-2 mb-4">
                   <%= for tag <- project["tags"] || [] do %>
                     <span class="px-2 py-1 text-xs font-medium bg-[#f39d8d]/10 text-[#8B4513] dark:bg-[#8B4513]/20 dark:text-[#f39d8d] rounded">
@@ -408,7 +418,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
                     <td class="px-6 py-4">
                       <div class="text-sm text-gray-900 dark:text-white max-w-xs overflow-hidden">
-                        {project["tech"]}
+                        {project["techs"]}
                       </div>
                     </td>
 
@@ -485,7 +495,8 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
   defp get_all_techs(projects) do
     projects
-    |> Enum.flat_map(&String.split(&1["tech"], ","))
+    |> Enum.filter(fn project -> is_binary(project["techs"]) end)
+    |> Enum.flat_map(&String.split(&1["techs"], ","))
     |> Enum.map(&String.trim/1)
     |> Enum.reject(&(&1 == ""))
     |> Enum.uniq()
@@ -539,7 +550,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
     Enum.filter(projects, fn project ->
       String.contains?(String.downcase(project["title"]), query) ||
         String.contains?(String.downcase(project["desc"]), query) ||
-        String.contains?(String.downcase(project["tech"]), query) ||
+        String.contains?(String.downcase(project["techs"]), query) ||
         Enum.any?(project["tags"] || [], &String.contains?(String.downcase(&1), query))
     end)
   end
@@ -548,7 +559,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
   defp filter_by_techs(projects, techs) do
     Enum.filter(projects, fn project ->
-      project_techs = project["tech"] |> String.split(",") |> Enum.map(&String.trim/1)
+      project_techs = project["techs"] |> String.split(",") |> Enum.map(&String.trim/1)
       Enum.all?(techs, &(&1 in project_techs))
     end)
   end

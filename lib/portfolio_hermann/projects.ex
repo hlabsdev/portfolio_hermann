@@ -1,9 +1,28 @@
 defmodule PortfolioHermann.Projects do
-  @path "priv/projects.json"
+  @projects_path "priv/projects.json"
+  @techs_path "priv/techs.json"
 
   def list_projects do
-    case File.read(@path) do
+    case File.read(@projects_path) do
       {:ok, content} -> Jason.decode!(content)
+      _ -> []
+    end
+  end
+
+  def list_techs do
+    case File.read(@techs_path) do
+      {:ok, content} ->
+        data = Jason.decode!(content)
+        data["techs"]
+      _ -> []
+    end
+  end
+
+  def list_tags do
+    case File.read(@techs_path) do
+      {:ok, content} ->
+        data = Jason.decode!(content)
+        data["tags"]
       _ -> []
     end
   end
@@ -33,7 +52,7 @@ defmodule PortfolioHermann.Projects do
   end
 
   def save_projects(projects) do
-    File.write!(@path, Jason.encode!(projects, pretty: true))
+    File.write!(@projects_path, Jason.encode!(projects, pretty: true))
   end
 
   def add_project(project) do
