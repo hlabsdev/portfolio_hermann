@@ -5,11 +5,14 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   @impl true
   def mount(_params, _session, socket) do
+
+    all_years = Projects.list_projects() |> Enum.map(& &1["year"]) |> Enum.uniq() |> Enum.sort(:desc)
     socket =
       socket
       |> assign(:projects, Projects.list_projects())
       |> assign(:all_techs, Projects.list_techs())
       |> assign(:all_tags, Projects.list_tags())
+      |> assign(:all_years, all_years)
       |> assign(:editing_project, nil)
       |> assign(:logo_type, "url")
       |> assign(:form_mode, :none)
@@ -177,9 +180,9 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp parse_urls(_), do: []
 
   defp parse_url_line(line) do
-    case String.split(line, "|") do
+    case String.split(line, ":") do
       [url, label] -> %{"url" => String.trim(url), "label" => String.trim(label)}
-      # [url] -> %{"url" => String.trim(url), "label" => "Voir"}
+      # [url] -> %{"url" => String.trim(url), "label" => String.trim(label)}
       _ -> nil
     end
   end
@@ -266,7 +269,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
           <form phx-change="filter_year" class="flex items-center gap-2">
             <select name="year" class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400">
               <option value="all">Toutes années</option>
-              <%= for year <- 2019..2025 do %>
+              <%= for year <- @all_years do %>
                 <option value={year} selected={@year_filter == to_string(year)}><%= year %></option>
               <% end %>
             </select>
@@ -468,7 +471,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             <label class="block text-sm font-medium text-gray-700">Année</label>
             <select name="project[year]" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <%= for year <- 2019..2025 do %>
+              <%= for year <- @all_years do %>
                 <option value={year}><%= year %></option>
               <% end %>
             </select>
@@ -606,7 +609,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             <label class="block text-sm font-medium text-gray-700">Année</label>
             <select name="project[year]" required
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <%= for year <- 2019..2025 do %>
+              <%= for year <- @all_years do %>
                 <option value={year} selected={@editing_project["year"] == year}><%= year %></option>
               <% end %>
             </select>

@@ -4,7 +4,6 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   import PortfolioHermannWeb.ProjectCard
   import PortfolioHermannWeb.Helpers
   alias Phoenix.LiveView.JS
-
   @impl true
   def mount(_params, _session, socket) do
     projects = Projects.list_projects()
@@ -25,8 +24,23 @@ defmodule PortfolioHermannWeb.ProjectsLive do
       |> assign(:view_mode, :grid)
       |> assign(:sort_by, :recent)
       |> assign(:search_query, "")
+      |> assign(:show_details, false)
+      |> assign(:selected_project, nil)
+      |> assign(:show_details, false)
+      |> assign(:selected_project, nil)
 
     {:ok, socket}
+  end
+
+  @impl true
+  def handle_event("show_project_details", %{"id" => id}, socket) do
+    project = Enum.find(socket.assigns.projects, &(&1["id"] == id))
+    {:noreply, socket |> assign(:selected_project, project) |> assign(:show_details, true)}
+  end
+
+  @impl true
+  def handle_event("close_details", _params, socket) do
+    {:noreply, assign(socket, show_details: false)}
   end
 
   @impl true
@@ -118,6 +132,17 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
     {:noreply,
      assign(socket, selected_techs: selected_techs, filtered_projects: filtered_projects)}
+  end
+
+  @impl true
+  def handle_event("show_project_details", %{"id" => id}, socket) do
+    project = Enum.find(socket.assigns.projects, &(&1["id"] == id))
+    {:noreply, socket |> assign(:selected_project, project) |> assign(:show_details, true)}
+  end
+
+  @impl true
+  def handle_event("close_details", _, socket) do
+    {:noreply, socket |> assign(:show_details, false) |> assign(:selected_project, nil)}
   end
 
   @impl true
@@ -282,8 +307,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                   {project["desc"]}
                 </p>
-
-                  Technos:
+                Technos:
                 <div class="flex flex-wrap gap-2 mb-4">
                   <%= for tech <- project["techs"] || [] do %>
                     <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded">
@@ -291,8 +315,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                     </span>
                   <% end %>
                 </div>
-
-                  Tags:
+                Tags:
                 <div class="flex flex-wrap gap-2 mb-4">
                   <%= for tag <- project["tags"] || [] do %>
                     <span class="px-2 py-1 text-xs font-medium bg-[#f39d8d]/10 text-[#8B4513] dark:bg-[#8B4513]/20 dark:text-[#f39d8d] rounded">
@@ -343,21 +366,21 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                         rel="noopener noreferrer"
                         class="flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800 text-sm transition-colors duration-200"
                       >
-                        <.icon name="hero-code-bracket-square" class="w-4 h-4 mr-1" /> {source["label"]}
+                        <.icon name="hero-code-bracket-square" class="w-4 h-4 mr-1" /> {source[
+                          "label"
+                        ]}
                       </a>
                     <% end %>
                   </div>
                 <% end %>
 
                 <div class="bottom-6 right-8 flex items-center justify-end mt-4">
-                  <a
-                    href={~p"/projects/#{project["id"]}"}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    phx-click={JS.push("show_project_details", value: %{id: project["id"]})}
                     class="flex items-center px-3 py-1 rounded-lg bg-orange-100 text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200"
                   >
                     Details →
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -482,6 +505,126 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
       <% end %>
+
+      <%= if @show_details do %>
+        <.modal id="detail-project-modal" show={@show_details} on_cancel={JS.push("close_details")}>
+          <div class="mt-6 grid grid-cols-1 gap-6">
+          <div>
+            <h4 class="text-lg font-medium text-gray-900 mb-2">
+              {@selected_project["title"]}
+            </h4>
+          </div>
+
+            <div class="aspect-[9/6] bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+              <%= if @selected_project["logo_url"] && @selected_project["logo_url"] != "" do %>
+                <img
+                  src={@selected_project["logo_url"]}
+                  alt={@selected_project["title"]}
+                  class="w-full h-full object-cover"
+                />
+              <% else %>
+                <div class="w-full h-full flex items-center justify-center">
+                  <.icon name="hero-photo" class="w-12 h-12 text-gray-400" />
+                </div>
+              <% end %>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <h4 class="text-lg font-medium text-gray-900 mb-2">
+                  Description
+                </h4>
+
+                <p class="text-gray-600 dark:text-gray-400">
+                  {@selected_project["desc"]}
+                </p>
+              </div>
+
+              <div>
+                <h4 class="text-lg font-medium text-gray-900 mb-2">
+                  Technologies
+                </h4>
+
+                <div class="flex flex-wrap gap-2">
+                  <%= for tech <- if is_list(@selected_project["techs"]), do: @selected_project["techs"], else: String.split(@selected_project["techs"] || "", ",") do %>
+                    <span class="px-2 py-1 text-sm font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 rounded">
+                      {if is_binary(tech), do: String.trim(tech), else: tech}
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Tags</h4>
+
+                <div class="flex flex-wrap gap-2">
+                  <%= for tag <- @selected_project["tags"] || [] do %>
+                    <span class="px-2 py-1 text-sm font-medium bg-[#f39d8d]/10 text-[#8B4513] dark:bg-[#8B4513]/20 dark:text-[#f39d8d] rounded">
+                      {tag}
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-lg font-medium text-gray-900 mb-2">
+                  Statistiques
+                </h4>
+
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center gap-1">
+                    <.icon name="hero-eye" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <span class="text-gray-600 dark:text-gray-400">
+                      {@selected_project["stats"]["views"]} vues
+                    </span>
+                  </div>
+
+                  <div class="flex items-center gap-1">
+                    <.icon name="hero-heart" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <span class="text-gray-600 dark:text-gray-400">
+                      {@selected_project["stats"]["likes"]} likes
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-lg font-medium text-gray-900 mb-2">Liens</h4>
+
+                <div class="flex flex-wrap gap-2">
+                  <%= if @selected_project["source_urls"] && length(@selected_project["source_urls"]) > 0 do %>
+                    <%= for source <- @selected_project["source_urls"] do %>
+                      <a
+                        href={source["url"]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-3 py-1 rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors duration-200"
+                      >
+                        <.icon name="hero-code-bracket-square" class="w-4 h-4 mr-1" /> {source[
+                          "label"
+                        ]}
+                      </a>
+                    <% end %>
+                  <% end %>
+
+                  <%= if @selected_project["demo_urls"] && length(@selected_project["demo_urls"]) > 0 do %>
+                    <%= for demo <- @selected_project["demo_urls"] do %>
+                      <a
+                        href={demo["url"]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-3 py-1 rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors duration-200"
+                      >
+                        <.icon name="hero-play" class="w-4 h-4 mr-1" /> {demo["label"]}
+                      </a>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </.modal>
+      <% end %>
     </div>
     """
   end
@@ -538,8 +681,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   defp filter_by_year(projects, "all"), do: projects
 
   defp filter_by_year(projects, year) when is_binary(year) do
-    year = String.to_integer(year)
-    Enum.filter(projects, &(&1["year"] == year))
+    Enum.filter(projects, &(to_string(&1["year"]) == year))
   end
 
   defp filter_by_search(projects, ""), do: projects

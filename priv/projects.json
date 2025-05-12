@@ -1,21 +1,11 @@
 [
   {
-    "demo_urls": [
-      {
-        "label": "Voir",
-        "url": ""
-      }
-    ],
-    "desc": "                    Illum saepe consequ\n        \n        ",
+    "demo_urls": [],
+    "desc": "                              Illum saepe consequ\n        \n        \n        ",
     "featured": true,
     "id": "a7d19984-d0ce-4ed1-8384-718f0b068d05",
     "logo_url": "/images/logo.svg",
-    "source_urls": [
-      {
-        "label": "Voir",
-        "url": ""
-      }
-    ],
+    "source_urls": [],
     "stats": {
       "likes": 2,
       "views": 0
@@ -65,7 +55,7 @@
       }
     ],
     "stats": {
-      "likes": 3,
+      "likes": 4,
       "views": 0
     },
     "tags": [
@@ -84,22 +74,12 @@
     "year": 2025
   },
   {
-    "demo_urls": [
-      {
-        "label": "Voir",
-        "url": ""
-      }
-    ],
-    "desc": "          Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n\n        \n        \n        \n        \n        ",
+    "demo_urls": [],
+    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n\n        \n        \n        \n        \n        \n        \n        \n        ",
     "featured": true,
     "id": "fastsms",
     "logo_url": "",
-    "source_urls": [
-      {
-        "label": "Voir",
-        "url": "Code source:https://github.com/hlabsdev/fastsms"
-      }
-    ],
+    "source_urls": [],
     "stats": {
       "likes": 2,
       "views": 0
