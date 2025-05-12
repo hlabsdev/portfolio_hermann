@@ -13,7 +13,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       |> assign(:editing_project, nil)
       |> assign(:logo_type, "url")
       |> assign(:form_mode, :none)
-      |> assign(:view_mode, :grid)
+      |> assign(:view_mode, :list)
       |> assign(:year_filter, "all")
       |> assign(:type_filter, "all")
       |> assign(:search_query, "")
@@ -179,7 +179,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp parse_url_line(line) do
     case String.split(line, "|") do
       [url, label] -> %{"url" => String.trim(url), "label" => String.trim(label)}
-      [url] -> %{"url" => String.trim(url), "label" => "Voir"}
+      # [url] -> %{"url" => String.trim(url), "label" => "Voir"}
       _ -> nil
     end
   end
@@ -238,8 +238,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     <div class="px-4 sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
-          <h1 class="text-xl font-semibold text-gray-900">Projets</h1>
-          <p class="mt-2 text-sm text-gray-700">Liste de tous vos projets avec options de gestion.</p>
+          <h1 class="text-xl font-semibold text-gray-900 dark:text-white mt-8">Projets</h1>
+          <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Liste de tous vos projets avec options de gestion.</p>
         </div>
       </div>
 
@@ -264,7 +264,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
         <!-- Filtres -->
         <div class="flex flex-wrap items-center gap-4">
           <form phx-change="filter_year" class="flex items-center gap-2">
-            <select name="year" class="rounded-md border-gray-300 text-sm">
+            <select name="year" class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400">
               <option value="all">Toutes années</option>
               <%= for year <- 2019..2025 do %>
                 <option value={year} selected={@year_filter == to_string(year)}><%= year %></option>
@@ -273,7 +273,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
           </form>
 
           <form phx-change="filter_type" class="flex items-center gap-2">
-            <select name="type" class="rounded-md border-gray-300 text-sm">
+            <select name="type" class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400">
               <option value="all">Tous types</option>
               <option value="Application Web">Application Web</option>
               <option value="Mobile">Mobile</option>
@@ -284,7 +284,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             </select>
           </form>
 
-          <form phx-change="search" class="flex items-center gap-2">
+          <form phx-change="search" class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <input type="text" name="query" value={@search_query}
               placeholder="Rechercher..."
               class="rounded-md border-gray-300 text-sm" />
@@ -295,10 +295,10 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       <%= if @view_mode == :grid do %>
         <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <%= for project <- filter_projects(@projects, @year_filter, @type_filter, @search_query) do %>
-            <div class="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 rounded-lg shadow">
+            <div class="relative group card-soft p-6 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="text-lg font-medium text-gray-900">
+                  <h3 class="text-lg font-medium text-gray-900 dark:text-white">
                     <span class="absolute inset-0" aria-hidden="true"></span>
                     <%= project["title"] %>
                   </h3>
@@ -344,11 +344,11 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
               <table class="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Projet</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Année</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Mis en avant</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tags</th>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Projet</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Type</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Année</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Mis en avant</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Tags</th>
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="sr-only">Actions</span>
                     </th>
@@ -359,9 +359,9 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     <tr>
                       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm">
                         <div>
-                          <div class="font-medium text-gray-900"><%= project["title"] %></div>
+                          <div class="font-medium text-gray-900 dark:text-white"><%= project["title"] %></div>
                           <div class="text-gray-500 line-clamp-1">
-                            <%= String.slice(project["desc"], 0..119) <> "..." %>
+                            <%= String.slice(project["desc"], 0..60) <> "..." %>
                         </div>
                         </div>
                       </td>

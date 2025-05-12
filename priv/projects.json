@@ -3,17 +3,17 @@
     "demo_urls": [
       {
         "label": "Voir",
-        "url": "Voir:Labore asperiores ea"
+        "url": ""
       }
     ],
-    "desc": "          Illum saepe consequ\n        ",
+    "desc": "                    Illum saepe consequ\n        \n        ",
     "featured": true,
     "id": "a7d19984-d0ce-4ed1-8384-718f0b068d05",
     "logo_url": "/images/logo.svg",
     "source_urls": [
       {
         "label": "Voir",
-        "url": "Voir:Fugiat ipsa ut nemo"
+        "url": ""
       }
     ],
     "stats": {
@@ -22,28 +22,14 @@
     },
     "tags": [
       "Assurance",
-      "CUBE",
       "Collaboration",
       "Export",
-      "Finance",
-      "Foncier",
-      "Full-Stack",
-      "GED",
-      "GIZ",
-      "Gouvernement",
       "Investissement",
-      "JSON",
       "LiveView (Concept)",
-      "OIF",
-      "OpenClinic (Domaine)",
-      "PDF (Format)",
       "SMS",
-      "Santé",
       "Startup",
       "Statistiques",
-      "Togo",
-      "UX",
-      "Édition"
+      "Togo"
     ],
     "techs": [
       "Bootstrap",

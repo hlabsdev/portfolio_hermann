@@ -140,7 +140,7 @@ defmodule PortfolioHermannWeb.AboutLive do
           <div class="card-soft p-6">
             <div class="flex items-center gap-3 mb-4">
               <div class="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg">
-                <.icon name="hero-database" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <.icon name="hero-circle-stack" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
               </div>
 
               <h3 class="text-xl font-semibold text-purple-600 dark:text-purple-400">
@@ -286,9 +286,9 @@ defmodule PortfolioHermannWeb.AboutLive do
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <%= for interest <- @experiences["interests"] do %>
-            <div class="card-soft p-2 text-center items-center">
-              <.icon name="hero-sparkles" class="w-66 h- text-[#8B4513] dark:text-[#f39d8d] mb-2" />
-              <h3 class="text-md font-semibold text-white dark:text-gray mb-2">
+            <div class="card-soft p-2 m-0 text-center items-center">
+              <.icon name="hero-sparkles" class="w-66 h- text-[#8B4513] dark:text-[#f39d8d] mb-1" />
+              <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300">
                 {interest}</h3>
               <%!-- <span class="text-gray-700 dark:text-gray-300">{interest}</span> --%>
             </div>
