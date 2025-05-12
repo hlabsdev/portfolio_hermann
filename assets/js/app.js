@@ -20,7 +20,6 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import DarkMode from "./hooks/dark-mode"
 import {initTypingEffect} from "./typing-effect"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
@@ -29,38 +28,45 @@ let Hooks = {}
 
 Hooks.DarkMode = {
   mounted() {
-    // Initialiser le mode sombre en fonction des préférences sauvegardées ou système
-    const isDark = localStorage.getItem('darkMode') === 'true' 
-      || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // Initialisation
+    const root = document.documentElement;
+    const darkModeKey = 'darkMode';
+    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    // Appliquer le mode initial
-    if (isDark) {
-      document.documentElement.classList.add('dark');
+    // Fonction pour mettre à jour le mode
+    const updateTheme = (isDark) => {
+      root.classList.toggle('dark', isDark);
+      localStorage.setItem(darkModeKey, isDark);
+    };
+
+    // Initialiser le mode sombre en fonction des préférences
+    const storedDarkMode = localStorage.getItem(darkModeKey);
+    if (storedDarkMode === null) {
+      // Pas de préférence stockée, utiliser la préférence système
+      updateTheme(darkModeMediaQuery.matches);
+    } else {
+      // Utiliser la préférence stockée
+      updateTheme(storedDarkMode === 'true');
     }
 
     // Ajouter le gestionnaire de clic
     this.el.addEventListener('click', () => {
-      const isDarkMode = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('darkMode', isDarkMode);
+      const isDark = !root.classList.contains('dark');
+      updateTheme(isDark);
     });
 
     // Écouter les changements de préférence système
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => {
-      if (!localStorage.getItem('darkMode')) {
-        if (e.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+    const handleSystemThemeChange = (e) => {
+      if (localStorage.getItem(darkModeKey) === null) {
+        updateTheme(e.matches);
       }
     };
 
-    mediaQuery.addEventListener('change', handleChange);
+    darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
     
     // Nettoyer l'écouteur lors du démontage
     this.destroy = () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      darkModeMediaQuery.removeEventListener('change', handleSystemThemeChange);
     };
   },
 

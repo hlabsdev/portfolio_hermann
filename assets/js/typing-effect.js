@@ -4,8 +4,8 @@ export function initTypingEffect() {
   
   const phrases = [
     "Ingénieur Logiciel",
+    "Créateur d'outils intelligents",
     "Data Scientist",
-    "Créateur d'outils intelligents"
   ];
   
   let phraseIndex = 0;

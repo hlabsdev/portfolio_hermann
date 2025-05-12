@@ -11,6 +11,7 @@ module.exports = {
     "../lib/portfolio_hermann_web.ex",
     "../lib/portfolio_hermann_web/**/*.*ex"
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       animation: {

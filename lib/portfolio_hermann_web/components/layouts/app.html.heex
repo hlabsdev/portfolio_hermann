@@ -11,6 +11,7 @@
         <.link
           :for={{label, path} <- [
             {"Accueil", ~p"/"},
+            {"A Propos", ~p"/about"},
             {"Projets", ~p"/projects"},
             {"Articles", ~p"/blog"},
             {"Contact", ~p"/contact"},
@@ -56,6 +57,7 @@
       <.link
         :for={{label, path} <- [
           {"Accueil", ~p"/"},
+          {"A Propos", ~p"/about"},
           {"Projets", ~p"/projects"},
           {"Articles", ~p"/blog"},
           {"Contact", ~p"/contact"},
@@ -63,7 +65,7 @@
         ]}
         navigate={path}
         class="block px-3 py-2 text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d]"
-        target={if path == "/cv.pdf", do: "_blank"}
+        target={if path == "/files/cv.pdf", do: "_blank"}
       >
         <%= label %>
       </.link>
@@ -80,7 +82,7 @@
   <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="space-y-4">
-        <h3 class="text-lg font-semibold text-[#f39d8d]">À propos</h3>
+        <h3 class="text-lg font-semibold text-[#f39d8d]"><.link navigate={~p"/about"}>À propos</.link></h3>
         <p class="text-gray-600 dark:text-gray-400">
           Expert en développement full-stack et data engineering, passionné par l'innovation technologique.
         </p>

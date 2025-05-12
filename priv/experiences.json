@@ -1,0 +1,185 @@
+{
+  "workExperiences": [
+    {
+      "id": "yulcom",
+      "title": "Ingénieur Logiciel Senior",
+      "company": "YULCOM Technologies",
+      "location": "Lomé, Togo",
+      "start_date": 2022,
+      "end_date": null,
+      "description": "Développement de solutions logicielles pour le secteur public et privé. Réalisation de projets pour des institutions telles que l’OIF, ANPE, Sanlam Allianz et l'Assemblée nationale du Togo.",
+      "achievements": [
+        "Développement backend de la plateforme d'internationalisation de l’OIF",
+        "Implémentation du Tarificateur Intelligent pour Sanlam Allianz",
+        "Conception d’un système GED et de transcription pour l’Assemblée nationale",
+        "Lead front-end pour la plateforme MVDMT (ANPE TOGO)",
+        "Déploiement du Système de Gestion Foncier (SGF) pour la DGID du Sénégal"
+      ],
+      "keywords": ["Phoenix", "Django", "FastAPI", "Vue.js", "Machine Learning", "API", "DevOps"]
+    },
+    {
+      "id": "assigame",
+      "title": "Développeur Flutter (Consultant)",
+      "company": "Assigame Market",
+      "location": "Lomé, Togo",
+      "start_date": 2021,
+      "end_date": 2022,
+      "description": "Développement mobile sur un projet e-commerce Flutter pour Assigame Market.",
+      "achievements": [
+        "Développement complet de l'application mobile e-commerce",
+        "Intégration de la gestion des produits et paiements"
+      ],
+      "keywords": ["Flutter", "Mobile", "E-commerce"]
+    },
+    {
+      "id": "clin",
+      "title": "Ingénieur Logiciel",
+      "company": "CLIN SARLU",
+      "location": "Lomé, Togo",
+      "start_date": 2021,
+      "end_date": 2021,
+      "description": "Participation à des projets dans l’éducation et l’agriculture numérique.",
+      "achievements": [
+        "Backend pour la gestion des coopératives agricoles du Togo",
+        "Développement mobile pour le projet GESCHOOL de la GIZ-TOGO"
+      ],
+      "keywords": ["Django", "Flutter", "Éducation", "Agritech"]
+    },
+    {
+      "id": "cube",
+      "title": "Développeur Full Stack (Consultant)",
+      "company": "CUBE TOGO",
+      "location": "Lomé, Togo",
+      "start_date": 2021,
+      "end_date": 2021,
+      "description": "Réalisation de plateformes numériques pour la gestion de projets et de publications.",
+      "achievements": [
+        "Conception et déploiement de K-PITAL Invest (collecte de fonds)",
+        "Développement de CUBE-BOOK pour la publication de livres"
+      ],
+      "keywords": ["Django", "Angular", "Édition", "Financement"]
+    },
+    {
+      "id": "alukson",
+      "title": "Développeur Full Stack (Alternance)",
+      "company": "ALUKSON Business",
+      "location": "USA (Remote)",
+      "start_date": 2019,
+      "end_date": 2021,
+      "description": "Conception UI/UX, développement web et mobile de solutions de microfinance.",
+      "achievements": [
+        "Développement de Microfinance Pro (Laravel + Flutter)",
+        "Maquettes Figma & gestion de l’équipe front-end"
+      ],
+      "keywords": ["Flutter", "Laravel", "Microfinance", "Design"]
+    },
+    {
+      "id": "fintechvision",
+      "title": "Co-fondateur & Lead Technique",
+      "company": "Fintech-Vision",
+      "location": "Lomé, Togo",
+      "start_date": 2019,
+      "end_date": null,
+      "description": "Création et maintenance d’une suite logicielle de gestion pour institutions de microfinance.",
+      "achievements": [
+        "Conception de la solution Fintech (Django, Vue.js, Flutter)",
+        "Gestion de projet et relation clientèle"
+      ],
+      "keywords": ["Entrepreneuriat", "Microfinance", "Vue.js", "Flutter"]
+    }
+  ],
+  "education": [
+    {
+      "id": "master",
+      "degree": "Master International en Génie Logiciel",
+      "school": "Université Technologique de Belfort-Montbéliard (UTBM)",
+      "location": "Belfort, France",
+      "period": "2019 - 2021",
+      "description": "Spécialisation en ingénierie logicielle et architecture distribuée.",
+      "achievements": [
+        "Projets IA et systèmes distribués",
+        "Mémoire sur la prédiction intelligente appliquée à la finance"
+      ]
+    },
+    {
+      "id": "licence",
+      "degree": "Licence en Génie Logiciel",
+      "school": "Institut Africain d’Informatique (IAI-Togo)",
+      "location": "Lomé, Togo",
+      "period": "2016 - 2019",
+      "description": "Formation généraliste avec spécialisation en développement logiciel.",
+      "achievements": [
+        "Mention Très Bien",
+        "Président du club CISCO CCNA"
+      ]
+    }
+  ],
+  "skills": {
+    "programming": [
+      "Python (Django, FastAPI)",
+      "JavaScript/TypeScript (Vue.js, Angular)",
+      "Flutter & Dart",
+      "Elixir & Phoenix LiveView"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MongoDB",
+      "MySQL",
+      "ElasticSearch"
+    ],
+    "cloud": [
+      "Docker",
+      "CI/CD",
+      "Keycloak",
+      "Linux/Windows"
+    ],
+    "methodologies": [
+      "Agile/Scrum",
+      "DevOps",
+      "Tests automatisés",
+      "Clean Architecture"
+    ]
+  },
+  "certifications": [
+    {
+      "name": "Introduction to Data Science with Python",
+      "issuer": "HarvardX (EdX)",
+      "year": 2024
+    },
+    {
+      "name": "Data Scientist with Python (en cours)",
+      "issuer": "DataCamp",
+      "year": 2024
+    },
+    {
+      "name": "Lingual Skill Business English C1",
+      "issuer": "Cambridge University",
+      "year": 2021
+    },
+    {
+      "name": "CCNA V7",
+      "issuer": "CISCO",
+      "year": 2018
+    }
+  ],
+  "languages": [
+    {
+      "name": "Français",
+      "level": "Courant C2"
+    },
+    {
+      "name": "Anglais",
+      "level": "Avancé C1"
+    },
+    {
+      "name": "Allemand",
+      "level": "Notions de Base"
+    }
+  ],
+  "interests": [
+    "Lecture (tech, nouvelles, science-fiction, spiritualité)",
+    "Sport (football, course)",
+    "Instruments (Piano, Guitare)",
+    "Jeux vidéo"
+  ]
+}

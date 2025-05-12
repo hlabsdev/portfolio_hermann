@@ -33,9 +33,7 @@ defmodule PortfolioHermannWeb.HomeLive do
               Hermann Kekeil GOLO (💻 Hlabs)
             </h1>
 
-            <p class="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-300">
-              Ingénieur Logiciel Full-Stack & Data Engineer
-            </p>
+            <p class="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-300 typing-effect">Ingénieur Logiciel & Data Engineer</p>
             <p class="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Expert en développement d'applications web performantes avec <span class="font-semibold text-indigo-600 dark:text-indigo-400">Elixir & Phoenix</span>,
               et en solutions data-driven avec <span class="font-semibold text-purple-600 dark:text-purple-400">Python & Flutter</span>.
