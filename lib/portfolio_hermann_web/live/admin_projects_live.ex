@@ -180,9 +180,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp parse_urls(_), do: []
 
   defp parse_url_line(line) do
-    case String.split(line, ":") do
-      [url, label] -> %{"url" => String.trim(url), "label" => String.trim(label)}
-      # [url] -> %{"url" => String.trim(url), "label" => String.trim(label)}
+    case String.split(line, "|") do
+      [label, url] -> %{"url" => String.trim(url), "label" => String.trim(label)}
       _ -> nil
     end
   end
@@ -522,14 +521,14 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             <label class="block text-sm font-medium text-gray-700">URLs de démo</label>
             <input type="text" name="project[demo_urls]"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label:url, label2:url2" />
+              placeholder="label|url, label2|url2" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">URLs du code source</label>
             <input type="text" name="project[source_urls]"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label:url, label2:url2" />
+              placeholder="label|url, label2|url2" />
           </div>
 
           <div>
@@ -662,7 +661,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             <input type="text" name="project[demo_urls]"
               value={format_urls(@editing_project["demo_urls"])}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label:url, label2:url2" />
+              placeholder="label|url, label2|url2" />
           </div>
 
           <div>
@@ -670,7 +669,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
             <input type="text" name="project[source_urls]"
               value={format_urls(@editing_project["source_urls"])}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label:url, label2:url2" />
+              placeholder="label|url, label2|url2" />
           </div>
 
           <div>
@@ -700,7 +699,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   defp format_urls(urls) when is_list(urls) do
     urls
-    |> Enum.map(fn %{"label" => label, "url" => url} -> "#{label}:#{url}" end)
+    |> Enum.map(fn %{"label" => label, "url" => url} -> "#{label}|#{url}" end)
     |> Enum.join(", ")
   end
   defp format_urls(_), do: ""

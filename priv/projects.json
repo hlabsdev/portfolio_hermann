@@ -75,11 +75,16 @@
   },
   {
     "demo_urls": [],
-    "desc": "Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n\n        \n        \n        \n        \n        \n        \n        \n        ",
+    "desc": "                              Plateforme de gestion de contacts, de groupes et d’envoi de SMS programmés avec personnalisation dynamique et configuration d'API SMS tierces.\n\n\n\n        \n        \n        \n        \n        \n        \n        \n        \n        \n        \n        ",
     "featured": true,
     "id": "fastsms",
     "logo_url": "",
-    "source_urls": [],
+    "source_urls": [
+      {
+        "label": "Code complet",
+        "url": "https://github.com/hlabsdev/fastsms"
+      }
+    ],
     "stats": {
       "likes": 2,
       "views": 0

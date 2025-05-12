@@ -73,7 +73,7 @@ defmodule PortfolioHermannWeb.AboutLive do
               <img
                 src={@selected_image}
                 alt="Image en plein écran"
-                class="w-full h-full object-contain rounded-lg"
+                class="w-full h-full object-cover rounded-lg"
               />
               <button
                 class="absolute top-4 right-4 text-white hover:text-[#f39d8d] transition-colors duration-200"
@@ -111,9 +111,9 @@ defmodule PortfolioHermannWeb.AboutLive do
         </div>
 
     <!-- Compétences clés -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
 
-          <div class="card-soft p-6">
+          <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
             <div class="flex items-center gap-3 mb-4">
               <div class="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
                 <.icon
@@ -137,7 +137,7 @@ defmodule PortfolioHermannWeb.AboutLive do
             </div>
           </div>
 
-          <div class="card-soft p-6">
+          <div class="card-soft p-6 hover:scale-110  hover:shadow-xl transition-all duration-300">
             <div class="flex items-center gap-3 mb-4">
               <div class="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg">
                 <.icon name="hero-circle-stack" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -158,7 +158,7 @@ defmodule PortfolioHermannWeb.AboutLive do
             </ul>
           </div>
 
-          <div class="card-soft p-6">
+          <div class="card-soft p-6  hover:scale-110 hover:shadow-xl transition-all duration-300">
             <div class="flex items-center gap-3 mb-4">
               <div class="p-2 bg-pink-100 dark:bg-pink-900/50 rounded-lg">
                 <.icon name="hero-cloud" class="w-6 h-6 text-pink-600 dark:text-pink-400" />
@@ -196,7 +196,7 @@ defmodule PortfolioHermannWeb.AboutLive do
 
         <div class="grid grid-cols-1 gap-6">
           <%= for edu <- @experiences["education"] do %>
-            <div class="card-soft p-6 relative">
+            <div class="card-soft p-6 relative hover:scale-110 hover:shadow-xl transition-all duration-300">
               <div class="flex justify-between items-start mb-4">
                 <div>
                   <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d]">
@@ -229,16 +229,14 @@ defmodule PortfolioHermannWeb.AboutLive do
       <section class="mb-16">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Méthodologies & Pratiques</h2>
 
-        <div class="card-soft p-6">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <%= for method <- @experiences["skills"]["methodologies"] do %>
-              <div class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div class="card-soft p-6 flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800/50 hover:scale-110 hover:shadow-xl transition-all duration-300">
                 <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-                <span class="text-gray-700 dark:text-gray-300">{method}</span>
+                <span class="text-md font-semibold text-gray-700 dark:text-gray-300">{method}</span>
               </div>
             <% end %>
           </div>
-        </div>
       </section>
 
     <!-- Section Langues -->
@@ -247,7 +245,7 @@ defmodule PortfolioHermannWeb.AboutLive do
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <%= for lang <- @experiences["languages"] do %>
-            <div class="card-soft p-6">
+            <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
               <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d] mb-2">
                 {lang["name"]}
               </h3>
@@ -264,7 +262,7 @@ defmodule PortfolioHermannWeb.AboutLive do
 
         <div class="grid grid-cols-1 gap-6">
           <%= for cert <- @experiences["certifications"] do %>
-            <div class="card-soft p-6">
+            <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
               <div class="flex justify-between items-start mb-2">
                 <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d]">
                   {cert["name"]}
@@ -286,7 +284,7 @@ defmodule PortfolioHermannWeb.AboutLive do
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <%= for interest <- @experiences["interests"] do %>
-            <div class="card-soft p-2 m-0 text-center items-center">
+            <div class="card-soft p-2 m-0 text-center items-center hover:scale-110 hover:shadow-xl transition-all duration-300">
               <.icon name="hero-sparkles" class="w-66 h- text-[#8B4513] dark:text-[#f39d8d] mb-1" />
               <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300">
                 {interest}</h3>

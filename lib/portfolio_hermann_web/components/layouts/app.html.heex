@@ -15,11 +15,11 @@
             {"Projets", ~p"/projects"},
             {"Articles", ~p"/blog"},
             {"Contact", ~p"/contact"},
-            {"CV", "/cv.pdf"}
+            {"CV", "/files/cv.pdf"}
           ]}
           navigate={path}
           class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d] transition-colors"
-          target={if path == "/cv.pdf", do: "_blank"}
+          download={if path == "/files/cv.pdf", do: "CV Hermann K. GOLO"}
         >
           <%= label %>
         </.link>
@@ -61,11 +61,11 @@
           {"Projets", ~p"/projects"},
           {"Articles", ~p"/blog"},
           {"Contact", ~p"/contact"},
-          {"CV", "/cv.pdf"}
+          {"CV", "/files/cv.pdf"}
         ]}
         navigate={path}
         class="block px-3 py-2 text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d]"
-        target={if path == "/files/cv.pdf", do: "_blank"}
+        download={if path == "/files/cv.pdf", do: "CV Hermann K. GOLO"}
       >
         <%= label %>
       </.link>
@@ -83,9 +83,9 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="space-y-4">
         <h3 class="text-lg font-semibold text-[#f39d8d]"><.link navigate={~p"/about"}>À propos</.link></h3>
-        <p class="text-gray-600 dark:text-gray-400">
+        <.link navigate={~p"/about"} class="text-gray-600 dark:text-gray-400">
           Expert en développement full-stack et data engineering, passionné par l'innovation technologique.
-        </p>
+        </.link>
       </div>
       <div class="space-y-4">
         <h3 class="text-lg font-semibold text-[#f39d8d]">Liens rapides</h3>
@@ -119,7 +119,7 @@
             <.icon name="hero-code-bracket" class="w-6 h-6" />
           </a>
           <a
-            href="https://www.linkedin.com/in/hermann-agossou"
+            href="https://www.linkedin.com/in/komi-golo"
             target="_blank"
             rel="noopener noreferrer"
             class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]"

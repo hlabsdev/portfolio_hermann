@@ -193,37 +193,21 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
     <!-- Année -->
           <div>
-            <select
-              phx-change="filter_year"
-              name="year"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
-            >
-              <option value="all">Toutes les années</option>
+            <form phx-change="filter_year">
+              <select
+                phx-change="filter_year"
+                name="year"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
+              >
+                <option value="all">Toutes les années</option>
 
-              <%= for year <- @all_years do %>
-                <option value={year} selected={@selected_year == to_string(year)}>
-                  {year}
-                </option>
-              <% end %>
-            </select>
-          </div>
-
-    <!-- Technologies -->
-          <div class="space-y-2">
-            <div class="flex flex-wrap gap-2">
-              <%= for tech <- @all_techs do %>
-                <button
-                  type="button"
-                  phx-click={JS.push("toggle_tech", value: %{tech: tech})}
-                  class={"px-3 py-1 rounded-full text-sm font-medium
-                    #{if tech in @selected_techs,
-                      do: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300",
-                      else: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/50"}"}
-                >
-                  {tech}
-                </button>
-              <% end %>
-            </div>
+                <%= for year <- @all_years do %>
+                  <option value={year} selected={@selected_year == to_string(year)}>
+                    {year}
+                  </option>
+                <% end %>
+              </select>
+            </form>
           </div>
 
     <!-- Tri -->
@@ -263,7 +247,27 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
 
+    <!-- Techs -->
+        <p class="text-xl font-bold text-gray-900 dark:text-white mb-8">Technologies</p>
+
+        <div class="flex flex-wrap gap-2">
+          <%= for tech <- @all_techs do %>
+            <button
+              type="button"
+              phx-click={JS.push("toggle_tech", value: %{tech: tech})}
+              class={"px-3 py-1 rounded-full text-sm font-medium
+                  #{if tech in @selected_techs,
+                    do: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300",
+                    else: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/50"}"}
+            >
+              {tech}
+            </button>
+          <% end %>
+        </div>
+
     <!-- Tags -->
+        <p class="text-xl font-bold text-gray-900 dark:text-white mb-8">Tags</p>
+
         <div class="flex flex-wrap gap-2">
           <%= for tag <- @all_tags do %>
             <button
@@ -284,7 +288,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
       <%= if @view_mode == :grid do %>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <%= for project <- @filtered_projects do %>
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-xl transition-shadow duration-300">
               <div class="relative aspect-[4/3] bg-gray-200 dark:bg-gray-700">
                 <%= if project["logo_url"] && project["logo_url"] != "" do %>
                   <img
@@ -302,6 +306,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               <div class="p-6">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {project["title"]}
+                  <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project["year"]}</b>
                 </h3>
 
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
@@ -397,11 +402,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                   </th>
 
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Technologies
-                  </th>
-
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    Année
+                    Technos
                   </th>
 
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -410,6 +411,10 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
                   <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     Liens
+                  </th>
+
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Détails
                   </th>
                 </tr>
               </thead>
@@ -420,36 +425,42 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center">
                         <div class="h-10 w-10 flex-shrink-0">
-                          <img
-                            class="h-10 w-10 rounded object-cover"
-                            src={project["logo_url"]}
-                            alt=""
-                          />
+                          <%= if project["logo_url"] && project["logo_url"] != "" do %>
+                            <img
+                              src={project["logo_url"]}
+                              alt={project["title"]}
+                              class="h-10 w-10 rounded object-cover"
+                            />
+                          <% else %>
+                            <div class="h-10 w-10 rounded object-cover flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                              <.icon name="hero-photo" class="w-4 h-4 text-gray-400" />
+                            </div>
+                          <% end %>
                         </div>
 
                         <div class="ml-4">
                           <div class="text-sm font-medium text-gray-900 dark:text-white">
                             {project["title"]}
+                            <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project["year"]}</b>
                           </div>
 
                           <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                            {limit_text(project["desc"], 90)}
+                            {limit_text(project["desc"], 60)}
                           </div>
                         </div>
                       </div>
                     </td>
 
-                    <td class="px-6 py-4">
-                      <div class="text-sm text-gray-900 dark:text-white max-w-xs overflow-hidden">
-                        {project["techs"]}
-                      </div>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs overflow-hidden">
+                      <div class="flex flex-wrap gap-2">
+                          <%= for tech <- project["techs"] || [] do %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                              <%= tech %>
+                            </span>
+                          <% end %>
+                        </div>
                     </td>
 
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm text-gray-900 dark:text-white">
-                        {project["year"]}
-                      </div>
-                    </td>
 
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <div class="flex items-center space-x-4">
@@ -498,6 +509,16 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                         <% end %>
                       </div>
                     </td>
+
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900 dark:text-white">
+                        <button phx-click={JS.push("show_project_details", value: %{id: project["id"]})}
+                            class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200"
+                            title="Voir les details">
+                            <.icon name="hero-eye" class="w-5 h-5" />
+                          </button>
+                      </div>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
@@ -505,15 +526,15 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
       <% end %>
-
+       <%!-- Modal detail --%>
       <%= if @show_details do %>
         <.modal id="detail-project-modal" show={@show_details} on_cancel={JS.push("close_details")}>
           <div class="mt-6 grid grid-cols-1 gap-6">
-          <div>
-            <h4 class="text-lg font-medium text-gray-900 mb-2">
-              {@selected_project["title"]}
-            </h4>
-          </div>
+            <div>
+              <h4 class="text-lg font-medium text-gray-900 mb-2">
+                {@selected_project["title"]}
+              </h4>
+            </div>
 
             <div class="aspect-[9/6] bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
               <%= if @selected_project["logo_url"] && @selected_project["logo_url"] != "" do %>
@@ -638,10 +659,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
   defp get_all_techs(projects) do
     projects
-    |> Enum.filter(fn project -> is_binary(project["techs"]) end)
-    |> Enum.flat_map(&String.split(&1["techs"], ","))
-    |> Enum.map(&String.trim/1)
-    |> Enum.reject(&(&1 == ""))
+    |> Enum.flat_map(& &1["techs"])
     |> Enum.uniq()
     |> Enum.sort()
   end
@@ -691,8 +709,9 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
     Enum.filter(projects, fn project ->
       String.contains?(String.downcase(project["title"]), query) ||
-        String.contains?(String.downcase(project["desc"]), query) ||
-        String.contains?(String.downcase(project["techs"]), query) ||
+        String.contains?(String.downcase(project["desc"]), query)
+
+      Enum.any?(project["techs"] || [], &String.contains?(String.downcase(&1), query)) ||
         Enum.any?(project["tags"] || [], &String.contains?(String.downcase(&1), query))
     end)
   end
@@ -701,8 +720,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
   defp filter_by_techs(projects, techs) do
     Enum.filter(projects, fn project ->
-      project_techs = project["techs"] |> String.split(",") |> Enum.map(&String.trim/1)
-      Enum.all?(techs, &(&1 in project_techs))
+      Enum.all?(techs, &(&1 in (project["techs"] || [])))
     end)
   end
 

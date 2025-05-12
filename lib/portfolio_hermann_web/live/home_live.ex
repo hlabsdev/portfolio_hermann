@@ -8,7 +8,7 @@ defmodule PortfolioHermannWeb.HomeLive do
     featured_projects =
       Projects.list_projects()
       |> Enum.filter(& &1["featured"])
-      |> Enum.take(3)
+      |> Enum.take(5)
 
     socket =
       socket
@@ -43,7 +43,7 @@ defmodule PortfolioHermannWeb.HomeLive do
           <div class="flex justify-center gap-6">
             <.link
               navigate={~p"/projects"}
-              class="px-8 py-4 tracking-tight bg-gradient-to-r from-[#f39d8d] to-[#8B4513] text-white rounded-xl hover:from-[#f39d8d]/50 hover:to-[#8B4513]/70 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl"
+              class="px-8 py-4 tracking-tight bg-gradient-to-r from-[#f39d8d] to-[#8B4513] text-white rounded-xl hover:from-[#f39d8d]/50 hover:to-[#8B4513]/70 transform hover:scale-110 transition duration-200 shadow-lg hover:shadow-xl"
             >
               <div class="flex items-center gap-2">
                 <.icon name="hero-rocket-launch" class="w-5 h-5" /> <span>Voir mes projets</span>
@@ -52,7 +52,7 @@ defmodule PortfolioHermannWeb.HomeLive do
 
             <.link
               navigate={~p"/contact"}
-              class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700"
+              class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transform hover:scale-110 transition duration-200 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700"
             >
               <div class="flex items-center gap-2">
                 <.icon name="hero-envelope" class="w-5 h-5" /> <span>Me contacter</span>
@@ -74,7 +74,7 @@ defmodule PortfolioHermannWeb.HomeLive do
           </p>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="group hover:scale-105 transition-transform duration-300">
+            <div class="group hover:scale-110 transition-transform duration-300">
               <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 dark:from-indigo-600/10 dark:to-purple-600/10">
                 </div>
@@ -93,17 +93,16 @@ defmodule PortfolioHermannWeb.HomeLive do
                   <ul class="space-y-3 text-gray-600 dark:text-gray-300">
                     <li class="flex items-center gap-2">
                       <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Elixir & Phoenix LiveView
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
                       Python & Django/FastAPI
                     </li>
 
                     <li class="flex items-center gap-2">
                       <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
                       Node.js & Express
+                    </li>
+                    <li class="flex items-center gap-2">
+                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
+                      Elixir & Phoenix LiveView
                     </li>
 
                     <li class="flex items-center gap-2">
@@ -115,7 +114,7 @@ defmodule PortfolioHermannWeb.HomeLive do
               </div>
             </div>
 
-            <div class="group hover:scale-105 transition-transform duration-300">
+            <div class="group hover:scale-110 transition-transform duration-300">
               <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 dark:from-purple-600/10 dark:to-pink-600/10">
                 </div>
@@ -136,16 +135,15 @@ defmodule PortfolioHermannWeb.HomeLive do
 
                   <ul class="space-y-3 text-gray-600 dark:text-gray-300">
                     <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      TailwindCSS & Alpine.js
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> Vue.js & React
+                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> Angular & Vue.js
                     </li>
 
                     <li class="flex items-center gap-2">
                       <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> Flutter & Dart
+                    </li>
+                    <li class="flex items-center gap-2">
+                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
+                      TailwindCSS & Alpine.js
                     </li>
 
                     <li class="flex items-center gap-2">
@@ -156,7 +154,7 @@ defmodule PortfolioHermannWeb.HomeLive do
               </div>
             </div>
 
-            <div class="group hover:scale-105 transition-transform duration-300">
+            <div class="group hover:scale-110 transition-transform duration-300">
               <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-pink-600/5 to-rose-600/5 dark:from-pink-600/10 dark:to-rose-600/10">
                 </div>
@@ -212,7 +210,7 @@ defmodule PortfolioHermannWeb.HomeLive do
 
         <div class="mt-12 grid gap-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
           <%= for project <- @featured_projects do %>
-            <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+            <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-110 hover:shadow-xl transition-all duration-300">
               <div class="relative aspect-[4/3] bg-gray-200 dark:bg-gray-700">
                 <%= if project["logo_url"] && project["logo_url"] !="" do %>
                   <img
@@ -271,10 +269,10 @@ defmodule PortfolioHermannWeb.HomeLive do
 
         <div class="mt-12 text-center">
           <.link
-            navigate={~p"/projects"}
+            navigate={~p"/about"}
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#f39d8d] hover:bg-[#8B4513] dark:bg-[#8B4513] dark:hover:bg-[#f39d8d] transition-colors duration-200"
           >
-            Voir tous les projets <.icon name="hero-arrow-right" class="ml-2 w-5 h-5" />
+            A propos de Hermann <.icon name="hero-arrow-right" class="ml-2 w-5 h-5" />
           </.link>
         </div>
       </section>
