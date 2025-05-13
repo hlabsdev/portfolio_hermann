@@ -1,14 +1,13 @@
 defmodule PortfolioHermannWeb.HomeLive do
   use PortfolioHermannWeb, :live_view
   alias PortfolioHermann.Projects
-  import PortfolioHermannWeb.ProjectCard
 
   @impl true
   def mount(_params, _session, socket) do
     featured_projects =
       Projects.list_projects()
       |> Enum.filter(& &1["featured"])
-      |> Enum.take(5)
+      |> Enum.take(6)
 
     socket =
       socket
@@ -74,6 +73,7 @@ defmodule PortfolioHermannWeb.HomeLive do
           </p>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
             <div class="group hover:scale-110 transition-transform duration-300">
               <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 dark:from-indigo-600/10 dark:to-purple-600/10">
@@ -208,7 +208,7 @@ defmodule PortfolioHermannWeb.HomeLive do
           </p>
         </div>
 
-        <div class="mt-12 grid gap-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
+        <div class="mt-12 grid grid-cols-2 gap-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
           <%= for project <- @featured_projects do %>
             <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-110 hover:shadow-xl transition-all duration-300">
               <div class="relative aspect-[4/3] bg-gray-200 dark:bg-gray-700">

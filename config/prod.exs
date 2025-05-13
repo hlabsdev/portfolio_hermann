@@ -6,6 +6,8 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :portfolio_hermann, PortfolioHermannWeb.Endpoint,
+  http: [ip: {0, 0, 0, 0}, port: 8080],
+  url: [host: System.get_env("PHX_HOST") || "localhost", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Configures Swoosh API Client

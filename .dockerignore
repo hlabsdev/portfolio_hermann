@@ -1,0 +1,6 @@
+.git
+deps
+doc
+test
+node_modules
+assets/node_modules

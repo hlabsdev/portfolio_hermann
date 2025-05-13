@@ -21,4 +21,4 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 * Gerer la creation d'article avec des fichiers markdown
 * Formulaire de contact dynamique (Choix de projet et sujet) et qui m'envoie un mail directement
-* Tout faire pour que lle toggle dark mode marche correctement
+* Faire un post sur linkdein

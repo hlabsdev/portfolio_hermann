@@ -9,7 +9,22 @@ defmodule PortfolioHermann.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      # Pour les assets
+      elixirc_paths: elixirc_paths(Mix.env()),
+      elixirc_options: [debug_info: Mix.env() == :dev],
+      start_permanent: Mix.env() == :prod,
+      releases: [
+        portfolio_hermann: [
+          include_executables_for: [:unix],
+          applications: [runtime_tools: :permanent],
+          steps: [:assemble, :tar],
+          include_erts: true,
+          include_src: false,
+          # Ceci est crucial
+          include_priv: true
+        ]
+      ]
     ]
   end
 
@@ -56,7 +71,7 @@ defmodule PortfolioHermann.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:elixir_uuid, "~> 1.2"},
-      {:mdex, "~> 0.6"},
+      {:mdex, "~> 0.6"}
     ]
   end
 

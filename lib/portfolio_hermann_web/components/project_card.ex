@@ -15,11 +15,11 @@ defmodule PortfolioHermannWeb.ProjectCard do
             alt={@project["title"]}
             class="w-full h-full object-cover"
           />
-        <%= else %>
+        <% else %>
           <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
             <.icon name="hero-computer-desktop" class="w-16 h-16" />
           </div>
-        <%= end %>
+        <% end %>
       </div>
 
       <div class="p-6">
@@ -36,7 +36,7 @@ defmodule PortfolioHermannWeb.ProjectCard do
             <span class="px-2 py-1 text-xs bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 rounded">
               {tech}
             </span>
-          <%= end %>
+          <% end %>
         </div>
 
         <div class="flex flex-wrap gap-2 mb-4">
@@ -44,7 +44,7 @@ defmodule PortfolioHermannWeb.ProjectCard do
             <span class="px-2 py-1 text-xs bg-[#f39d8d]/10 text-[#8B4513] dark:bg-[#8B4513]/20 dark:text-[#f39d8d] rounded">
               {tag}
             </span>
-          <%= end %>
+          <% end %>
         </div>
 
         <div class="flex justify-between items-center">
@@ -71,10 +71,10 @@ defmodule PortfolioHermannWeb.ProjectCard do
               >
                 <.icon name="hero-code-bracket" class="w-5 h-5" />
               </a>
-            <%= end %>
+            <% end %>
 
             <%=if @project["demo_urls"] && length(@project["demo_urls"]) > 0 do %>
-              <%=for demo <- @project["demo_urls"] do %>
+              <%= for demo <- @project["demo_urls"] do %>
                 <a
                   href={demo["url"]}
                   target="_blank"
@@ -84,8 +84,8 @@ defmodule PortfolioHermannWeb.ProjectCard do
                 >
                   <.icon name="hero-play" class="w-5 h-5" />
                 </a>
-              <%= end %>
-            <%= end %>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>

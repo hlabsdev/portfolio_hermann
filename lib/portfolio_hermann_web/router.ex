@@ -25,6 +25,7 @@ defmodule PortfolioHermannWeb.Router do
       live "/projects/:id", ProjectsLive
       live "/contact", ContactLive
       live "/blog", BlogLive
+      get "/health", HealthController, :index
     end
   end
 

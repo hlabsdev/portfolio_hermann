@@ -1,0 +1,14 @@
+{
+  "name": "portfolio_hermann",
+  "version": "1.0.0",
+  "description": "Portfolio Hermann assets",
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy"
+  },
+  "dependencies": {
+    "topbar": "^2.0.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

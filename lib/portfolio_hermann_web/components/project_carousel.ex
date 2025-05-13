@@ -2,7 +2,6 @@ defmodule PortfolioHermannWeb.Components.ProjectCarousel do
   use Phoenix.Component
   use PortfolioHermannWeb, :html
   import Phoenix.VerifiedRoutes
-  import PortfolioHermannWeb.Helpers
   alias Phoenix.LiveView.JS
 
   def carousel(assigns) do

@@ -1,43 +1,5 @@
 [
   {
-    "demo_urls": [],
-    "desc": "                              Illum saepe consequ\n        \n        \n        ",
-    "featured": true,
-    "id": "a7d19984-d0ce-4ed1-8384-718f0b068d05",
-    "logo_url": "/images/logo.svg",
-    "source_urls": [],
-    "stats": {
-      "likes": 2,
-      "views": 0
-    },
-    "tags": [
-      "Assurance",
-      "Collaboration",
-      "Export",
-      "Investissement",
-      "LiveView (Concept)",
-      "SMS",
-      "Startup",
-      "Statistiques",
-      "Togo"
-    ],
-    "techs": [
-      "Bootstrap",
-      "Camunda",
-      "ElasticSearch",
-      "Elixir",
-      "Laravel",
-      "TailwindCSS",
-      "Vue.js",
-      "Yii2",
-      "Figma",
-      "Google Drive"
-    ],
-    "title": "Officiis hic reprehe",
-    "type": "SIG",
-    "year": 2023
-  },
-  {
     "demo_urls": [
       {
         "label": "Visiter le site",
@@ -55,7 +17,7 @@
       }
     ],
     "stats": {
-      "likes": 4,
+      "likes": 0,
       "views": 0
     },
     "tags": [
@@ -86,7 +48,7 @@
       }
     ],
     "stats": {
-      "likes": 2,
+      "likes": 0,
       "views": 0
     },
     "tags": [
@@ -177,7 +139,7 @@
     "id": "oifppl",
     "source_urls": [],
     "stats": {
-      "likes": 1,
+      "likes": 0,
       "views": 0
     },
     "tags": [

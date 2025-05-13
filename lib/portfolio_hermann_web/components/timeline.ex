@@ -1,6 +1,5 @@
 defmodule PortfolioHermannWeb.Components.Timeline do
   use Phoenix.Component
-  alias Phoenix.LiveView.JS
 
   attr :experiences, :list, required: true
   attr :type, :string, default: "work"

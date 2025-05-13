@@ -5,21 +5,32 @@ defmodule PortfolioHermannWeb.AboutLive do
   alias File
 
   def mount(_params, _session, socket) do
+    # Chemin pour experiences.json
+    experiences_path =
+      Application.app_dir(:portfolio_hermann, "priv/experiences.json")
+      |> Path.expand()
+
     experiences =
-      "priv/experiences.json"
+      experiences_path
       |> File.read!()
       |> Jason.decode!()
 
-    # Liste les images dans le dossier me/
+    # Chemin pour les images
+    images_dir =
+      Application.app_dir(:portfolio_hermann, "priv/static/images/me")
+      |> Path.expand()
+
     images =
-      "priv/static/images/me"
+      images_dir
       |> File.ls!()
       |> Enum.filter(&String.ends_with?(&1, [".jpg", ".jpeg", ".png"]))
       |> Enum.sort()
-      |> Enum.map(&%{
-        path: "/images/me/#{&1}",
-        alt: "Hermann GOLO - Photo"
-      })
+      |> Enum.map(
+        &%{
+          path: "/images/me/#{&1}",
+          alt: "Hermann GOLO - Photo"
+        }
+      )
 
     {:ok,
      assign(socket,
@@ -46,14 +57,18 @@ defmodule PortfolioHermannWeb.AboutLive do
           À propos de moi
         </h1>
 
-        <!-- Photos de profil -->
+    <!-- Photos de profil -->
         <div class="flex justify-center gap-8 mb-12 grid grid-cols-1 md:grid-cols-2">
           <%= for {image, index} <- Enum.with_index(@images) do %>
             <div class={"relative group transform #{if rem(index, 2) == 0, do: "hover:rotate-2", else: "hover:-rotate-2"} transition-transform duration-300"}>
-              <div class={"absolute -inset-1 bg-gradient-to-r #{if rem(index, 2) == 0, do: "from-[#f39d8d] to-[#8B4513]", else: "from-[#8B4513] to-[#f39d8d]"} rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"}></div>
-              <div class="relative w-48 h-64 rounded-2xl overflow-hidden ring-4 ring-white dark:ring-gray-800 shadow-xl cursor-pointer"
-                   phx-click="view-image"
-                   phx-value-path={image.path}>
+              <div class={"absolute -inset-1 bg-gradient-to-r #{if rem(index, 2) == 0, do: "from-[#f39d8d] to-[#8B4513]", else: "from-[#8B4513] to-[#f39d8d]"} rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"}>
+              </div>
+
+              <div
+                class="relative w-48 h-64 rounded-2xl overflow-hidden ring-4 ring-white dark:ring-gray-800 shadow-xl cursor-pointer"
+                phx-click="view-image"
+                phx-value-path={image.path}
+              >
                 <img
                   src={image.path}
                   alt={image.alt}
@@ -64,12 +79,16 @@ defmodule PortfolioHermannWeb.AboutLive do
           <% end %>
         </div>
 
-        <!-- Modal pour l'affichage de l'image -->
+    <!-- Modal pour l'affichage de l'image -->
         <%= if @selected_image do %>
-          <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-               phx-click="close-modal">
-            <div class="relative max-w-4xl max-h-[90vh] mx-4 overflow-hidden"
-                 phx-click-away="close-modal">
+          <div
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            phx-click="close-modal"
+          >
+            <div
+              class="relative max-w-4xl max-h-[90vh] mx-4 overflow-hidden"
+              phx-click-away="close-modal"
+            >
               <img
                 src={@selected_image}
                 alt="Image en plein écran"
@@ -112,7 +131,6 @@ defmodule PortfolioHermannWeb.AboutLive do
 
     <!-- Compétences clés -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-
           <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
             <div class="flex items-center gap-3 mb-4">
               <div class="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
@@ -227,16 +245,18 @@ defmodule PortfolioHermannWeb.AboutLive do
 
     <!-- Section Méthodologies -->
       <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Méthodologies & Pratiques</h2>
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+          Méthodologies & Pratiques
+        </h2>
 
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <%= for method <- @experiences["skills"]["methodologies"] do %>
-              <div class="card-soft p-6 flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800/50 hover:scale-110 hover:shadow-xl transition-all duration-300">
-                <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-                <span class="text-md font-semibold text-gray-700 dark:text-gray-300">{method}</span>
-              </div>
-            <% end %>
-          </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <%= for method <- @experiences["skills"]["methodologies"] do %>
+            <div class="card-soft p-6 flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800/50 hover:scale-110 hover:shadow-xl transition-all duration-300">
+              <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span class="text-md font-semibold text-gray-700 dark:text-gray-300">{method}</span>
+            </div>
+          <% end %>
+        </div>
       </section>
 
     <!-- Section Langues -->
@@ -287,8 +307,9 @@ defmodule PortfolioHermannWeb.AboutLive do
             <div class="card-soft p-2 m-0 text-center items-center hover:scale-110 hover:shadow-xl transition-all duration-300">
               <.icon name="hero-sparkles" class="w-66 h- text-[#8B4513] dark:text-[#f39d8d] mb-1" />
               <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300">
-                {interest}</h3>
-              <%!-- <span class="text-gray-700 dark:text-gray-300">{interest}</span> --%>
+                {interest}
+              </h3>
+               <%!-- <span class="text-gray-700 dark:text-gray-300">{interest}</span> --%>
             </div>
           <% end %>
         </div>

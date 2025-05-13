@@ -1,7 +1,6 @@
 defmodule PortfolioHermannWeb.ProjectsLive do
   use PortfolioHermannWeb, :live_view
   alias PortfolioHermann.Projects
-  import PortfolioHermannWeb.ProjectCard
   import PortfolioHermannWeb.Helpers
   alias Phoenix.LiveView.JS
   @impl true
