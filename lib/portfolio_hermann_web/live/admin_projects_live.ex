@@ -294,6 +294,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
           <h1 class="text-xl font-semibold text-gray-900 dark:text-white mt-8">Projets</h1>
           <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Liste de tous vos projets avec options de gestion.</p>
           <.link navigate={~p"/admin/experiences"} class="mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300">Gérer mes expériences →</.link>
+          <.link navigate={~p"/admin/articles"} class="ml-4 mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300">Gérer les articles →</.link>
         </div>
       </div>
 

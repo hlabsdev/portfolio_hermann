@@ -24,10 +24,21 @@ defmodule PortfolioHermannWeb.Router do
       live "/projects", ProjectsLive
       live "/projects/:id", ProjectsLive
       live "/contact", ContactLive
+      live "/contact/merci", ContactThanksLive
       live "/blog", BlogLive
+      live "/blog/:slug", BlogLive
       get "/health", HealthController, :index
       get "/uploads/:filename", UploadController, :show
+      get "/article-media/:filename", ArticleMediaController, :show
     end
+  end
+
+  scope "/api", PortfolioHermannWeb do
+    pipe_through :api
+
+    post "/articles", ArticleApiController, :upsert
+    delete "/articles/:slug", ArticleApiController, :delete
+    post "/articles/media", ArticleMediaController, :create
   end
 
   scope "/admin", PortfolioHermannWeb do
@@ -37,6 +48,7 @@ defmodule PortfolioHermannWeb.Router do
       on_mount: [PortfolioHermannWeb.AdminAuth] do
       live "/projects", AdminProjectsLive
       live "/experiences", AdminExperiencesLive
+      live "/articles", AdminArticlesLive
       live "/stats", AdminStatsLive
     end
 

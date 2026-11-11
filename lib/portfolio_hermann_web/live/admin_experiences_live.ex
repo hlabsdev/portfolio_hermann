@@ -92,6 +92,7 @@ defmodule PortfolioHermannWeb.AdminExperiencesLive do
         </div>
         <div class="flex flex-wrap gap-3">
           <.link navigate={~p"/admin/projects"} class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Projets</.link>
+          <.link navigate={~p"/admin/articles"} class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Articles</.link>
           <button type="button" phx-click="new" class="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950">Ajouter une expérience</button>
         </div>
       </div>
