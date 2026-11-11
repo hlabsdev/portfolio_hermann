@@ -7,7 +7,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   def mount(_params, _session, socket) do
     projects = Projects.list_projects()
     all_tags = get_all_tags(projects)
-    all_years = projects |> Enum.map(& &1["year"]) |> Enum.uniq() |> Enum.sort(:desc)
+    all_years = projects |> Enum.map(& &1["year"]) |> Enum.reject(&is_nil/1) |> Enum.uniq() |> Enum.sort(:desc)
     all_techs = get_all_techs(projects)
 
     socket =
@@ -25,21 +25,8 @@ defmodule PortfolioHermannWeb.ProjectsLive do
       |> assign(:search_query, "")
       |> assign(:show_details, false)
       |> assign(:selected_project, nil)
-      |> assign(:show_details, false)
-      |> assign(:selected_project, nil)
 
     {:ok, socket}
-  end
-
-  @impl true
-  def handle_event("show_project_details", %{"id" => id}, socket) do
-    project = Enum.find(socket.assigns.projects, &(&1["id"] == id))
-    {:noreply, socket |> assign(:selected_project, project) |> assign(:show_details, true)}
-  end
-
-  @impl true
-  def handle_event("close_details", _params, socket) do
-    {:noreply, assign(socket, show_details: false)}
   end
 
   @impl true
@@ -305,7 +292,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               <div class="p-6">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {project["title"]}
-                  <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project["year"]}</b>
+                  <%= if project["year"] do %><b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800"><%= project["year"] %></b><% end %>
                 </h3>
 
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
@@ -440,7 +427,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                         <div class="ml-4">
                           <div class="text-sm font-medium text-gray-900 dark:text-white">
                             {project["title"]}
-                            <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project["year"]}</b>
+                            <%= if project["year"] do %><b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800"><%= project["year"] %></b><% end %>
                           </div>
 
                           <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
@@ -707,11 +694,12 @@ defmodule PortfolioHermannWeb.ProjectsLive do
     query = String.downcase(query)
 
     Enum.filter(projects, fn project ->
-      String.contains?(String.downcase(project["title"]), query) ||
-        String.contains?(String.downcase(project["desc"]), query)
+      searchable = [project["title"], project["desc"], project["type"], project["client"]] ++
+        (project["techs"] || []) ++ (project["tags"] || [])
 
-      Enum.any?(project["techs"] || [], &String.contains?(String.downcase(&1), query)) ||
-        Enum.any?(project["tags"] || [], &String.contains?(String.downcase(&1), query))
+      Enum.any?(searchable, fn value ->
+        is_binary(value) and String.contains?(String.downcase(value), query)
+      end)
     end)
   end
 
@@ -724,7 +712,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   end
 
   defp sort_projects(projects, :recent) do
-    Enum.sort_by(projects, & &1["year"], :desc)
+    Enum.sort_by(projects, &(&1["year"] || 0), :desc)
   end
 
   defp sort_projects(projects, :popular) do

@@ -1,146 +1,55 @@
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <div class="flex items-center">
-        <.link navigate={~p"/"} class="text-xl font-bold bg-gradient-to-r from-[#f39d8d] to-[#8B4513] bg-clip-text text-transparent">
-          Hermann GOLO
-        </.link>
-      </div>
+<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-slate-950">Aller au contenu</a>
 
-      <div class="hidden md:flex items-center space-x-8">
-        <.link
-          :for={{label, path} <- [
-            {"Accueil", ~p"/"},
-            {"A Propos", ~p"/about"},
-            {"Projets", ~p"/projects"},
-            {"Articles", ~p"/blog"},
-            {"Contact", ~p"/contact"},
-            {"CV", "/files/cv.pdf"}
-          ]}
-          navigate={path}
-          class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d] transition-colors"
-          download={if path == "/files/cv.pdf", do: "CV Hermann K. GOLO"}
-        >
-          <%= label %>
-        </.link>
-      </div>
+<header class="sticky top-0 z-40 border-b border-slate-200/80 bg-[#f8f8f6]/90 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/90">
+  <nav aria-label="Navigation principale" class="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-5 sm:px-8">
+    <.link navigate={~p"/"} class="group inline-flex items-center gap-3" aria-label="Accueil — Komi Kekeli Hermann GOLO">
+      <span class="grid h-9 w-9 place-items-center rounded-lg bg-slate-950 font-mono text-sm font-semibold text-orange-300 dark:bg-white dark:text-slate-950">KG</span>
+      <span class="text-sm font-semibold tracking-tight text-slate-950 dark:text-white">Komi K. Hermann GOLO</span>
+    </.link>
 
-      <div class="flex items-center gap-4">
-        <!-- Dark Mode Toggle -->
-        <button
-          id="dark-mode-toggle"
-          phx-hook="DarkMode"
-          type="button"
-          class="p-2 text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d] rounded-lg transition-colors"
-          aria-label="Basculer le mode sombre"
-        >
-          <.icon name="hero-sun" class="w-5 h-5 hidden dark:block"/>
-          <.icon name="hero-moon" class="w-5 h-5 block dark:hidden"/>
-        </button>
-        <button
-          phx-click={Phoenix.LiveView.JS.toggle(to: "#mobile-menu")}
-          type="button"
-          class="md:hidden p-2 text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d]"
-          aria-controls="mobile-menu"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Ouvrir le menu</span>
-          <.icon name="hero-bars-3" class="block w-6 h-6" />
-        </button>
-      </div>
+    <div class="hidden items-center gap-7 md:flex">
+      <.link navigate={~p"/projects"} class="text-sm text-slate-600 transition hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Projets</.link>
+      <.link navigate={~p"/about"} class="text-sm text-slate-600 transition hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Profil</.link>
+      <.link navigate={~p"/blog"} class="text-sm text-slate-600 transition hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Articles</.link>
+      <a href="https://www.linkedin.com/in/komi-golo" target="_blank" rel="noopener noreferrer" class="text-sm text-slate-600 transition hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">LinkedIn</a>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button id="dark-mode-toggle" phx-hook="DarkMode" type="button" aria-label="Basculer le thème clair ou sombre" class="grid h-10 w-10 place-items-center rounded-lg text-slate-600 transition hover:bg-slate-200/70 dark:text-slate-300 dark:hover:bg-slate-800">
+        <.icon name="hero-sun" class="hidden h-5 w-5 dark:block" />
+        <.icon name="hero-moon" class="h-5 w-5 dark:hidden" />
+      </button>
+      <.link navigate={~p"/contact"} class="hidden rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200 sm:inline-flex">Contact</.link>
+      <button phx-click={Phoenix.LiveView.JS.toggle(to: "#mobile-menu")} type="button" class="grid h-10 w-10 place-items-center rounded-lg text-slate-700 hover:bg-slate-200/70 dark:text-slate-200 dark:hover:bg-slate-800 md:hidden" aria-controls="mobile-menu" aria-expanded="false" aria-label="Ouvrir le menu"><.icon name="hero-bars-3" class="h-5 w-5" /></button>
+    </div>
+  </nav>
+  <div id="mobile-menu" class="hidden border-t border-slate-200 bg-[#f8f8f6] px-5 py-3 dark:border-slate-800 dark:bg-slate-950 md:hidden">
+    <div class="mx-auto grid max-w-7xl gap-1">
+      <.link navigate={~p"/projects"} class="rounded-lg px-3 py-3 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900">Projets</.link>
+      <.link navigate={~p"/about"} class="rounded-lg px-3 py-3 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900">Profil</.link>
+      <.link navigate={~p"/blog"} class="rounded-lg px-3 py-3 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900">Articles</.link>
+      <.link navigate={~p"/contact"} class="rounded-lg px-3 py-3 text-sm font-semibold text-orange-800 hover:bg-orange-50 dark:text-orange-300 dark:hover:bg-orange-950/30">Contact</.link>
     </div>
   </div>
+</header>
 
-  <!-- Mobile menu -->
-  <div class="md:hidden hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-      <.link
-        :for={{label, path} <- [
-          {"Accueil", ~p"/"},
-          {"A Propos", ~p"/about"},
-          {"Projets", ~p"/projects"},
-          {"Articles", ~p"/blog"},
-          {"Contact", ~p"/contact"},
-          {"CV", "/files/cv.pdf"}
-        ]}
-        navigate={path}
-        class="block px-3 py-2 text-gray-600 hover:text-[#f39d8d] dark:text-gray-300 dark:hover:text-[#f39d8d]"
-        download={if path == "/files/cv.pdf", do: "CV Hermann K. GOLO"}
-      >
-        <%= label %>
-      </.link>
-    </div>
-  </div>
-</nav>
-
-<main class="min-h-screen pt-16">
+<main id="main-content" class="min-h-[65vh]">
   <.flash_group flash={@flash} />
   <%= @inner_content %>
 </main>
 
-<footer class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 mt-24">
-  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="space-y-4">
-        <h3 class="text-lg font-semibold text-[#f39d8d]"><.link navigate={~p"/about"}>À propos</.link></h3>
-        <.link navigate={~p"/about"} class="text-gray-600 dark:text-gray-400">
-          Expert en développement full-stack et data engineering, passionné par l'innovation technologique.
-        </.link>
-      </div>
-      <div class="space-y-4">
-        <h3 class="text-lg font-semibold text-[#f39d8d]">Liens rapides</h3>
-        <ul class="space-y-2">
-          <li>
-            <.link navigate={~p"/projects"} class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]">
-              Projets
-            </.link>
-          </li>
-          <li>
-            <.link navigate={~p"/blog"} class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]">
-              Articles
-            </.link>
-          </li>
-          <li>
-            <.link navigate={~p"/contact"} class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]">
-              Contact
-            </.link>
-          </li>
-        </ul>
-      </div>
-      <div class="space-y-4">
-        <h3 class="text-lg font-semibold text-[#f39d8d]">Me suivre</h3>
-        <div class="flex space-x-4">
-          <a
-            href="https://github.com/hlabsdev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]"
-          >
-            <.icon name="hero-code-bracket" class="w-6 h-6" />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/komi-golo"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]"
-          >
-            <.icon name="hero-academic-cap" class="w-6 h-6" />
-          </a>
-          <a
-            href="https://twitter.com/hlabsdev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-gray-600 hover:text-[#f39d8d] dark:text-gray-400 dark:hover:text-[#f39d8d]"
-          >
-            <.icon name="hero-chat-bubble-left-right" class="w-6 h-6" />
-          </a>
-        </div>
-      </div>
+<footer class="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+  <div class="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1fr_auto] md:items-end">
+    <div>
+      <p class="text-sm font-semibold text-slate-950 dark:text-white">Komi Kekeli Hermann GOLO</p>
+      <p class="mt-2 max-w-xl text-sm leading-6 text-slate-500 dark:text-slate-400">Ingénierie logicielle, DevOps et produits numériques. Basé à Lomé, Togo.</p>
+      <p class="mt-5 text-xs text-slate-400">© <%= DateTime.utc_now().year %> · Tous droits réservés</p>
     </div>
-    <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-      <p class="text-center text-gray-600 dark:text-gray-400">
-        © <%= DateTime.utc_now.year %> Hermann GOLO. Tous droits réservés.
-      </p>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+      <.link navigate={~p"/projects"} class="text-slate-600 hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Projets</.link>
+      <.link navigate={~p"/about"} class="text-slate-600 hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Profil</.link>
+      <.link navigate={~p"/contact"} class="text-slate-600 hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">Contact</.link>
+      <a href="https://github.com/hlabsdev" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-orange-800 dark:text-slate-300 dark:hover:text-orange-300">GitHub <.icon name="hero-arrow-up-right" class="ml-1 inline h-3.5 w-3.5" /></a>
     </div>
   </div>
 </footer>

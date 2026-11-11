@@ -26,6 +26,7 @@ defmodule PortfolioHermannWeb.Router do
       live "/contact", ContactLive
       live "/blog", BlogLive
       get "/health", HealthController, :index
+      get "/uploads/:filename", UploadController, :show
     end
   end
 
@@ -35,6 +36,7 @@ defmodule PortfolioHermannWeb.Router do
     live_session :admin,
       on_mount: [PortfolioHermannWeb.AdminAuth] do
       live "/projects", AdminProjectsLive
+      live "/experiences", AdminExperiencesLive
       live "/stats", AdminStatsLive
     end
 

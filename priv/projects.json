@@ -446,5 +446,172 @@
     "title": "GED & Collaboration Assemblée Nationale",
     "type": "Application Web",
     "year": 2022
+  },
+  {
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "featured": false,
+    "logo_url": "",
+    "type": "Bot Telegram",
+    "desc": "Bot Telegram permettant d’exporter des conversations au format PDF. Le dépôt public contient le code Python et les éléments de conteneurisation.",
+    "source_urls": [
+      {
+        "label": "Code source",
+        "url": "https://github.com/hlabsdev/discuss-to-pdf"
+      }
+    ],
+    "client": "Projet personnel",
+    "id": "discuss-to-pdf",
+    "title": "Discuss to PDF",
+    "year": 2021,
+    "tags": [
+      "Automatisation",
+      "PDF",
+      "Projet personnel"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "Python",
+      "Telegram Bot API",
+      "Docker"
+    ]
+  },
+  {
+    "year": null,
+    "logo_url": "",
+    "desc": "Contribution au système de planification stratégique de l’OIF. Déploiement d’un modèle de machine learning sur GPU et supervision centralisée des journaux et indicateurs.",
+    "featured_priority": 100,
+    "tags": [
+      "IA",
+      "Observabilité",
+      "Institution internationale"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "Machine learning",
+      "GPU",
+      "Elasticsearch",
+      "Logstash",
+      "Grafana"
+    ],
+    "type": "IA appliquée",
+    "featured": true,
+    "client": "Organisation internationale de la Francophonie",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "id": "oif-planning-ia",
+    "title": "Planification stratégique et supervision IA"
+  },
+  {
+    "year": null,
+    "logo_url": "",
+    "desc": "Développement backend, API et frontend, participation au déploiement de la plateforme et intégration d’une recherche sémantique avec Elasticsearch pour accompagner les PME francophones.",
+    "featured_priority": 95,
+    "tags": [
+      "Francophonie",
+      "Recherche",
+      "Plateforme"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "API",
+      "Elasticsearch",
+      "Recherche sémantique",
+      "Développement web"
+    ],
+    "type": "Plateforme web",
+    "featured": true,
+    "client": "Organisation internationale de la Francophonie",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "id": "oif-pme-francophones",
+    "title": "Internationalisation des PME francophones"
+  },
+  {
+    "year": null,
+    "logo_url": "",
+    "desc": "Contribution à la mise en production d’un modèle de machine learning pour la tarification des primes d’assurance.",
+    "featured_priority": 90,
+    "tags": [
+      "IA",
+      "Assurance",
+      "Production"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "Machine learning",
+      "Assurance",
+      "Mise en production"
+    ],
+    "type": "Machine learning",
+    "featured": true,
+    "client": "Sanlam Allianz",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "id": "sanlam-tarification",
+    "title": "Tarificateur intelligent de primes"
+  },
+  {
+    "year": null,
+    "logo_url": "",
+    "desc": "Contribution à la conception de solutions de gestion électronique de documents et de transcription automatisée des débats parlementaires.",
+    "featured_priority": 85,
+    "tags": [
+      "Services publics",
+      "Automatisation",
+      "Togo"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "Gestion électronique de documents",
+      "Transcription automatisée"
+    ],
+    "type": "Plateforme web",
+    "featured": true,
+    "client": "Assemblée nationale du Togo",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "id": "assemblee-ged-transcription",
+    "title": "GED et transcription des débats"
+  },
+  {
+    "year": null,
+    "logo_url": "",
+    "desc": "Contribution à une expérience numérique combinant cartographie interactive et chatbot.",
+    "featured_priority": 80,
+    "tags": [
+      "Francophonie",
+      "Cartographie",
+      "Conversationnel"
+    ],
+    "demo_urls": [],
+    "techs": [
+      "Cartographie interactive",
+      "Chatbot"
+    ],
+    "type": "Application web",
+    "featured": true,
+    "client": "Organisation internationale de la Francophonie",
+    "source_urls": [],
+    "stats": {
+      "likes": 0,
+      "views": 0
+    },
+    "id": "oif-carte-chatbot",
+    "title": "Cartographie interactive et chatbot"
   }
 ]

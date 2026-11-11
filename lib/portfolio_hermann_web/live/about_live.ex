@@ -1,319 +1,75 @@
 defmodule PortfolioHermannWeb.AboutLive do
   use PortfolioHermannWeb, :live_view
+
+  alias PortfolioHermann.Projects
   import PortfolioHermannWeb.Components.Timeline
-  alias Jason
-  alias File
 
+  @impl true
   def mount(_params, _session, socket) do
-    # Chemin pour experiences.json
-    experiences_path =
-      Application.app_dir(:portfolio_hermann, "priv/experiences.json")
-      |> Path.expand()
-
-    experiences =
-      experiences_path
-      |> File.read!()
-      |> Jason.decode!()
-
-    # Chemin pour les images
-    images_dir =
-      Application.app_dir(:portfolio_hermann, "priv/static/images/me")
-      |> Path.expand()
-
-    images =
-      images_dir
-      |> File.ls!()
-      |> Enum.filter(&String.ends_with?(&1, [".jpg", ".jpeg", ".png"]))
-      |> Enum.sort()
-      |> Enum.map(
-        &%{
-          path: "/images/me/#{&1}",
-          alt: "Hermann GOLO - Photo"
-        }
-      )
+    data = Projects.list_experiences()
+    profile = data["profile"] || %{}
 
     {:ok,
-     assign(socket,
-       experiences: experiences,
-       images: images,
-       selected_image: nil
-     )}
+     socket
+     |> assign(:page_title, "À propos")
+     |> assign(:profile, profile)
+     |> assign(:experiences, data["workExperiences"] || [])
+     |> assign(:education, data["education"] || [])
+     |> assign(:skills, data["skills"] || %{})
+     |> assign(:certifications, data["certifications"] || [])
+     |> assign(:languages, data["languages"] || [])
+     |> assign(:interests, data["interests"] || [])}
   end
 
-  def handle_event("view-image", %{"path" => path}, socket) do
-    {:noreply, assign(socket, selected_image: path)}
-  end
-
-  def handle_event("close-modal", _, socket) do
-    {:noreply, assign(socket, selected_image: nil)}
-  end
-
+  @impl true
   def render(assigns) do
     ~H"""
-    <div class="max-w-5xl mx-auto py-16 px-6">
-      <!-- Section Introduction -->
-      <section class="mb-16">
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-[#f39d8d] to-[#8B4513] bg-clip-text text-transparent mb-8 text-center">
-          À propos de moi
-        </h1>
-
-    <!-- Photos de profil -->
-        <div class="flex justify-center gap-8 mb-12 grid grid-cols-1 md:grid-cols-2">
-          <%= for {image, index} <- Enum.with_index(@images) do %>
-            <div class={"relative group transform #{if rem(index, 2) == 0, do: "hover:rotate-2", else: "hover:-rotate-2"} transition-transform duration-300"}>
-              <div class={"absolute -inset-1 bg-gradient-to-r #{if rem(index, 2) == 0, do: "from-[#f39d8d] to-[#8B4513]", else: "from-[#8B4513] to-[#f39d8d]"} rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"}>
-              </div>
-
-              <div
-                class="relative w-48 h-64 rounded-2xl overflow-hidden ring-4 ring-white dark:ring-gray-800 shadow-xl cursor-pointer"
-                phx-click="view-image"
-                phx-value-path={image.path}
-              >
-                <img
-                  src={image.path}
-                  alt={image.alt}
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500"
-                />
-              </div>
-            </div>
-          <% end %>
-        </div>
-
-    <!-- Modal pour l'affichage de l'image -->
-        <%= if @selected_image do %>
-          <div
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            phx-click="close-modal"
-          >
-            <div
-              class="relative max-w-4xl max-h-[90vh] mx-4 overflow-hidden"
-              phx-click-away="close-modal"
-            >
-              <img
-                src={@selected_image}
-                alt="Image en plein écran"
-                class="w-full h-full object-cover rounded-lg"
-              />
-              <button
-                class="absolute top-4 right-4 text-white hover:text-[#f39d8d] transition-colors duration-200"
-                phx-click="close-modal"
-              >
-                <.icon name="hero-x-mark" class="w-8 h-8" />
-              </button>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="card-soft text-lg leading-relaxed space-y-6 mb-12">
-          <p>
-            Je m'appelle <strong class="text-[#8B4513] dark:text-[#f39d8d]">Hermann Komi Kekeli GOLO</strong>, ingénieur logiciel passionné par la data science, le développement backend et les systèmes intelligents.
-            Avec plus de 6 ans d'expérience, j'ai contribué à des projets pour des institutions privées comme: Sanlam Allianz; publiques comme: Le ministere de la sante (DSNISI) du Togo, L'assemble nationale Togoalaise, La DGID du Senegal; des institutions internationales comme: l'OIF, l'ANPE, l'UGP.
-          </p>
-
-          <p>
-            <strong class="text-[#8B4513] dark:text-[#f39d8d]">Mon expertise en developpement</strong>
-            couvre Python (Django, FastAPI), Flutter, Angular, Elixir (Phoenix, LiveView) et les bases de données relationnelles ou NoSQL.
-            Je suis particulièrement intéressé par l'architecture de solutions cloud-native et les systèmes distribués.
-            Je suis également passionné par l'optimisation des performances et la sécurité des applications, et je m'efforce de rester à jour avec les dernières tendances technologiques.
-          </p>
-
-          <p>
-            <strong class="text-[#8B4513] dark:text-[#f39d8d]">Mon expertise en data science</strong>
-            inclut l'analyse de données, le machine learning et l'integration de solution IA dans des projeet externes grace a des APIs.
-            J'ai travaillé sur des projets d'analyse prédictive et de traitement du langage naturel.
-            Je suis également familiarisé avec les pipelines de données et l'ingénierie des données, ce qui me permet de créer des solutions complètes allant de la collecte de données à l'analyse avancée.
-          </p>
-
-          <p>
-            Ma passion pour l'innovation technologique me pousse à toujours rester à jour avec les dernières avancées du secteur.
-          </p>
-        </div>
-
-    <!-- Compétences clés -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
-                <.icon
-                  name="hero-code-bracket-square"
-                  class="w-6 h-6 text-indigo-600 dark:text-indigo-400"
-                />
-              </div>
-
-              <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400">
-                Langages & Frameworks
-              </h3>
-            </div>
-
-            <div class="grid grid-cols-1 gap-2">
-              <%= for skill <- @experiences["skills"]["programming"] do %>
-                <div class="flex items-center gap-2">
-                  <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span class="text-gray-700 dark:text-gray-300">{skill}</span>
-                </div>
-              <% end %>
-            </div>
-          </div>
-
-          <div class="card-soft p-6 hover:scale-110  hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg">
-                <.icon name="hero-circle-stack" class="w-6 h-6 text-purple-600 dark:text-purple-400" />
-              </div>
-
-              <h3 class="text-xl font-semibold text-purple-600 dark:text-purple-400">
-                Bases de données
-              </h3>
-            </div>
-
-            <ul class="space-y-2">
-              <%= for skill <- @experiences["skills"]["databases"] do %>
-                <li class="flex items-center gap-2">
-                  <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span class="text-gray-700 dark:text-gray-300">{skill}</span>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-
-          <div class="card-soft p-6  hover:scale-110 hover:shadow-xl transition-all duration-300">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="p-2 bg-pink-100 dark:bg-pink-900/50 rounded-lg">
-                <.icon name="hero-cloud" class="w-6 h-6 text-pink-600 dark:text-pink-400" />
-              </div>
-
-              <h3 class="text-xl font-semibold text-pink-600 dark:text-pink-400">Cloud & DevOps</h3>
-            </div>
-
-            <ul class="space-y-2">
-              <%= for skill <- @experiences["skills"]["cloud"] do %>
-                <li class="flex items-center gap-2">
-                  <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span class="text-gray-700 dark:text-gray-300">{skill}</span>
-                </li>
-              <% end %>
-            </ul>
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 lg:py-24">
+      <section class="grid gap-12 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
+        <div>
+          <p class="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-orange-700">Profil</p>
+          <h1 class="max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-slate-950 dark:text-white sm:text-6xl">Logiciel, exploitation et produit : du premier commit à la production.</h1>
+          <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300"><%= @profile["summary"] %></p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <.link navigate={~p"/projects"} class="rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950">Voir les projets</.link>
+            <.link navigate={~p"/contact"} class="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-white dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-900">Me contacter</.link>
           </div>
         </div>
-      </section>
-
-    <!-- Section Parcours -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Parcours professionnel</h2>
-
-        <div class="relative">
-          <div class="absolute left-4 h-full w-0.5 bg-gradient-to-b from-[#f39d8d] to-[#8B4513] dark:from-[#8B4513] dark:to-[#f39d8d]">
-          </div>
-           <.timeline experiences={@experiences["workExperiences"]} />
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-2xl bg-slate-950 p-5 text-white dark:bg-slate-800"><p class="text-3xl font-semibold">6+</p><p class="mt-2 text-sm text-slate-300">ans en ingénierie logicielle</p></div>
+          <div class="rounded-2xl bg-orange-50 p-5 text-slate-950 dark:bg-orange-950/40 dark:text-white"><p class="text-3xl font-semibold">4+</p><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">ans de déploiements en production</p></div>
+          <div class="col-span-2 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Domaines</p><p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-200">Logiciel · DevOps · IA appliquée · santé numérique · services publics · fintech</p></div>
         </div>
       </section>
 
-    <!-- Section Éducation -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Formation</h2>
+      <section class="mt-24 grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
+        <div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">Expérience</p><h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Livrer. Exploiter. Améliorer.</h2><p class="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">Je travaille aussi bien sur l’architecture et le code que sur les mises en production, le suivi opérationnel et la coordination des équipes.</p></div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-8"><.timeline experiences={@experiences} /></div>
+      </section>
 
-        <div class="grid grid-cols-1 gap-6">
-          <%= for edu <- @experiences["education"] do %>
-            <div class="card-soft p-6 relative hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d]">
-                    {edu["degree"]}
-                  </h3>
-
-                  <p class="text-gray-600 dark:text-gray-400">
-                    {edu["school"]}, {edu["location"]}
-                  </p>
-                </div>
-
-                <div class="text-right">
-                  <span class="text-gray-500 dark:text-gray-400">{edu["period"]}</span>
-                </div>
-              </div>
-
-              <p class="text-gray-700 dark:text-gray-300 mb-4">{edu["description"]}</p>
-
-              <ul class="list-disc list-inside space-y-1">
-                <%= for achievement <- edu["achievements"] do %>
-                  <li class="text-gray-600 dark:text-gray-400">{achievement}</li>
-                <% end %>
-              </ul>
-            </div>
+      <section class="mt-24">
+        <div class="max-w-2xl"><p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">Compétences</p><h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Un profil transversal, ancré dans la pratique.</h2></div>
+        <div class="mt-8 grid gap-4 md:grid-cols-2">
+          <%= for {key, title, icon} <- [{"programming", "Développement", "hero-code-bracket"}, {"databases", "Données", "hero-circle-stack"}, {"cloud", "DevOps et plateformes", "hero-cloud"}, {"methodologies", "Produit et delivery", "hero-clipboard-document-check"}] do %>
+            <article class="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center gap-3"><.icon name={icon} class="h-5 w-5 text-orange-700" /><h3 class="font-semibold text-slate-950 dark:text-white"><%= title %></h3></div>
+              <div class="mt-4 flex flex-wrap gap-2"><%= for skill <- @skills[key] || [] do %><span class="rounded-md bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"><%= skill %></span><% end %></div>
+            </article>
           <% end %>
         </div>
       </section>
 
-    <!-- Section Méthodologies -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          Méthodologies & Pratiques
-        </h2>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <%= for method <- @experiences["skills"]["methodologies"] do %>
-            <div class="card-soft p-6 flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800/50 hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <.icon name="hero-check-circle" class="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span class="text-md font-semibold text-gray-700 dark:text-gray-300">{method}</span>
-            </div>
-          <% end %>
+      <section class="mt-24 grid gap-8 lg:grid-cols-2">
+        <div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">Formation</p><h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Des bases solides en génie logiciel.</h2>
+          <div class="mt-6 space-y-3"><%= for item <- @education do %><article class="rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"><div class="flex justify-between gap-4"><h3 class="font-semibold text-slate-950 dark:text-white"><%= item["degree"] %></h3><span class="shrink-0 text-sm text-slate-500"><%= item["period"] %></span></div><p class="mt-1 text-sm text-slate-600 dark:text-slate-300"><%= item["school"] %> · <%= item["location"] %></p></article><% end %></div>
+        </div>
+        <div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">Certifications et langues</p><h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Apprendre en continu.</h2>
+          <div class="mt-6 space-y-3"><%= for cert <- @certifications do %><article class="flex justify-between gap-4 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"><div><h3 class="text-sm font-semibold text-slate-950 dark:text-white"><%= cert["name"] %></h3><p class="mt-1 text-xs text-slate-500"><%= cert["issuer"] %></p></div><span class="shrink-0 text-sm text-slate-500"><%= cert["year"] %></span></article><% end %></div>
+          <div class="mt-5 flex flex-wrap gap-2"><%= for lang <- @languages do %><span class="rounded-md bg-orange-50 px-3 py-2 text-sm text-slate-700 dark:bg-orange-950/40 dark:text-slate-100"><strong><%= lang["name"] %></strong> · <%= lang["level"] %></span><% end %></div>
         </div>
       </section>
 
-    <!-- Section Langues -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Langues</h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <%= for lang <- @experiences["languages"] do %>
-            <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d] mb-2">
-                {lang["name"]}
-              </h3>
-
-              <p class="text-gray-600 dark:text-gray-400">{lang["level"]}</p>
-            </div>
-          <% end %>
-        </div>
-      </section>
-
-    <!-- Section Certifications -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Certifications</h2>
-
-        <div class="grid grid-cols-1 gap-6">
-          <%= for cert <- @experiences["certifications"] do %>
-            <div class="card-soft p-6 hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <div class="flex justify-between items-start mb-2">
-                <h3 class="text-xl font-semibold text-[#8B4513] dark:text-[#f39d8d]">
-                  {cert["name"]}
-                </h3>
-                 <span class="text-gray-500 dark:text-gray-400">{cert["year"]}</span>
-              </div>
-
-              <p class="text-gray-600 dark:text-gray-400">
-                {cert["issuer"]}
-              </p>
-            </div>
-          <% end %>
-        </div>
-      </section>
-
-    <!-- Section Centres d'intérêts -->
-      <section>
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Centres d'intérêts</h2>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <%= for interest <- @experiences["interests"] do %>
-            <div class="card-soft p-2 m-0 text-center items-center hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <.icon name="hero-sparkles" class="w-66 h- text-[#8B4513] dark:text-[#f39d8d] mb-1" />
-              <h3 class="text-md font-semibold text-gray-700 dark:text-gray-300">
-                {interest}
-              </h3>
-               <%!-- <span class="text-gray-700 dark:text-gray-300">{interest}</span> --%>
-            </div>
-          <% end %>
-        </div>
-      </section>
+      <section class="mt-24 border-t border-slate-200 pt-8 dark:border-slate-800"><p class="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">En dehors du travail</p><div class="mt-4 flex flex-wrap gap-2"><%= for interest <- @interests do %><span class="rounded-full border border-slate-300 px-3 py-2 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-300"><%= interest %></span><% end %></div></section>
     </div>
     """
   end

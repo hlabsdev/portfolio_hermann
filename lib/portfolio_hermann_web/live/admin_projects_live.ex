@@ -6,13 +6,37 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   @impl true
   def mount(_params, _session, socket) do
 
-    all_years = Projects.list_projects() |> Enum.map(& &1["year"]) |> Enum.uniq() |> Enum.sort(:desc)
+    projects = Projects.list_projects()
+    all_years =
+      projects
+      |> Enum.map(& &1["year"])
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+      |> Enum.sort(:desc)
+
+    all_types =
+      projects
+      |> Enum.map(& &1["type"])
+      |> Enum.reject(&(&1 in [nil, ""]))
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    all_techs =
+      (Projects.list_techs() ++ Enum.flat_map(projects, &(&1["techs"] || [])))
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    all_tags =
+      (Projects.list_tags() ++ Enum.flat_map(projects, &(&1["tags"] || [])))
+      |> Enum.uniq()
+      |> Enum.sort()
     socket =
       socket
-      |> assign(:projects, Projects.list_projects())
-      |> assign(:all_techs, Projects.list_techs())
-      |> assign(:all_tags, Projects.list_tags())
+      |> assign(:projects, projects)
+      |> assign(:all_techs, all_techs)
+      |> assign(:all_tags, all_tags)
       |> assign(:all_years, all_years)
+      |> assign(:all_types, all_types)
       |> assign(:editing_project, nil)
       |> assign(:logo_type, "url")
       |> assign(:form_mode, :none)
@@ -21,7 +45,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       |> assign(:type_filter, "all")
       |> assign(:search_query, "")
       |> allow_upload(:logo,
-        accept: ~w(.jpg .jpeg .png .gif),
+        accept: ~w(.jpg .jpeg .png .gif .webp),
         max_entries: 1,
         max_file_size: 5_000_000,
         auto_upload: true
@@ -42,14 +66,15 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     project = %{
       "id" => UUID.uuid4(),
       "title" => project_params["title"],
-      "techs" => parse_techs(project_params["techs"]),
+      "techs" => parse_multi(project_params["techs"], project_params["techs_custom"]),
       "desc" => project_params["desc"],
+      "client" => blank_to_nil(project_params["client"]),
       "logo_url" => project_params["logo_url"],
       "demo_urls" => parse_urls(project_params["demo_urls"]),
       "source_urls" => parse_urls(project_params["source_urls"]),
-      "year" => String.to_integer(project_params["year"] || "2024"),
+      "year" => parse_year(project_params["year"]),
       "type" => project_params["type"],
-      "tags" => parse_tags(project_params["tags"]),
+      "tags" => parse_multi(project_params["tags"], project_params["tags_custom"]),
       "featured" => project_params["featured"] == "true",
       "stats" => %{
         "views" => 0,
@@ -79,14 +104,15 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
     updates = %{
       "title" => project_params["title"],
-      "techs" => parse_techs(project_params["techs"]),
+      "techs" => parse_multi(project_params["techs"], project_params["techs_custom"]),
       "desc" => project_params["desc"],
+      "client" => blank_to_nil(project_params["client"]),
       "logo_url" => project_params["logo_url"],
       "demo_urls" => parse_urls(project_params["demo_urls"]),
       "source_urls" => parse_urls(project_params["source_urls"]),
-      "year" => String.to_integer(project_params["year"] || "2024"),
+      "year" => parse_year(project_params["year"]),
       "type" => project_params["type"],
-      "tags" => parse_tags(project_params["tags"]),
+      "tags" => parse_multi(project_params["tags"], project_params["tags_custom"]),
       "featured" => project_params["featured"] == "true",
       "stats" => socket.assigns.editing_project["stats"]
     }
@@ -155,7 +181,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       consume_uploaded_entries(socket, :logo, fn %{path: path}, _entry ->
         ext = Path.extname(path)
         filename = "#{UUID.uuid4()}#{ext}"
-        dest = Path.join("priv/static/uploads", filename)
+        dest = Path.join(Projects.uploads_dir(), filename)
         File.mkdir_p!(Path.dirname(dest))
         File.cp!(path, dest)
         {:ok, "/uploads/" <> filename}
@@ -166,10 +192,6 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       _ -> project_params
     end
   end
-
-  defp error_to_string(:too_large), do: "Fichier trop volumineux"
-  defp error_to_string(:too_many_files), do: "Trop de fichiers"
-  defp error_to_string(:not_accepted), do: "Format de fichier non accepté"
 
   defp parse_urls(urls_string) when is_binary(urls_string) do
     urls_string
@@ -195,6 +217,33 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     |> Enum.reject(&(&1 == ""))
   end
   defp parse_tags(_), do: []
+
+  defp parse_multi(selected, custom) do
+    (parse_techs(selected) ++ parse_tags(custom)) |> Enum.uniq()
+  end
+
+  defp parse_year(year) when is_binary(year) do
+    case String.trim(year) do
+      "" -> nil
+      value -> parse_year_value(value)
+    end
+  end
+  defp parse_year(_), do: nil
+
+  defp parse_year_value(year) do
+    case Integer.parse(year) do
+      {value, ""} when value >= 1900 and value <= 2200 -> value
+      _ -> nil
+    end
+  end
+
+  defp blank_to_nil(nil), do: nil
+  defp blank_to_nil(value) when is_binary(value) do
+    case String.trim(value) do
+      "" -> nil
+      trimmed -> trimmed
+    end
+  end
 
   defp parse_techs(techs) when is_list(techs), do: techs
   defp parse_techs(techs_string) when is_binary(techs_string) do
@@ -227,10 +276,12 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp filter_by_search(projects, query) do
     query = String.downcase(query)
     Enum.filter(projects, fn project ->
-      String.contains?(String.downcase(project["title"]), query) ||
-      String.contains?(String.downcase(project["desc"]), query) ||
-      String.contains?(String.downcase(project["techs"]), query) ||
-      Enum.any?(project["tags"], &String.contains?(String.downcase(&1), query))
+      searchable = [project["title"], project["desc"], project["type"]] ++
+        (project["techs"] || []) ++ (project["tags"] || [])
+
+      Enum.any?(searchable, fn value ->
+        is_binary(value) and String.contains?(String.downcase(value), query)
+      end)
     end)
   end
 
@@ -242,6 +293,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
         <div class="sm:flex-auto">
           <h1 class="text-xl font-semibold text-gray-900 dark:text-white mt-8">Projets</h1>
           <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Liste de tous vos projets avec options de gestion.</p>
+          <.link navigate={~p"/admin/experiences"} class="mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300">Gérer mes expériences →</.link>
         </div>
       </div>
 
@@ -304,7 +356,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     <span class="absolute inset-0" aria-hidden="true"></span>
                     <%= project["title"] %>
                   </h3>
-                  <p class="text-sm text-gray-500"><%= project["year"] %> · <%= project["type"] %></p>
+                  <p class="text-sm text-gray-500"><%= if project["year"], do: project["year"], else: "Période non précisée" %> · <%= project["type"] %></p>
                 </div>
                 <button phx-click="toggle_featured" phx-value-id={project["id"]}
                   class={"#{if project["featured"], do: 'text-yellow-400', else: 'text-gray-300'} hover:text-yellow-400"}>
@@ -451,29 +503,27 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                 </label>
               <% end %>
             </div>
+            <input name="project[techs_custom]" placeholder="Ajouter des outils séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Type de projet</label>
-            <select name="project[type]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <option value="Application Web">Application Web</option>
-              <option value="Mobile">Mobile</option>
-              <option value="SaaS">SaaS</option>
-              <option value="Dashboard">Dashboard</option>
-              <option value="Plateforme">Plateforme</option>
-              <option value="SIG">SIG</option>
-            </select>
+            <input name="project[type]" list="project-types" required placeholder="Application Web"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <datalist id="project-types"><%= for type <- @all_types do %><option value={type} /><% end %></datalist>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Client ou organisation <span class="font-normal text-gray-500">(facultatif)</span></label>
+            <input name="project[client]" placeholder="Ex. OIF, Sanlam Allianz"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Année</label>
-            <select name="project[year]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <%= for year <- @all_years do %>
-                <option value={year}><%= year %></option>
-              <% end %>
-            </select>
+            <input type="number" name="project[year]" min="1900" max="2200" placeholder="Optionnel"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
           </div>
 
           <div>
@@ -491,6 +541,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                 </label>
               <% end %>
             </div>
+            <input name="project[tags_custom]" placeholder="Ajouter des tags séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>
@@ -592,26 +644,27 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                 </label>
               <% end %>
             </div>
+            <input name="project[techs_custom]" placeholder="Ajouter des outils séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Type de projet</label>
-            <select name="project[type]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <%= for type <- ["Application Web", "Mobile", "SaaS", "Dashboard", "Plateforme", "SIG"] do %>
-                <option value={type} selected={@editing_project["type"] == type}><%= type %></option>
-              <% end %>
-            </select>
+            <input name="project[type]" list="project-types-edit" value={@editing_project["type"]} required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <datalist id="project-types-edit"><%= for type <- @all_types do %><option value={type} /><% end %></datalist>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Client ou organisation <span class="font-normal text-gray-500">(facultatif)</span></label>
+            <input name="project[client]" value={@editing_project["client"]} placeholder="Ex. OIF, Sanlam Allianz"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Année</label>
-            <select name="project[year]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-              <%= for year <- @all_years do %>
-                <option value={year} selected={@editing_project["year"] == year}><%= year %></option>
-              <% end %>
-            </select>
+            <input type="number" name="project[year]" min="1900" max="2200" value={@editing_project["year"]} placeholder="Optionnel"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
           </div>
 
           <div>
@@ -630,6 +683,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                 </label>
               <% end %>
             </div>
+            <input name="project[tags_custom]" placeholder="Ajouter des tags séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
           </div>
 
           <div>

@@ -13,6 +13,7 @@ kill_signal = 'SIGTERM'
 [env]
   PHX_HOST = 'portfolio-hermann.fly.dev'
   PORT = '8080'
+  PORTFOLIO_DATA_DIR = '/data'
 
 [http_service]
   internal_port = 8080
@@ -26,6 +27,10 @@ kill_signal = 'SIGTERM'
     type = 'connections'
     hard_limit = 1000
     soft_limit = 500
+
+[[mounts]]
+  source = "portfolio_data"
+  destination = "/data"
 
 [[vm]]
   cpu_kind = 'shared'

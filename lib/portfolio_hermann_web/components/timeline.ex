@@ -19,7 +19,7 @@ defmodule PortfolioHermannWeb.Components.Timeline do
                 </p>
               </div>
               <div class="text-right text-gray-500">
-                <p><%= exp["start_date"] %> - <%= exp["end_date"] || "Present" %></p>
+                <p><%= exp["start_date"] %> – <%= exp["end_date"] || "Aujourd’hui" %></p>
                 <%= if exp["duration"] do %>
                   <p class="text-sm"><%= exp["duration"] %></p>
                 <% end %>
@@ -30,7 +30,8 @@ defmodule PortfolioHermannWeb.Components.Timeline do
               <p class="text-gray-700 dark:text-gray-200"><%= exp["description"] %></p>
 
               <%= if Enum.any?(exp["achievements"] || []) do %>
-                <div class="mt-2">
+                <div class="mt-4">
+                  <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Responsabilités et réalisations</p>
                   <ul class="list-disc list-inside">
                     <%= for achievement <- exp["achievements"] do %>
                       <li class="text-gray-700 dark:text-gray-300"><%= achievement %></li>

@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Portfolio de Komi Kekeli Hermann GOLO, ingénieur logiciel, DevOps et Lead Developer basé à Lomé. Projets, expertise et parcours." />
+    <meta name="theme-color" content="#0f172a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Komi Kekeli Hermann GOLO · Portfolio" />
+    <meta property="og:description" content="Ingénierie logicielle, DevOps et delivery de produits numériques." />
     <meta name="csrf-token" content={get_csrf_token()} />
     <.live_title default="Hermann GOLO | Portfolio" suffix=" · Hermann GOLO">
       {assigns[:page_title]}
@@ -11,7 +16,7 @@
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-[#f39d8d]/10 via-orange-50 to-white dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 text-gray-800 dark:text-gray-200 antialiased transition-colors duration-300 ease-in-out">
+  <body class="min-h-screen bg-[#f8f8f6] text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
     <div class="relative">
       <%= @inner_content %>
     </div>

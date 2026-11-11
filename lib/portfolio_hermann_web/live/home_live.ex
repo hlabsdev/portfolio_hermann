@@ -1,279 +1,99 @@
 defmodule PortfolioHermannWeb.HomeLive do
   use PortfolioHermannWeb, :live_view
+
   alias PortfolioHermann.Projects
+  alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, _session, socket) do
+    portfolio = Projects.list_experiences()
+
     featured_projects =
       Projects.list_projects()
       |> Enum.filter(& &1["featured"])
-      |> Enum.take(6)
+      |> Enum.sort_by(&{&1["featured_priority"] || 0, &1["year"] || 0}, :desc)
+      |> Enum.take(3)
 
-    socket =
-      socket
-      |> assign(:featured_projects, featured_projects)
-      |> assign(:current_slide, 0)
-
-    {:ok, socket}
+    {:ok,
+     socket
+     |> assign(:page_title, "Ingénieur logiciel, DevOps et Lead Developer")
+     |> assign(:profile, portfolio["profile"] || %{})
+     |> assign(:featured_projects, featured_projects)}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-transparent">
-      <!-- Hero Section -->
-      <section class="relative py-24 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-white dark:from-gray-900 dark:to-gray-800 -z-10">
-        </div>
-
-        <div class="relative text-center">
-           <div class="space-y-4 mb-8">
-            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-[#f39d8d] to-[#8B4513] bg-clip-text text-transparent">
-              Hermann Kekeil GOLO (💻 Hlabs)
-            </h1>
-
-            <p class="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-300 typing-effect">Ingénieur Logiciel & Data Engineer</p>
-            <p class="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Expert en développement d'applications web performantes avec <span class="font-semibold text-indigo-600 dark:text-indigo-400">Elixir & Phoenix</span>,
-              et en solutions data-driven avec <span class="font-semibold text-purple-600 dark:text-purple-400">Python & Flutter</span>.
-            </p>
+    <div>
+      <section class="relative overflow-hidden bg-slate-950 text-white">
+        <div class="absolute -right-24 -top-40 h-[34rem] w-[34rem] rounded-full bg-orange-500/10 blur-3xl"></div>
+        <div class="relative mx-auto grid max-w-7xl gap-16 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-[1fr_0.62fr] lg:items-center lg:py-36">
+          <div>
+            <p class="mb-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-orange-300"><span class="h-px w-9 bg-orange-400"></span><%= @profile["headline"] || "Ingénieur logiciel · DevOps · Lead Developer" %></p>
+            <h1 class="max-w-4xl text-5xl font-semibold leading-[1.03] tracking-tight sm:text-7xl">Je fais avancer le logiciel, de l’idée jusqu’à la production.</h1>
+            <p class="mt-8 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">Je conçois des applications web et mobiles, je pilote leur livraison et je veille à leur fonctionnement en production. J’interviens aussi sur la donnée et l’IA appliquée.</p>
+            <div class="mt-10 flex flex-wrap gap-3">
+              <.link navigate={~p"/projects"} class="rounded-lg bg-orange-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-orange-300">Parcourir les projets <.icon name="hero-arrow-up-right" class="ml-2 inline h-4 w-4" /></.link>
+              <.link navigate={~p"/contact"} class="rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Parler d’un projet</.link>
+            </div>
+            <div class="mt-12 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-400">
+              <span class="inline-flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-emerald-400"></span>Basé à Lomé, Togo</span>
+              <a href={@profile["linkedin"] || "https://www.linkedin.com/in/komi-golo"} target="_blank" rel="noopener noreferrer" class="transition hover:text-white">LinkedIn <.icon name="hero-arrow-up-right" class="ml-1 inline h-3.5 w-3.5" /></a>
+              <a href={@profile["github"] || "https://github.com/hlabsdev"} target="_blank" rel="noopener noreferrer" class="transition hover:text-white">GitHub <.icon name="hero-arrow-up-right" class="ml-1 inline h-3.5 w-3.5" /></a>
+            </div>
           </div>
 
-          <div class="flex justify-center gap-6">
-            <.link
-              navigate={~p"/projects"}
-              class="px-8 py-4 tracking-tight bg-gradient-to-r from-[#f39d8d] to-[#8B4513] text-white rounded-xl hover:from-[#f39d8d]/50 hover:to-[#8B4513]/70 transform hover:scale-110 transition duration-200 shadow-lg hover:shadow-xl"
-            >
-              <div class="flex items-center gap-2">
-                <.icon name="hero-rocket-launch" class="w-5 h-5" /> <span>Voir mes projets</span>
+          <div class="relative">
+            <div class="absolute -inset-4 rounded-[2rem] border border-white/10"></div>
+            <div class="relative rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur sm:p-9">
+              <div class="flex items-center justify-between border-b border-white/10 pb-5"><span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">En pratique</span><span class="font-mono text-xs text-orange-300">01 / 03</span></div>
+              <div class="space-y-7 py-7">
+                <div class="flex gap-4"><span class="font-mono text-sm text-orange-300">01</span><div><h2 class="font-semibold">Construire</h2><p class="mt-1 text-sm leading-6 text-slate-400">Backend, interfaces et applications mobiles adaptées au besoin.</p></div></div>
+                <div class="flex gap-4"><span class="font-mono text-sm text-orange-300">02</span><div><h2 class="font-semibold">Mettre en production</h2><p class="mt-1 text-sm leading-6 text-slate-400">Automatisation des livraisons, conteneurs et environnements fiables.</p></div></div>
+                <div class="flex gap-4"><span class="font-mono text-sm text-orange-300">03</span><div><h2 class="font-semibold">Faire évoluer</h2><p class="mt-1 text-sm leading-6 text-slate-400">Supervision, amélioration continue et coordination avec les équipes produit.</p></div></div>
               </div>
-            </.link>
-
-            <.link
-              navigate={~p"/contact"}
-              class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transform hover:scale-110 transition duration-200 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700"
-            >
-              <div class="flex items-center gap-2">
-                <.icon name="hero-envelope" class="w-5 h-5" /> <span>Me contacter</span>
-              </div>
-            </.link>
-          </div>
-        </div>
-      </section>
-
-      <!-- Technologies Section -->
-      <section class="py-20 bg-gradient-to-b from-transparent via-indigo-50/50 to-transparent dark:from-transparent dark:via-gray-800/50 dark:to-transparent">
-        <div class="max-w-7xl mx-auto">
-          <h2 class="text-3xl font-bold mb-2 text-center bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 text-transparent bg-clip-text">
-            Technologies & Expertise
-          </h2>
-
-          <p class="text-center text-gray-600 dark:text-gray-400 mb-12">
-            Un ensemble diversifié de technologies modernes pour des solutions performantes
-          </p>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <div class="group hover:scale-110 transition-transform duration-300">
-              <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5 dark:from-indigo-600/10 dark:to-purple-600/10">
-                </div>
-
-                <div class="relative p-6">
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
-                      <.icon name="hero-server" class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-                    </div>
-
-                    <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400">
-                      Backend
-                    </h3>
-                  </div>
-
-                  <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Python & Django/FastAPI
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Node.js & Express
-                    </li>
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Elixir & Phoenix LiveView
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      PostgreSQL & MongoDB
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="group hover:scale-110 transition-transform duration-300">
-              <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-pink-600/5 dark:from-purple-600/10 dark:to-pink-600/10">
-                </div>
-
-                <div class="relative p-6">
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-purple-100 dark:bg-purple-900/50 rounded-lg">
-                      <.icon
-                        name="hero-computer-desktop"
-                        class="w-6 h-6 text-purple-600 dark:text-purple-400"
-                      />
-                    </div>
-
-                    <h3 class="text-xl font-semibold text-purple-600 dark:text-purple-400">
-                      Frontend
-                    </h3>
-                  </div>
-
-                  <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> Angular & Vue.js
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> Flutter & Dart
-                    </li>
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      TailwindCSS & Alpine.js
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" /> HTML5 & CSS3
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="group hover:scale-110 transition-transform duration-300">
-              <div class="card-soft bg-white dark:bg-gray-800 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-pink-600/5 to-rose-600/5 dark:from-pink-600/10 dark:to-rose-600/10">
-                </div>
-
-                <div class="relative p-6">
-                  <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-pink-100 dark:bg-pink-900/50 rounded-lg">
-                      <.icon name="hero-chart-bar" class="w-6 h-6 text-pink-600 dark:text-pink-400" />
-                    </div>
-
-                    <h3 class="text-xl font-semibold text-pink-600 dark:text-pink-400">Data</h3>
-                  </div>
-
-                  <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Machine Learning & IA
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Data Engineering
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Data Visualization
-                    </li>
-
-                    <li class="flex items-center gap-2">
-                      <.icon name="hero-check-circle" class="w-5 h-5 text-green-500" />
-                      Business Intelligence
-                    </li>
-                  </ul>
-                </div>
+              <div class="grid grid-cols-2 gap-3 border-t border-white/10 pt-5">
+                <div><p class="text-2xl font-semibold">6+</p><p class="mt-1 text-xs text-slate-400">ans en ingénierie logicielle</p></div>
+                <div><p class="text-2xl font-semibold">4+</p><p class="mt-1 text-xs text-slate-400">ans de livraison en production</p></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-    <!-- Projets en vedette -->
-      <section class="py-12">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Projets en vedette
-          </h2>
-
-          <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400 sm:mt-4">
-            Découvrez une sélection de mes projets les plus significatifs
-          </p>
+      <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+        <div class="grid gap-8 border-b border-slate-200 pb-14 dark:border-slate-800 lg:grid-cols-[0.7fr_1.3fr]">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-700">Collaborations</p>
+          <div><p class="text-lg leading-8 text-slate-700 dark:text-slate-200">J’ai contribué à des produits numériques pour des organisations internationales, des institutions publiques et des acteurs de l’assurance.</p><div class="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400"><span>OIF</span><span>Sanlam Allianz</span><span>DSNISI Togo</span><span>Assemblée nationale du Togo</span><span>ANPE Togo</span></div></div>
         </div>
 
-        <div class="mt-12 grid grid-cols-2 gap-8 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
-          <%= for project <- @featured_projects do %>
-            <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:scale-110 hover:shadow-xl transition-all duration-300">
-              <div class="relative aspect-[4/3] bg-gray-200 dark:bg-gray-700">
-                <%= if project["logo_url"] && project["logo_url"] !="" do %>
-                  <img
-                    src={project["logo_url"]}
-                    alt={project["title"]}
-                    class="w-full h-full object-cover"
-                  />
-                <% else %>
-                  <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500">
-                    <.icon name="hero-computer-desktop" class="w-16 h-16" />
-                  </div>
-                <% end %>
+        <div class="mt-16 flex flex-wrap items-end justify-between gap-6">
+          <div><p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-700">Projets sélectionnés</p><h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl">Du concret, en contexte.</h2></div>
+          <.link navigate={~p"/projects"} class="text-sm font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-orange-700 dark:text-slate-200 dark:decoration-slate-700">Voir tous les projets <.icon name="hero-arrow-right" class="ml-1 inline h-4 w-4" /></.link>
+        </div>
+
+        <div class="mt-8 grid gap-4 lg:grid-cols-3">
+          <%= for {project, index} <- Enum.with_index(@featured_projects) do %>
+            <article class="group flex min-h-[22rem] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+              <div class={"relative flex h-40 items-end overflow-hidden p-6 #{if rem(index, 2) == 0, do: "bg-slate-100 dark:bg-slate-800", else: "bg-orange-50 dark:bg-orange-950/30"}"}>
+                <span class="absolute -right-3 -top-12 select-none font-mono text-[10rem] font-semibold leading-none text-slate-200/70 dark:text-white/[0.04]">0<%= index + 1 %></span>
+                <%= if is_binary(project["logo_url"]) and project["logo_url"] != "" do %><img src={project["logo_url"]} alt={project["title"]} class="absolute inset-0 h-full w-full object-cover" loading="lazy" /><% else %><span class="relative font-mono text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400"><%= project["type"] %><%= if project["year"], do: " · #{project["year"]}" %></span><% end %>
               </div>
-
-              <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {project["title"]}
-                </h3>
-
-                <p class="text-gray-600 dark:text-gray-400 line-clamp-3 mb-4">
-                  {project["desc"]}
-                </p>
-
-                <div class="flex flex-wrap gap-2 mb-4">
-                  <%= for tech <- project["techs"] || [] do %>
-                    <span class="px-2 py-1 text-xs bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 rounded">
-                      {tech}
-                    </span>
-                  <% end %>
-                </div>
-
-                <div class="flex justify-between items-center">
-                  <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                    <.icon name="hero-eye" class="w-4 h-4" /> <span>{project["stats"]["views"]}</span>
-                    <button
-                      type="button"
-                      phx-click={JS.push("like_project", value: %{id: project["id"]})}
-                      class="ml-2 flex items-center hover:text-[#f39d8d] dark:hover:text-[#f39d8d] transition-colors duration-200"
-                    >
-                      <.icon name="hero-heart" class="w-4 h-4" />
-                      <span class="ml-1">{project["stats"]["likes"]}</span>
-                    </button>
-                  </div>
-
-                  <.link
-                    navigate={~p"/projects"}
-                    class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
-                  >
-                    Voir les détails →
-                  </.link>
-                </div>
+              <div class="flex flex-1 flex-col p-6">
+                <h3 class="text-xl font-semibold text-slate-950 dark:text-white"><%= project["title"] %></h3>
+                <p class="mt-3 flex-1 text-sm leading-6 text-slate-600 dark:text-slate-300"><%= project["desc"] %></p>
+                <div class="mt-5 flex flex-wrap gap-2"><%= for tech <- Enum.take(project["techs"] || [], 4) do %><span class="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300"><%= tech %></span><% end %></div>
+                <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800"><span class="text-xs text-slate-500"><%= project["client"] || project["type"] %></span><button type="button" phx-click={JS.push("like_project", value: %{id: project["id"]})} class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-orange-700"><.icon name="hero-heart" class="h-4 w-4" /><%= get_in(project, ["stats", "likes"]) || 0 %></button></div>
               </div>
-            </div>
+            </article>
           <% end %>
         </div>
+      </section>
 
-        <div class="mt-12 text-center">
-          <.link
-            navigate={~p"/about"}
-            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#f39d8d] hover:bg-[#8B4513] dark:bg-[#8B4513] dark:hover:bg-[#f39d8d] transition-colors duration-200"
-          >
-            A propos de Hermann <.icon name="hero-arrow-right" class="ml-2 w-5 h-5" />
-          </.link>
+      <section class="bg-orange-50 dark:bg-orange-950/20">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center lg:py-20">
+          <div><p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-800 dark:text-orange-300">Pour la suite</p><h2 class="mt-3 max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl">Un projet à concevoir, livrer ou stabiliser ?</h2><p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">Échangeons sur le contexte, les objectifs et l’équipe avec laquelle le faire avancer.</p></div>
+          <.link navigate={~p"/contact"} class="inline-flex items-center justify-center rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950">Me contacter <.icon name="hero-arrow-right" class="ml-2 h-4 w-4" /></.link>
         </div>
       </section>
     </div>
@@ -283,12 +103,9 @@ defmodule PortfolioHermannWeb.HomeLive do
   @impl true
   def handle_event("like_project", %{"id" => id}, socket) do
     Projects.increment_like(id)
-
-    featured_projects =
-      Projects.list_projects()
-      |> Enum.filter(& &1["featured"])
-      |> Enum.take(3)
-
-    {:noreply, assign(socket, featured_projects: featured_projects)}
+    projects = Projects.list_projects()
+    ids = MapSet.new(Enum.map(socket.assigns.featured_projects, & &1["id"]))
+    featured = Enum.filter(projects, &MapSet.member?(ids, &1["id"]))
+    {:noreply, assign(socket, :featured_projects, featured)}
   end
 end

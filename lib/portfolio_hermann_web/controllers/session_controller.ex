@@ -10,7 +10,7 @@ defmodule PortfolioHermannWeb.SessionController do
   end
 
   def create(conn, %{"login" => %{"password" => password}}) do
-    if password == System.get_env("ADMIN_PASSWORD", "25091999") do
+    if valid_admin_password?(password) do
       conn
       |> put_session(:admin, true)
       |> put_flash(:info, "Connecté avec succès!")
@@ -21,6 +21,15 @@ defmodule PortfolioHermannWeb.SessionController do
       |> render(:new)
     end
   end
+
+  defp valid_admin_password?(password) when is_binary(password) do
+    case System.fetch_env("ADMIN_PASSWORD") do
+      {:ok, expected} when expected != "" -> Plug.Crypto.secure_compare(password, expected)
+      _ -> false
+    end
+  end
+
+  defp valid_admin_password?(_), do: false
 
   def delete(conn, _params) do
     conn
