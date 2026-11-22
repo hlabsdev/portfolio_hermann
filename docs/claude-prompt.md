@@ -45,8 +45,8 @@ Livrables attendus :
    cadence (1er, 11, 21 à 09:00 Africa/Lome), prérequis, 7 étapes (vérifier le
    jeton, choisir le sujet, vérifier les faits, rédiger, illustrer, publier,
    journaliser), tableau des erreurs (503, 401, 409, 422, 415, réseau) et règles
-   éditoriales (anonymisation des clients, sources citées, pas de HTML, pas de
-   tableaux Markdown car le site ne les rend pas).
+   éditoriales (anonymisation des clients, sources citées, pas de HTML brut,
+   tableaux GFM, listes et liens rendus par le site).
 
 4. docs/blog-topics.md — banque de 10 à 12 sujets ancrés dans l'expérience réelle
    de Hermann (Elixir/Phoenix, DevOps, IA appliquée, secteur public, fintech et
@@ -97,7 +97,7 @@ docs/blog-automation-task.md, docs/blog-topics.md, docs/blog-published.md.
 3. Prends le premier sujet "a traiter" de docs/blog-topics.md en suivant l'ordre de
    publication conseillé. Vérifie les faits par 2 à 4 recherches en ligne (sources
    2025-2026) et rédige un article inédit en français de 1 200 à 1 800 mots, ton
-   retour d'expérience, sans HTML brut ni tableaux Markdown.
+   retour d'expérience, avec tableaux GFM, listes à puces et liens, sans HTML brut.
 4. Écris tmp/blog/<slug>/article.json : title, slug stable en kebab-case, summary,
    tags (2-4), status, published_at, body_markdown.
 5. Génère au moins une image originale avec scripts/blog_images.py (diagramme ou
@@ -107,6 +107,8 @@ docs/blog-automation-task.md, docs/blog-topics.md, docs/blog-published.md.
 6. Publie avec status "scheduled" et published_at à J+7 à 09:00 UTC, via
    node scripts/blog-publish.mjs article --file tmp/blog/<slug>/article.json.
    Ne considère l'envoi réussi que si la sortie contient "OK: article".
+   Vérifie ensuite la page publique : HTTP 200, tableaux/listes/liens présents
+   (aucun paragraphe commençant par un tube), sinon corrige et republie.
 7. Mets à jour docs/blog-published.md et passe le sujet à "traite" dans
    docs/blog-topics.md. Écris les versions X et LinkedIn dans docs/social/<slug>.md.
 

@@ -43,7 +43,7 @@ redaction et de verification (1 = rapide, 5 = lourd).
 ## Ordre de publication conseille
 
 1. ~~**B1** - Transcrire les debats parlementaires~~ (publie le 12/11/2026)
-2. ~~**A1** - Un blog Phoenix LiveView qui se publie tout seul~~ (programme le 29/11/2026)
+2. ~~**A1** - Un blog Phoenix LiveView qui se publie tout seul~~ (publie le 22/11/2026)
 3. **B3** - Recherche semantique pour des PME francophones
 4. **C1** - Microfinance offline-first
 5. **A2** - Phoenix sur Fly.io : persistance par volume
@@ -59,7 +59,8 @@ redaction et de verification (1 = rapide, 5 = lourd).
 
 A relire avant de rediger, pour ne pas publier une version fausse :
 
-* LiveView 1.2 est stable depuis juin 2026 ; Phenix 1.8 est la version stable.
+* Versions installees au 22 novembre 2026 : Elixir 1.20.5 / OTP 29.1.2,
+  Phoenix 1.8.17, LiveView 1.2.15, MDEx 0.14.7 (voir mix.lock et Dockerfile).
   Ne pas annoncer Phoenix 1.9 ou LiveView 1.3 comme publies : ils sont en
   developpement.
 * Les volumes Fly sont lies a une Machine, non repliques, avec des snapshots ;

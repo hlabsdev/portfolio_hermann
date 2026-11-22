@@ -107,6 +107,9 @@ tache.
 * Ajouter `--status published` pour publier tout de suite, ou laisser
   `scheduled` (J+7) pour la relecture.
 * Ne considerer l'etape terminee que si la sortie contient `OK: article`.
+* Verifier ensuite la page publique (`https://portfolio-hermann.fly.dev/blog/<slug>`) :
+  code 200, balises de tableau si l'article en contient, listes et liens rendus,
+  aucun paragraphe commencant par un tube (`|`). Corriger et republier si besoin.
 * En cas d'erreur, appliquer la section "Erreurs" et ne pas boucler.
 
 ### 7. Journaliser et rapporter
