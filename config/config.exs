@@ -32,7 +32,7 @@ config :portfolio_hermann, PortfolioHermann.Mailer, adapter: Swoosh.Adapters.Loc
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.17.11",
+  version: "0.28.2",
   portfolio_hermann: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -41,8 +41,9 @@ config :esbuild,
   ]
 
 # Configure tailwind (the version is required)
+# Tailwind 3.4.x is the latest stable LTS line for this asset pipeline.
 config :tailwind,
-  version: "3.4.3",
+  version: "3.4.19",
   portfolio_hermann: [
     args: ~w(
       --config=tailwind.config.js

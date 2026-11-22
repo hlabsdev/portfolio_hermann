@@ -32,6 +32,10 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    // Styles typographiques de `.prose` pour le contenu des articles Markdown.
+    // Le CLI Tailwind standalone utilisé par `mix tailwind` embarque ce plugin
+    // first-party : aucun `npm install` n'est nécessaire.
+    require("@tailwindcss/typography"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
     //

@@ -2,17 +2,22 @@ defmodule PortfolioHermannWeb.BlogLive do
   use PortfolioHermannWeb, :live_view
 
   alias PortfolioHermann.Articles
+  alias PortfolioHermannWeb.Helpers
 
   @impl true
   def mount(params, _session, socket) do
     case params["slug"] && Articles.get_by_slug(params["slug"]) do
       %{"published" => true} = article ->
-        {:ok,
-         socket
-         |> assign(:page_title, article["title"])
-         |> assign(:article, article)
-         |> assign(:article_html, MDEx.to_html!(article["body"] || ""))
-         |> assign(:articles, [])}
+        if Articles.publication_due?(article["published_at"]) do
+          {:ok,
+           socket
+           |> assign(:page_title, article["title"])
+           |> assign(:article, article)
+           |> assign(:article_html, Helpers.md_to_html(article["body"]))
+           |> assign(:articles, [])}
+        else
+          {:ok, not_available(socket)}
+        end
 
       nil ->
         {:ok,
@@ -23,14 +28,17 @@ defmodule PortfolioHermannWeb.BlogLive do
          |> assign(:articles, Articles.list_published())}
 
       _draft_or_missing ->
-        {:ok,
-         socket
-         |> assign(:page_title, "Article introuvable")
-         |> assign(:article, nil)
-         |> assign(:article_html, nil)
-         |> assign(:articles, [])
-         |> put_flash(:error, "Cet article n’existe pas ou n’est pas encore publié.")}
+        {:ok, not_available(socket)}
     end
+  end
+
+  defp not_available(socket) do
+    socket
+    |> assign(:page_title, "Article introuvable")
+    |> assign(:article, nil)
+    |> assign(:article_html, nil)
+    |> assign(:articles, [])
+    |> put_flash(:error, "Cet article n’existe pas ou n’est pas encore publié.")
   end
 
   @impl true
@@ -41,7 +49,7 @@ defmodule PortfolioHermannWeb.BlogLive do
         <article class="mx-auto max-w-3xl">
           <.link href={~p"/blog"} class="text-sm font-semibold text-orange-800 hover:text-orange-600 dark:text-orange-300">← Tous les articles</.link>
           <%= if @article["cover_url"] do %>
-            <img src={@article["cover_url"]} alt="" class="mt-8 max-h-[28rem] w-full rounded-2xl object-cover" />
+            <img src={@article["cover_url"]} alt={@article["title"]} class="mt-8 max-h-[28rem] w-full rounded-2xl object-cover" />
           <% end %>
           <header class="mt-8 border-b border-slate-200 pb-8 dark:border-slate-800">
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500">
@@ -73,7 +81,7 @@ defmodule PortfolioHermannWeb.BlogLive do
             <div class="mt-12 grid gap-5 md:grid-cols-2">
               <%= for article <- @articles do %>
                 <article class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
-                  <%= if article["cover_url"] do %><a href={~p"/blog/#{article["slug"]}"}><img src={article["cover_url"]} alt="" loading="lazy" class="h-52 w-full object-cover" /></a><% end %>
+                  <%= if article["cover_url"] do %><a href={~p"/blog/#{article["slug"]}"}><img src={article["cover_url"]} alt={article["title"]} loading="lazy" class="h-52 w-full object-cover" /></a><% end %>
                   <div class="p-6">
                     <div class="flex items-center gap-3 text-xs text-slate-500"><time datetime={article["published_at"]}><%= format_date(article["published_at"]) %></time><span>·</span><span><%= Articles.reading_time(article["body"] || "") %> min</span></div>
                     <h2 class="mt-3 text-2xl font-semibold tracking-tight text-slate-950 group-hover:text-orange-800 dark:text-white dark:group-hover:text-orange-300"><a href={~p"/blog/#{article["slug"]}"}><%= article["title"] %></a></h2>

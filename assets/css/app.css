@@ -71,3 +71,116 @@
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* ---------------------------------------------------------------------------
+   Contenu Markdown des articles (`.prose`)
+
+   Le plugin @tailwindcss/typography (activé dans tailwind.config.js) rétablit
+   les styles des listes, titres, citations, code et tableaux que le preflight
+   de Tailwind supprime. Les règles ci-dessous complètent le plugin pour les
+   structures GFM propres au blog : tableaux qui défilent sur mobile, listes de
+   tâches, notes de bas de page et accord avec le design orange/slate.
+
+   Elles sont volontairement hors `@layer` : à spécificité égale, le CSS non
+   layeré l'emporte sur les styles injectés par les plugins Tailwind, ce qui
+   rend les surcharges fiables quel que soit l'ordre de génération.
+--------------------------------------------------------------------------- */
+
+/* Tableaux GFM : Helpers.md_to_html/1 enveloppe chaque <table> dans ce
+   conteneur pour que le tableau défile horizontalement au lieu de déborder
+   de l'article sur mobile. */
+.prose .md-table-wrap {
+  @apply my-8 w-full overflow-x-auto;
+}
+
+.prose .md-table-wrap > table {
+  margin-top: 0;
+  margin-bottom: 0;
+  min-width: 100%;
+}
+
+/* Listes de tâches GFM (`- [x] ...`) : pas de puce, case alignée avec le texte. */
+.prose .contains-task-list {
+  @apply list-none pl-0;
+}
+
+.prose .task-list-item {
+  @apply list-none pl-0;
+}
+
+.prose .task-list-item > input[type="checkbox"] {
+  @apply mr-2 h-4 w-4 rounded border-slate-400 accent-orange-600 dark:border-slate-500;
+  margin-top: -0.125em;
+  vertical-align: middle;
+}
+
+/* Notes de bas de page. */
+.prose .footnotes {
+  @apply mt-12 border-t border-slate-200 pt-6 text-sm dark:border-slate-800;
+}
+
+.prose .footnotes ol {
+  @apply mt-3 pl-5;
+}
+
+.prose .footnote-ref a,
+.prose .footnote-backref {
+  @apply no-underline;
+}
+
+/* Encadres GitHub (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`, ...). */
+.prose .markdown-alert {
+  @apply my-6 rounded-xl border-l-4 px-5 py-4;
+}
+
+.prose .markdown-alert > :first-child {
+  margin-top: 0;
+}
+
+.prose .markdown-alert > :last-child {
+  margin-bottom: 0;
+}
+
+.prose .markdown-alert .markdown-alert-title {
+  @apply mb-2 text-sm font-semibold uppercase tracking-wide;
+}
+
+.prose .markdown-alert-note {
+  @apply border-blue-500/70 bg-blue-50/70 dark:bg-blue-950/30;
+}
+
+.prose .markdown-alert-tip {
+  @apply border-emerald-500/70 bg-emerald-50/70 dark:bg-emerald-950/30;
+}
+
+.prose .markdown-alert-important {
+  @apply border-purple-500/70 bg-purple-50/70 dark:bg-purple-950/30;
+}
+
+.prose .markdown-alert-warning {
+  @apply border-amber-500/70 bg-amber-50/70 dark:bg-amber-950/30;
+}
+
+.prose .markdown-alert-caution {
+  @apply border-red-500/70 bg-red-50/70 dark:bg-red-950/30;
+}
+
+/* Citations : accent orange du site (le plugin utilise des variables CSS). */
+.prose blockquote {
+  border-left-color: theme("colors.orange.500");
+}
+
+/* Images et traits de séparation. */
+.prose img {
+  @apply rounded-xl;
+}
+
+.prose hr {
+  @apply border-slate-200 dark:border-slate-800;
+}
+
+/* Les blocs de code défilent déjà via le plugin ; on arrondit et on garde une
+   taille de police lisible sur mobile. */
+.prose pre {
+  @apply rounded-xl text-sm;
+}

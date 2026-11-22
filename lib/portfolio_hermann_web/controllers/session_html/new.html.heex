@@ -1,11 +1,18 @@
 <section class="max-w-md mx-auto py-20">
   <h1 class="text-2xl font-bold mb-4">Connexion Admin</h1>
-  <.form :let={f} for={to_form(%{}, as: :login)} action={~p"/admin/login"} method="post" class="space-y-4">
+  
+  <.form
+    :let={f}
+    for={to_form(%{}, as: :login)}
+    action={~p"/admin/login"}
+    method="post"
+    class="space-y-4"
+  >
     <.input type="password" field={f[:password]} placeholder="Mot de passe" />
     <.button class="btn-soft px-4 py-2">Se connecter</.button>
   </.form>
-
-  <%= if Phoenix.Controller.get_flash(@conn, :error) do %>
-    <p class="text-red-600 mt-4"><%= Phoenix.Controller.get_flash(@conn, :error) %></p>
+  
+  <%= if Phoenix.Flash.get(@flash, :error) do %>
+    <p class="text-red-600 mt-4">{Phoenix.Flash.get(@flash, :error)}</p>
   <% end %>
 </section>

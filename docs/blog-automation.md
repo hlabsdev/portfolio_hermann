@@ -40,9 +40,19 @@ répondent `503`. Un jeton absent ou incorrect reçoit `401`.
 
 Valeurs possibles de `status` :
 
-* `draft` : conservé dans l’administration, invisible publiquement.
-* `published` : visible immédiatement.
+* `draft` : conservé dans l’administration, invisible publiquement. Toute
+  `published_at` envoyée est ignorée et effacée.
+* `published` : visible immédiatement. La publication est **immédiate même si
+  l’article était auparavant programmé** : renvoyer `status: "published"` sans
+  `published_at` sur un article existant efface sa date future et le publie
+  maintenant. Si une `published_at` future est explicitement fournie, l’API la
+  conserve et l’article reste programmé (la réponse renvoie alors
+  `"status": "scheduled"`). Éditer un article déjà publié sans fournir de date
+  conserve sa date de publication d’origine.
 * `scheduled` : conservé comme publié, mais invisible jusqu’à `published_at`.
+  Une date future est obligatoire, sinon l’API répond
+  `422 scheduled_date_required` (date absente) ou
+  `422 scheduled_date_in_past` (date passée).
 
 Exemple de publication programmée :
 
@@ -62,6 +72,19 @@ Exemple de publication programmée :
 utiliser un slug fixe : renvoyer le même slug met à jour l’article existant au
 lieu d’en créer un second. Garde ce slug stable après publication pour ne pas
 changer l’adresse de l’article.
+
+### Publier immédiatement un article déjà programmé
+
+Deux moyens équivalents, sans changer le slug :
+
+* API : renvoyer l’article avec `status: "published"` et **sans**
+  `published_at`. La date de publication passe à maintenant, l’article devient
+  visible sur `/blog` et l’administration affiche le badge « Publié ».
+* Administration : dans `/admin/articles`, cliquer sur « Publier maintenant »
+  sur la ligne de l’article (bouton présent pour les brouillons et les articles
+  programmés). L’éditeur propose aussi un statut explicite « Brouillon » /
+  « Programmé » / « Publié (maintenant) » et un champ date/heure pour
+  programmer ou reprogrammer un article.
 
 Pour supprimer un brouillon ou un article, appeler
 `DELETE /api/articles/<slug>` avec le même en-tête Bearer.
@@ -97,6 +120,9 @@ utilise un lien vers la plateforme vidéo ou intègre une image cliquable.
    `status: "published"` pour le publier.
 4. Pour une date de publication précise, envoyer `status: "scheduled"` et
    `published_at` en ISO 8601.
+5. Pour publier tout de suite un article déjà programmé, renvoyer le même slug
+   avec `status: "published"` et sans `published_at` : la date future est
+   remplacée par l’instant présent.
 
 L’API renvoie l’article enregistré et son slug. Les erreurs de validation
 retournent un code HTTP 4xx avec un champ `error.code`; ne considère la tâche

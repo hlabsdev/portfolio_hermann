@@ -5,6 +5,12 @@ if System.get_env("PHX_SERVER") do
   config :portfolio_hermann, PortfolioHermannWeb.Endpoint, server: true
 end
 
+# Autorise la surcharge du port d'écoute par la variable d'environnement PORT
+# dans tous les environnements (utile pour les tests locaux et le déploiement).
+if port = System.get_env("PORT") do
+  config :portfolio_hermann, PortfolioHermannWeb.Endpoint, http: [port: String.to_integer(port)]
+end
+
 if config_env() == :prod do
   secret_key_base =
     System.get_env("SECRET_KEY_BASE") ||
@@ -19,10 +25,12 @@ if config_env() == :prod do
   config :portfolio_hermann, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :portfolio_hermann, PortfolioHermannWeb.Endpoint,
-    server: true, # Force le démarrage du serveur en production
+    # Force le démarrage du serveur en production
+    server: true,
     url: [host: host, port: 443, scheme: "https"],
     http: [
-      ip: {0, 0, 0, 0}, # Écoute sur toutes les interfaces IPv4
+      # Écoute sur toutes les interfaces IPv4
+      ip: {0, 0, 0, 0},
       port: port
     ],
     secret_key_base: secret_key_base

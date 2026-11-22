@@ -1,7 +1,7 @@
 defmodule PortfolioHermannWeb.ContactLive do
   use PortfolioHermannWeb, :live_view
 
-  @contact_address "ghermann@yulcom.ca"
+  @contact_address "kekeligolo@gmail.com"
 
   @impl true
   def mount(_params, _session, socket) do

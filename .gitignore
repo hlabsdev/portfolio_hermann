@@ -35,3 +35,7 @@ portfolio_hermann-*.tar
 npm-debug.log
 /assets/node_modules/
 
+
+# Python caches
+__pycache__/
+*.pyc

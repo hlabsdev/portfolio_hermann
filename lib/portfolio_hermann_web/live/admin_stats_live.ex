@@ -1,17 +1,20 @@
 defmodule PortfolioHermannWeb.AdminStatsLive do
   use PortfolioHermannWeb, :live_view
   import PortfolioHermannWeb.Components.VisitStats
+  alias PortfolioHermann.Analytics
+
+  @refresh_interval 5_000
 
   def mount(_params, _session, socket) do
     if connected?(socket) do
-      :timer.send_interval(5000, self(), :update_stats)
+      :timer.send_interval(@refresh_interval, self(), :update_stats)
     end
 
-    {:ok, socket}
+    {:ok, assign(socket, :stats, Analytics.get_stats())}
   end
 
   def handle_info(:update_stats, socket) do
-    {:noreply, socket}
+    {:noreply, assign(socket, :stats, Analytics.get_stats())}
   end
 
   def render(assigns) do
@@ -23,13 +26,18 @@ defmodule PortfolioHermannWeb.AdminStatsLive do
           <.link navigate={~p"/admin/projects"} class="btn-soft px-4 py-2">
             Gérer les projets
           </.link>
-          <.link href={~p"/admin/logout"} method="delete" data-confirm="Se deconnecter de l'Admin?" class="btn-soft text-red-600 hover:underline px-4 py-2">
+          <.link
+            href={~p"/admin/logout"}
+            method="delete"
+            data-confirm="Se deconnecter de l'Admin?"
+            class="btn-soft text-red-600 hover:underline px-4 py-2"
+          >
             Logout
           </.link>
         </div>
       </div>
 
-      <.stats />
+      <.stats stats={@stats} />
     </div>
     """
   end

@@ -5,8 +5,8 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
   @impl true
   def mount(_params, _session, socket) do
-
     projects = Projects.list_projects()
+
     all_years =
       projects
       |> Enum.map(& &1["year"])
@@ -30,6 +30,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       (Projects.list_tags() ++ Enum.flat_map(projects, &(&1["tags"] || [])))
       |> Enum.uniq()
       |> Enum.sort()
+
     socket =
       socket
       |> assign(:projects, projects)
@@ -199,6 +200,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     |> Enum.map(&parse_url_line/1)
     |> Enum.reject(&is_nil/1)
   end
+
   defp parse_urls(_), do: []
 
   defp parse_url_line(line) do
@@ -216,6 +218,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     |> Enum.map(&String.trim/1)
     |> Enum.reject(&(&1 == ""))
   end
+
   defp parse_tags(_), do: []
 
   defp parse_multi(selected, custom) do
@@ -228,6 +231,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       value -> parse_year_value(value)
     end
   end
+
   defp parse_year(_), do: nil
 
   defp parse_year_value(year) do
@@ -238,6 +242,7 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   end
 
   defp blank_to_nil(nil), do: nil
+
   defp blank_to_nil(value) when is_binary(value) do
     case String.trim(value) do
       "" -> nil
@@ -246,12 +251,14 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   end
 
   defp parse_techs(techs) when is_list(techs), do: techs
+
   defp parse_techs(techs_string) when is_binary(techs_string) do
     techs_string
     |> String.split(",")
     |> Enum.map(&String.trim/1)
     |> Enum.reject(&(&1 == ""))
   end
+
   defp parse_techs(_), do: []
 
   defp filter_projects(projects, year_filter, type_filter, search_query) do
@@ -262,22 +269,27 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   end
 
   defp filter_by_year(projects, "all"), do: projects
+
   defp filter_by_year(projects, year) do
     year = String.to_integer(year)
     Enum.filter(projects, &(&1["year"] == year))
   end
 
   defp filter_by_type(projects, "all"), do: projects
+
   defp filter_by_type(projects, type) do
     Enum.filter(projects, &(&1["type"] == type))
   end
 
   defp filter_by_search(projects, ""), do: projects
+
   defp filter_by_search(projects, query) do
     query = String.downcase(query)
+
     Enum.filter(projects, fn project ->
-      searchable = [project["title"], project["desc"], project["type"]] ++
-        (project["techs"] || []) ++ (project["tags"] || [])
+      searchable =
+        [project["title"], project["desc"], project["type"]] ++
+          (project["techs"] || []) ++ (project["tags"] || [])
 
       Enum.any?(searchable, fn value ->
         is_binary(value) and String.contains?(String.downcase(value), query)
@@ -292,61 +304,96 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="text-xl font-semibold text-gray-900 dark:text-white mt-8">Projets</h1>
-          <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Liste de tous vos projets avec options de gestion.</p>
-          <.link navigate={~p"/admin/experiences"} class="mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300">Gérer mes expériences →</.link>
-          <.link navigate={~p"/admin/articles"} class="ml-4 mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300">Gérer les articles →</.link>
+          
+          <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+            Liste de tous vos projets avec options de gestion.
+          </p>
+          
+          <.link
+            navigate={~p"/admin/experiences"}
+            class="mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300"
+          >Gérer mes expériences →</.link>
+          <.link
+            navigate={~p"/admin/articles"}
+            class="ml-4 mt-3 inline-flex text-sm font-semibold text-orange-700 hover:text-orange-800 dark:text-orange-300"
+          >Gérer les articles →</.link>
         </div>
       </div>
-
+      
       <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <!-- Contrôles de vue -->
         <div class="flex items-center gap-2">
-          <button phx-click="toggle_view" phx-value-view="grid"
-            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :grid, do: "bg-indigo-600 text-white", else: "bg-white text-gray-700 hover:bg-gray-50"}"}>
+          <button
+            phx-click="toggle_view"
+            phx-value-view="grid"
+            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :grid, do: "bg-indigo-600 text-white", else: "bg-white text-gray-700 hover:bg-gray-50"}"}
+          >
             <.icon name="hero-squares-2x2" class="w-5 h-5" />
           </button>
-          <button phx-click="toggle_view" phx-value-view="list"
-            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :list, do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+          
+          <button
+            phx-click="toggle_view"
+            phx-value-view="list"
+            class={"px-3 py-2 text-sm rounded-md #{if @view_mode == :list, do: ~c"bg-indigo-600 text-white", else: ~c"bg-white text-gray-700 hover:bg-gray-50"}"}
+          >
             <.icon name="hero-bars-4" class="w-5 h-5" />
           </button>
-          <button phx-click="new"
-            class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-500">
-              <.icon name="hero-plus" class="w-5 h-5" />
-              Ajouter un projet
+          
+          <button
+            phx-click="new"
+            class="inline-flex items-center px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-500"
+          >
+            <.icon name="hero-plus" class="w-5 h-5" /> Ajouter un projet
           </button>
         </div>
-
         <!-- Filtres -->
         <div class="flex flex-wrap items-center gap-4">
           <form phx-change="filter_year" class="flex items-center gap-2">
-            <select name="year" class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400">
+            <select
+              name="year"
+              class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400"
+            >
               <option value="all">Toutes années</option>
+              
               <%= for year <- @all_years do %>
-                <option value={year} selected={@year_filter == to_string(year)}><%= year %></option>
+                <option value={year} selected={@year_filter == to_string(year)}>{year}</option>
               <% end %>
             </select>
           </form>
-
+          
           <form phx-change="filter_type" class="flex items-center gap-2">
-            <select name="type" class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400">
+            <select
+              name="type"
+              class="rounded-md border-gray-300 text-sm text-gray-600 dark:text-gray-400"
+            >
               <option value="all">Tous types</option>
+              
               <option value="Application Web">Application Web</option>
+              
               <option value="Mobile">Mobile</option>
+              
               <option value="SaaS">SaaS</option>
+              
               <option value="Dashboard">Dashboard</option>
+              
               <option value="Plateforme">Plateforme</option>
+              
               <option value="SIG">SIG</option>
             </select>
           </form>
-
+          
           <form phx-change="search" class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <input type="text" name="query" value={@search_query}
+            <input
+              type="text"
+              name="query"
+              value={@search_query}
               placeholder="Rechercher..."
-              class="rounded-md border-gray-300 text-sm" />
+              class="rounded-md border-gray-300 text-sm"
+            />
           </form>
         </div>
       </div>
-
+      
       <%= if @view_mode == :grid do %>
         <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <%= for project <- filter_projects(@projects, @year_filter, @type_filter, @search_query) do %>
@@ -354,39 +401,55 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
               <div class="flex items-center justify-between">
                 <div>
                   <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                    <span class="absolute inset-0" aria-hidden="true"></span>
-                    <%= project["title"] %>
+                    <span class="absolute inset-0" aria-hidden="true"></span> {project["title"]}
                   </h3>
-                  <p class="text-sm text-gray-500"><%= if project["year"], do: project["year"], else: "Période non précisée" %> · <%= project["type"] %></p>
+                  
+                  <p class="text-sm text-gray-500">
+                    {if project["year"], do: project["year"], else: "Période non précisée"} · {project[
+                      "type"
+                    ]}
+                  </p>
                 </div>
-                <button phx-click="toggle_featured" phx-value-id={project["id"]}
-                  class={"#{if project["featured"], do: 'text-yellow-400', else: 'text-gray-300'} hover:text-yellow-400"}>
+                
+                <button
+                  phx-click="toggle_featured"
+                  phx-value-id={project["id"]}
+                  class={"#{if project["featured"], do: ~c"text-yellow-400", else: ~c"text-gray-300"} hover:text-yellow-400"}
+                >
                   <.icon name="hero-star" class="w-6 h-6" />
                 </button>
               </div>
+              
               <div class="mt-2">
-                <p class="text-sm text-gray-500 line-clamp-3"><%= project["desc"] %></p>
+                <p class="text-sm text-gray-500 line-clamp-3">{project["desc"]}</p>
               </div>
+              
               <div class="mt-4">
                 <div class="flex flex-wrap gap-2">
                   <%= for tag <- project["tags"] || [] do %>
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                      <%= tag %>
+                      {tag}
                     </span>
                   <% end %>
                 </div>
               </div>
+              
               <div class="mt-6 flex gap-2">
-                <button phx-click="edit" phx-value-id={project["id"]}
-                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-700 bg-indigo-100 rounded-md hover:bg-indigo-200">
-                  <.icon name="hero-pencil-square" class="w-5 h-5 mr-2" />
-                  Modifier
+                <button
+                  phx-click="edit"
+                  phx-value-id={project["id"]}
+                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-700 bg-indigo-100 rounded-md hover:bg-indigo-200"
+                >
+                  <.icon name="hero-pencil-square" class="w-5 h-5 mr-2" /> Modifier
                 </button>
-                <button phx-click="delete" phx-value-id={project["id"]}
+                
+                <button
+                  phx-click="delete"
+                  phx-value-id={project["id"]}
                   data-confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
-                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200">
-                  <.icon name="hero-trash" class="w-5 h-5 mr-2" />
-                  Supprimer
+                  class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-md hover:bg-red-200"
+                >
+                  <.icon name="hero-trash" class="w-5 h-5 mr-2" /> Supprimer
                 </button>
               </div>
             </div>
@@ -399,53 +462,106 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
               <table class="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white">Projet</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Type</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Année</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Mis en avant</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Tags</th>
+                    <th
+                      scope="col"
+                      class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
+                      Projet
+                    </th>
+                    
+                    <th
+                      scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
+                      Type
+                    </th>
+                    
+                    <th
+                      scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
+                      Année
+                    </th>
+                    
+                    <th
+                      scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
+                      Mis en avant
+                    </th>
+                    
+                    <th
+                      scope="col"
+                      class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
+                      Tags
+                    </th>
+                    
                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
                       <span class="sr-only">Actions</span>
                     </th>
                   </tr>
                 </thead>
+                
                 <tbody class="divide-y divide-gray-200">
                   <%= for project <- filter_projects(@projects, @year_filter, @type_filter, @search_query) do %>
                     <tr>
                       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm">
                         <div>
-                          <div class="font-medium text-gray-900 dark:text-white"><%= project["title"] %></div>
+                          <div class="font-medium text-gray-900 dark:text-white">
+                            {project["title"]}
+                          </div>
+                          
                           <div class="text-gray-500 line-clamp-1">
-                            <%= String.slice(project["desc"], 0..60) <> "..." %>
-                        </div>
+                            {String.slice(project["desc"], 0..60) <> "..."}
+                          </div>
                         </div>
                       </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= project["type"] %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= project["year"] %></td>
+                      
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {project["type"]}
+                      </td>
+                      
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {project["year"]}
+                      </td>
+                      
                       <td class="whitespace-nowrap px-3 py-4 text-sm">
-                        <button phx-click="toggle_featured" phx-value-id={project["id"]}
-                          class={"#{if project["featured"], do: 'text-yellow-400', else: 'text-gray-300'} hover:text-yellow-400"}>
+                        <button
+                          phx-click="toggle_featured"
+                          phx-value-id={project["id"]}
+                          class={"#{if project["featured"], do: ~c"text-yellow-400", else: ~c"text-gray-300"} hover:text-yellow-400"}
+                        >
                           <.icon name="hero-star" class="w-6 h-6" />
                         </button>
                       </td>
+                      
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         <div class="flex flex-wrap gap-2">
                           <%= for tag <- project["tags"] || [] do %>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                              <%= tag %>
+                              {tag}
                             </span>
                           <% end %>
                         </div>
                       </td>
+                      
                       <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <div class="flex justify-end gap-2">
-                          <button phx-click="edit" phx-value-id={project["id"]}
-                            class="text-indigo-600 hover:text-indigo-900">
+                          <button
+                            phx-click="edit"
+                            phx-value-id={project["id"]}
+                            class="text-indigo-600 hover:text-indigo-900"
+                          >
                             <.icon name="hero-pencil-square" class="w-5 h-5" />
                           </button>
-                          <button phx-click="delete" phx-value-id={project["id"]}
+                          
+                          <button
+                            phx-click="delete"
+                            phx-value-id={project["id"]}
                             data-confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
-                            class="text-red-600 hover:text-red-900">
+                            class="text-red-600 hover:text-red-900"
+                          >
                             <.icon name="hero-trash" class="w-5 h-5" />
                           </button>
                         </div>
@@ -462,9 +578,9 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
 
     <%= cond do %>
       <% @form_mode == :edit -> %>
-      <%= render_edit_modal(assigns) %>
+        {render_edit_modal(assigns)}
       <% @form_mode == :new -> %>
-      <%= render_add_modal(assigns) %>
+        {render_add_modal(assigns)}
       <% true -> %>
     <% end %>
     """
@@ -473,22 +589,27 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp render_add_modal(assigns) do
     ~H"""
     <.modal id="add-project-modal" show={@form_mode == :new} on_cancel={JS.push("cancel_edit")}>
-      <:title>Ajouter un projet</:title>
-
       <.form for={%{}} phx-submit="add">
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700">Titre</label>
-            <input type="text" name="project[title]" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <input
+              type="text"
+              name="project[title]"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
-
+          
           <div>
-            <label class="block text-sm font-medium text-gray-700">Description</label>
-            <textarea name="project[desc]" rows="3" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+            <label class="block text-sm font-medium text-gray-700">Description</label> <textarea
+              name="project[desc]"
+              rows="3"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            ></textarea>
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Technologies</label>
             <div class="mt-2 flex flex-wrap gap-2">
@@ -499,34 +620,54 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     name="project[techs][]"
                     value={tech}
                     class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tech %></span>
+                  /> <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{tech}</span>
                 </label>
               <% end %>
             </div>
-            <input name="project[techs_custom]" placeholder="Ajouter des outils séparés par des virgules"
-              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            
+            <input
+              name="project[techs_custom]"
+              placeholder="Ajouter des outils séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Type de projet</label>
-            <input name="project[type]" list="project-types" required placeholder="Application Web"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-            <datalist id="project-types"><%= for type <- @all_types do %><option value={type} /><% end %></datalist>
+            <input
+              name="project[type]"
+              list="project-types"
+              required
+              placeholder="Application Web"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+            <datalist id="project-types"><%= for type <- @all_types do %>
+              <option value={type} />
+            <% end %></datalist>
           </div>
-
+          
           <div>
-            <label class="block text-sm font-medium text-gray-700">Client ou organisation <span class="font-normal text-gray-500">(facultatif)</span></label>
-            <input name="project[client]" placeholder="Ex. OIF, Sanlam Allianz"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            <label class="block text-sm font-medium text-gray-700">Client ou organisation
+            <span class="font-normal text-gray-500">(facultatif)</span></label>
+            <input
+              name="project[client]"
+              placeholder="Ex. OIF, Sanlam Allianz"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Année</label>
-            <input type="number" name="project[year]" min="1900" max="2200" placeholder="Optionnel"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <input
+              type="number"
+              name="project[year]"
+              min="1900"
+              max="2200"
+              placeholder="Optionnel"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Tags</label>
             <div class="mt-2 flex flex-wrap gap-2">
@@ -537,69 +678,99 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     name="project[tags][]"
                     value={tag}
                     class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tag %></span>
+                  /> <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{tag}</span>
                 </label>
               <% end %>
             </div>
-            <input name="project[tags_custom]" placeholder="Ajouter des tags séparés par des virgules"
-              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            
+            <input
+              name="project[tags_custom]"
+              placeholder="Ajouter des tags séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Logo</label>
             <div class="mt-2 flex items-center gap-4">
-              <button type="button" phx-click="switch_logo_type" phx-value-type="url"
-                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "url", do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+              <button
+                type="button"
+                phx-click="switch_logo_type"
+                phx-value-type="url"
+                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "url", do: ~c"bg-indigo-600 text-white", else: ~c"bg-white text-gray-700 hover:bg-gray-50"}"}
+              >
                 URL
               </button>
-              <button type="button" phx-click="switch_logo_type" phx-value-type="upload"
-                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "upload", do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+              
+              <button
+                type="button"
+                phx-click="switch_logo_type"
+                phx-value-type="upload"
+                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "upload", do: ~c"bg-indigo-600 text-white", else: ~c"bg-white text-gray-700 hover:bg-gray-50"}"}
+              >
                 Upload
               </button>
             </div>
-
+            
             <%= if @logo_type == "url" do %>
-              <input type="text" name="project[logo_url]"
+              <input
+                type="text"
+                name="project[logo_url]"
                 class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="https://..." />
+                placeholder="https://..."
+              />
             <% else %>
               <div class="mt-2">
                 <.live_file_input upload={@uploads.logo} />
               </div>
             <% end %>
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">URLs de démo</label>
-            <input type="text" name="project[demo_urls]"
+            <input
+              type="text"
+              name="project[demo_urls]"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label|url, label2|url2" />
+              placeholder="label|url, label2|url2"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">URLs du code source</label>
-            <input type="text" name="project[source_urls]"
+            <input
+              type="text"
+              name="project[source_urls]"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label|url, label2|url2" />
+              placeholder="label|url, label2|url2"
+            />
           </div>
-
+          
           <div>
             <label class="flex items-center gap-2">
-              <input type="checkbox" name="project[featured]" value="true"
-                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-              <span class="text-sm font-medium text-gray-700">Mettre en avant</span>
+              <input
+                type="checkbox"
+                name="project[featured]"
+                value="true"
+                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              /> <span class="text-sm font-medium text-gray-700">Mettre en avant</span>
             </label>
           </div>
         </div>
-
+        
         <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-          <button type="submit"
-            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm">
+          <button
+            type="submit"
+            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
+          >
             Ajouter
           </button>
-          <button type="button" phx-click={JS.push("cancel_edit")}
-            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm">
+          
+          <button
+            type="button"
+            phx-click={JS.push("cancel_edit")}
+            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
+          >
             Annuler
           </button>
         </div>
@@ -611,24 +782,30 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
   defp render_edit_modal(assigns) do
     ~H"""
     <.modal id="edit-project-modal" show={@form_mode == :edit} on_cancel={JS.push("cancel_edit")}>
-      <:title>Modifier le projet</:title>
-
       <.form for={%{}} phx-submit="update">
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700">Titre</label>
-            <input type="text" name="project[title]" value={@editing_project["title"]} required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <input
+              type="text"
+              name="project[title]"
+              value={@editing_project["title"]}
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
-
+          
           <div>
-            <label class="block text-sm font-medium text-gray-700">Description</label>
-            <textarea name="project[desc]" rows="3" required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <label class="block text-sm font-medium text-gray-700">Description</label> <textarea
+              name="project[desc]"
+              rows="3"
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
               <%= @editing_project["desc"] %>
             </textarea>
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Technologies</label>
             <div class="mt-2 flex flex-wrap gap-2">
@@ -638,36 +815,58 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     type="checkbox"
                     name="project[techs][]"
                     value={tech}
-                    checked={tech in (@editing_project && @editing_project["techs"] || [])}
+                    checked={tech in ((@editing_project && @editing_project["techs"]) || [])}
                     class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tech %></span>
+                  /> <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{tech}</span>
                 </label>
               <% end %>
             </div>
-            <input name="project[techs_custom]" placeholder="Ajouter des outils séparés par des virgules"
-              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            
+            <input
+              name="project[techs_custom]"
+              placeholder="Ajouter des outils séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Type de projet</label>
-            <input name="project[type]" list="project-types-edit" value={@editing_project["type"]} required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
-            <datalist id="project-types-edit"><%= for type <- @all_types do %><option value={type} /><% end %></datalist>
+            <input
+              name="project[type]"
+              list="project-types-edit"
+              value={@editing_project["type"]}
+              required
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
+            <datalist id="project-types-edit"><%= for type <- @all_types do %>
+              <option value={type} />
+            <% end %></datalist>
           </div>
-
+          
           <div>
-            <label class="block text-sm font-medium text-gray-700">Client ou organisation <span class="font-normal text-gray-500">(facultatif)</span></label>
-            <input name="project[client]" value={@editing_project["client"]} placeholder="Ex. OIF, Sanlam Allianz"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            <label class="block text-sm font-medium text-gray-700">Client ou organisation
+            <span class="font-normal text-gray-500">(facultatif)</span></label>
+            <input
+              name="project[client]"
+              value={@editing_project["client"]}
+              placeholder="Ex. OIF, Sanlam Allianz"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Année</label>
-            <input type="number" name="project[year]" min="1900" max="2200" value={@editing_project["year"]} placeholder="Optionnel"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+            <input
+              type="number"
+              name="project[year]"
+              min="1900"
+              max="2200"
+              value={@editing_project["year"]}
+              placeholder="Optionnel"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Tags</label>
             <div class="mt-2 flex flex-wrap gap-2">
@@ -677,74 +876,105 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
                     type="checkbox"
                     name="project[tags][]"
                     value={tag}
-                    checked={tag in (@editing_project && @editing_project["tags"] || [])}
+                    checked={tag in ((@editing_project && @editing_project["tags"]) || [])}
                     class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><%= tag %></span>
+                  /> <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{tag}</span>
                 </label>
               <% end %>
             </div>
-            <input name="project[tags_custom]" placeholder="Ajouter des tags séparés par des virgules"
-              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
+            
+            <input
+              name="project[tags_custom]"
+              placeholder="Ajouter des tags séparés par des virgules"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">Logo</label>
             <div class="mt-2 flex items-center gap-4">
-              <button type="button" phx-click="switch_logo_type" phx-value-type="url"
-                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "url", do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+              <button
+                type="button"
+                phx-click="switch_logo_type"
+                phx-value-type="url"
+                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "url", do: ~c"bg-indigo-600 text-white", else: ~c"bg-white text-gray-700 hover:bg-gray-50"}"}
+              >
                 URL
               </button>
-              <button type="button" phx-click="switch_logo_type" phx-value-type="upload"
-                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "upload", do: 'bg-indigo-600 text-white', else: 'bg-white text-gray-700 hover:bg-gray-50'}"}>
+              
+              <button
+                type="button"
+                phx-click="switch_logo_type"
+                phx-value-type="upload"
+                class={"px-3 py-2 text-sm rounded-md #{if @logo_type == "upload", do: ~c"bg-indigo-600 text-white", else: ~c"bg-white text-gray-700 hover:bg-gray-50"}"}
+              >
                 Upload
               </button>
             </div>
-
+            
             <%= if @logo_type == "url" do %>
-              <input type="text" name="project[logo_url]" value={@editing_project["logo_url"]}
+              <input
+                type="text"
+                name="project[logo_url]"
+                value={@editing_project["logo_url"]}
                 class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="https://..." />
+                placeholder="https://..."
+              />
             <% else %>
               <div class="mt-2">
                 <.live_file_input upload={@uploads.logo} />
               </div>
             <% end %>
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">URLs de démo</label>
-            <input type="text" name="project[demo_urls]"
+            <input
+              type="text"
+              name="project[demo_urls]"
               value={format_urls(@editing_project["demo_urls"])}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label|url, label2|url2" />
+              placeholder="label|url, label2|url2"
+            />
           </div>
-
+          
           <div>
             <label class="block text-sm font-medium text-gray-700">URLs du code source</label>
-            <input type="text" name="project[source_urls]"
+            <input
+              type="text"
+              name="project[source_urls]"
               value={format_urls(@editing_project["source_urls"])}
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="label|url, label2|url2" />
+              placeholder="label|url, label2|url2"
+            />
           </div>
-
+          
           <div>
             <label class="flex items-center gap-2">
-              <input type="checkbox" name="project[featured]" value="true"
+              <input
+                type="checkbox"
+                name="project[featured]"
+                value="true"
                 checked={@editing_project["featured"]}
-                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-              <span class="text-sm font-medium text-gray-700">Mettre en avant</span>
+                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              /> <span class="text-sm font-medium text-gray-700">Mettre en avant</span>
             </label>
           </div>
         </div>
-
+        
         <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-          <button type="submit"
-            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm">
+          <button
+            type="submit"
+            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
+          >
             Enregistrer
           </button>
-          <button type="button" phx-click={JS.push("cancel_edit")}
-            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm">
+          
+          <button
+            type="button"
+            phx-click={JS.push("cancel_edit")}
+            class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:col-start-1 sm:mt-0 sm:text-sm"
+          >
             Annuler
           </button>
         </div>
@@ -758,5 +988,6 @@ defmodule PortfolioHermannWeb.AdminProjectsLive do
     |> Enum.map(fn %{"label" => label, "url" => url} -> "#{label}|#{url}" end)
     |> Enum.join(", ")
   end
+
   defp format_urls(_), do: ""
 end

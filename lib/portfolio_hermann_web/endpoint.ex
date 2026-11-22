@@ -22,7 +22,9 @@ defmodule PortfolioHermannWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :portfolio_hermann,
-    gzip: false,
+    # phx.digest génère les .gz à côté des assets : les servir directement
+    # évite de gzipper à la volée (CPU) et réduit la bande passante.
+    gzip: true,
     only: PortfolioHermannWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the

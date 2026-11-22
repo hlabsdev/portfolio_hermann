@@ -1,6 +1,15 @@
 .git
+.gitignore
+_build
 deps
 doc
+docs
 test
+tmp
+.cv_render
 node_modules
 assets/node_modules
+.formatter.exs
+Dockerfile
+fly.toml
+README.md

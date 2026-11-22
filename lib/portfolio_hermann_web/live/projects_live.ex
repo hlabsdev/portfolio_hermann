@@ -7,7 +7,14 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   def mount(_params, _session, socket) do
     projects = Projects.list_projects()
     all_tags = get_all_tags(projects)
-    all_years = projects |> Enum.map(& &1["year"]) |> Enum.reject(&is_nil/1) |> Enum.uniq() |> Enum.sort(:desc)
+
+    all_years =
+      projects
+      |> Enum.map(& &1["year"])
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+      |> Enum.sort(:desc)
+
     all_techs = get_all_techs(projects)
 
     socket =
@@ -158,8 +165,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             </button>
           </div>
         </div>
-
-    <!-- Filtres -->
+        <!-- Filtres -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Recherche -->
           <div>
@@ -176,8 +182,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               </div>
             </form>
           </div>
-
-    <!-- Année -->
+          <!-- Année -->
           <div>
             <form phx-change="filter_year">
               <select
@@ -195,8 +200,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               </select>
             </form>
           </div>
-
-    <!-- Tri -->
+          <!-- Tri -->
           <div class="flex gap-2">
             <button
               type="button"
@@ -232,8 +236,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             </button>
           </div>
         </div>
-
-    <!-- Techs -->
+        <!-- Techs -->
         <p class="text-xl font-bold text-gray-900 dark:text-white mb-8">Technologies</p>
 
         <div class="flex flex-wrap gap-2">
@@ -250,8 +253,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
             </button>
           <% end %>
         </div>
-
-    <!-- Tags -->
+        <!-- Tags -->
         <p class="text-xl font-bold text-gray-900 dark:text-white mb-8">Tags</p>
 
         <div class="flex flex-wrap gap-2">
@@ -269,8 +271,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           <% end %>
         </div>
       </div>
-
-    <!-- Liste des projets -->
+      <!-- Liste des projets -->
       <%= if @view_mode == :grid do %>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <%= for project <- @filtered_projects do %>
@@ -292,7 +293,11 @@ defmodule PortfolioHermannWeb.ProjectsLive do
               <div class="p-6">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {project["title"]}
-                  <%= if project["year"] do %><b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800"><%= project["year"] %></b><% end %>
+                  <%= if project["year"] do %>
+                    <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project[
+                      "year"
+                    ]}</b>
+                  <% end %>
                 </h3>
 
                 <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
@@ -318,8 +323,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                 <div class="flex justify-between items-center">
                   <div class="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center space-x-1">
-                      <.icon name="hero-eye" class="w-4 h-4" />
-                      <span>{project["stats"]["views"]}</span>
+                      <.icon name="hero-eye" class="w-4 h-4" /> <span>{stat(project, "views")}</span>
                     </div>
 
                     <button
@@ -328,7 +332,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                       class="ml-2 flex items-center space-x-1 hover:text-[#f39d8d] dark:hover:text-[#f39d8d] transition-colors duration-200"
                     >
                       <.icon name="hero-heart" class="w-4 h-4" />
-                      <span>{project["stats"]["likes"]}</span>
+                      <span>{stat(project, "likes")}</span>
                     </button>
                   </div>
                 </div>
@@ -427,7 +431,11 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                         <div class="ml-4">
                           <div class="text-sm font-medium text-gray-900 dark:text-white">
                             {project["title"]}
-                            <%= if project["year"] do %><b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800"><%= project["year"] %></b><% end %>
+                            <%= if project["year"] do %>
+                              <b class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-200 text-orange-800">{project[
+                                "year"
+                              ]}</b>
+                            <% end %>
                           </div>
 
                           <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
@@ -439,20 +447,19 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
                     <td class="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs overflow-hidden">
                       <div class="flex flex-wrap gap-2">
-                          <%= for tech <- project["techs"] || [] do %>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                              <%= tech %>
-                            </span>
-                          <% end %>
-                        </div>
+                        <%= for tech <- project["techs"] || [] do %>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            {tech}
+                          </span>
+                        <% end %>
+                      </div>
                     </td>
-
 
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <div class="flex items-center space-x-4">
                         <div class="flex items-center space-x-1">
                           <.icon name="hero-eye" class="w-4 h-4" />
-                          <span>{project["stats"]["views"]}</span>
+                          <span>{stat(project, "views")}</span>
                         </div>
 
                         <button
@@ -461,7 +468,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                           class="flex items-center space-x-1 hover:text-[#f39d8d] dark:hover:text-[#f39d8d] transition-colors duration-200"
                         >
                           <.icon name="hero-heart" class="w-4 h-4" />
-                          <span>{project["stats"]["likes"]}</span>
+                          <span>{stat(project, "likes")}</span>
                         </button>
                       </div>
                     </td>
@@ -498,11 +505,13 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900 dark:text-white">
-                        <button phx-click={JS.push("show_project_details", value: %{id: project["id"]})}
-                            class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200"
-                            title="Voir les details">
-                            <.icon name="hero-eye" class="w-5 h-5" />
-                          </button>
+                        <button
+                          phx-click={JS.push("show_project_details", value: %{id: project["id"]})}
+                          class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors duration-200"
+                          title="Voir les details"
+                        >
+                          <.icon name="hero-eye" class="w-5 h-5" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -512,7 +521,7 @@ defmodule PortfolioHermannWeb.ProjectsLive do
           </div>
         </div>
       <% end %>
-       <%!-- Modal detail --%>
+      <%!-- Modal detail --%>
       <%= if @show_details do %>
         <.modal id="detail-project-modal" show={@show_details} on_cancel={JS.push("close_details")}>
           <div class="mt-6 grid grid-cols-1 gap-6">
@@ -582,14 +591,14 @@ defmodule PortfolioHermannWeb.ProjectsLive do
                   <div class="flex items-center gap-1">
                     <.icon name="hero-eye" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                     <span class="text-gray-600 dark:text-gray-400">
-                      {@selected_project["stats"]["views"]} vues
+                      {stat(@selected_project, "views")} vues
                     </span>
                   </div>
 
                   <div class="flex items-center gap-1">
                     <.icon name="hero-heart" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
                     <span class="text-gray-600 dark:text-gray-400">
-                      {@selected_project["stats"]["likes"]} likes
+                      {stat(@selected_project, "likes")} likes
                     </span>
                   </div>
                 </div>
@@ -638,17 +647,35 @@ defmodule PortfolioHermannWeb.ProjectsLive do
 
   defp get_all_tags(projects) do
     projects
-    |> Enum.flat_map(& &1["tags"])
+    |> Enum.flat_map(&list_field(&1, "tags"))
     |> Enum.uniq()
     |> Enum.sort()
   end
 
   defp get_all_techs(projects) do
     projects
-    |> Enum.flat_map(& &1["techs"])
+    |> Enum.flat_map(&list_field(&1, "techs"))
     |> Enum.uniq()
     |> Enum.sort()
   end
+
+  # Accès tolérant aux données partielles : un projet sans "stats" ne doit pas
+  # faire planter le rendu ni les tris.
+  defp stat(project, field) do
+    case project do
+      %{"stats" => stats} when is_map(stats) -> Map.get(stats, field) || 0
+      _ -> 0
+    end
+  end
+
+  defp list_field(map, field) when is_map(map) do
+    case Map.get(map, field) do
+      list when is_list(list) -> list
+      _ -> []
+    end
+  end
+
+  defp list_field(_map, _field), do: []
 
   defp toggle_tag(selected_tags, tag) do
     if tag in selected_tags do
@@ -694,8 +721,9 @@ defmodule PortfolioHermannWeb.ProjectsLive do
     query = String.downcase(query)
 
     Enum.filter(projects, fn project ->
-      searchable = [project["title"], project["desc"], project["type"], project["client"]] ++
-        (project["techs"] || []) ++ (project["tags"] || [])
+      searchable =
+        [project["title"], project["desc"], project["type"], project["client"]] ++
+          (project["techs"] || []) ++ (project["tags"] || [])
 
       Enum.any?(searchable, fn value ->
         is_binary(value) and String.contains?(String.downcase(value), query)
@@ -716,10 +744,10 @@ defmodule PortfolioHermannWeb.ProjectsLive do
   end
 
   defp sort_projects(projects, :popular) do
-    Enum.sort_by(projects, & &1["stats"]["views"], :desc)
+    Enum.sort_by(projects, &stat(&1, "views"), :desc)
   end
 
   defp sort_projects(projects, :likes) do
-    Enum.sort_by(projects, & &1["stats"]["likes"], :desc)
+    Enum.sort_by(projects, &stat(&1, "likes"), :desc)
   end
 end

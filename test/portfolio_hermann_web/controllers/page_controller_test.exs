@@ -1,8 +1,10 @@
 defmodule PortfolioHermannWeb.PageControllerTest do
   use PortfolioHermannWeb.ConnCase
 
-  test "GET /", %{conn: conn} do
+  test "GET / rend la page d'accueil", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind from prototype to production"
+    html = html_response(conn, 200)
+    assert html =~ "Je fais avancer le logiciel"
+    assert html =~ "Komi K. Hermann GOLO"
   end
 end
