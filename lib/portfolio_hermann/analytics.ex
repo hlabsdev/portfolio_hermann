@@ -8,7 +8,7 @@ defmodule PortfolioHermann.Analytics do
   l'arrêt propre du serveur (`terminate/2`). Un `File.write/3` + `:sync` par
   vue (re-encodage complet du fichier) devient donc au pire une écriture
   toutes les 5 s, ce qui réduit fortement l'I/O et l'usure du volume sur une
-  machine Fly.io 256 Mo / 1 vCPU.
+  machine Fly.io 512 Mo / 1 vCPU.
 
   `get_stats/1` renvoie toujours l'état en mémoire : les statistiques affichées
   restent cohérentes même si le fichier n'est pas encore réécrit.
